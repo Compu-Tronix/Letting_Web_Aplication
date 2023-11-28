@@ -55,8 +55,8 @@ nav {
     border: 2px solid brown;
 }
 .login {
-    position: fixed;
-    background: yellow;
+    position: absolute;
+    background: gold;
     top: 0;
     left: 0;
     right: 0;
@@ -64,6 +64,24 @@ nav {
 }
 .login.visible {
     visibility: visible
+}
+.register {
+    visibility: hidden;
+    position: fixed;
+    background: maroon;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+}
+.register.visible {
+    visibility: visible;
+}
+.registration_form {
+    margin: auto;
+    background: blue;
 }
 
 

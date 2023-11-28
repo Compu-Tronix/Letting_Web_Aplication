@@ -14,9 +14,39 @@ print(db_connection.get_server_info())
 
 cusor = db_connection.cursor()
 
-@app.route('/')
+reg_details = []
+
+
+@app.route('/', methods = ['POST','GET'])
 def main():
-    return render_template('guest/index.html')
+    if request.method =='POST':
+    
+        username = request.form['username']
+        surname = request.form['surname']
+        cell_no = request.form['cell_no']
+        email = request.form['email']
+        password = request.form['password']
+
+        def send_to_reg_details(reg_details):
+            reg_details.append(username)
+            reg_details.append(surname)
+            reg_details.append(cell_no)
+            reg_details.append(email)
+            reg_details.append(password)
+        send_to_reg_details(reg_details)
+        print(reg_details)
+        return'it worrks'
+    
+    else:
+        print('error')
+        return render_template ('index.html')
+
+
+    
+
+
+
+
     
 if __name__ == '__main__':
     app.run (debug = True)

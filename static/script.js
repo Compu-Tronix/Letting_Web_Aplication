@@ -64,3 +64,31 @@ function closeForm() {
 
 });
   
+
+// registration popup function
+function closeForm() {
+  $('.register').removeClass('visible');
+}
+
+$(document).ready(function($) {
+  
+  
+  // Form Interactions //
+  $('#user_registration_button').on('click', function(event) {
+    event.preventDefault();
+
+    $('.register').addClass('visible');
+  });
+
+
+  // close popup
+  $('.register').on('click', function(event) {
+    if ($(event.target).is('.register') || $(event.target).is('#close_registration_popup')) {
+      event.preventDefault();
+      $(this).removeClass('visible');
+    }
+  });
+
+
+
+});
