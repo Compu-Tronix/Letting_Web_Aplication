@@ -24,7 +24,7 @@ window.smoothScroll = function(target) {
 
 // dashboard function
 function dashboard() {
-    document.getElementById('dashboard').innerHTML = '<button class="exit_dashboard" onclick="exit_dashboard(document.getElementById(\'dashboard\'))">X</button> <ul><li>User Profile</li><li>Update Information</li><li>Notifications</li></ul>'
+    document.getElementById('dashboard').innerHTML = '<button class="exit_dashboard" onclick="exit_dashboard(document.getElementById(\'dashboard\'))">X</button> <ul> <li><a href="/user_profile/">User Profile</a></li> <li><a href="/user_information/">Information</a></li> <li><a href="/notifications/">Notifications</a></li> </ul>'
 }
 //exit dashboard function
 function exit_dashboard() {
