@@ -26,29 +26,45 @@
 
             <!-- dashboard -->
             <span class="dashboard">
-                <button class="dashboard_btn" onclick="dashboard(document.getElementById('dashboard'))">
+                <a href="javascript:void(0)" onclick="dashboard(document.getElementById('dashboard'))">
+                    {% for dashboard in dashboard %}
 
-                </button>
+                    {{ dashboard }}
+
+                    {% endfor %}
+                </a>
             </span>
 
             <!-- user access & user registration function -->
             <span class="user_access_button_container">
-                <button class="user_access_button" id="user_access_button">
+                <a href="javascript:void(0)" id="user_access_button">
+                    {% for login in login %}
                     
-                </button>
+                    {{ login }}
+                    
+                    {% endfor %}
+                </a>
+                <a href="/logout/" >
+                    {% for logout in logout %}
+                    
+                    {{ logout }}
+                    
+                    {% endfor %}
+                </a>
+                
                 <div class="login" id="login">
 
                     <button id="close_login_popup">
                         X
                     </button>
-                    <form class="form">
-                        <input type="text" placeholder="username">
-                        <input type="password" placeholder="password">
+                    <form action="/login/" method="POST" class="form">
+                        <input type="text" placeholder="username" name="username">
+                        <input type="password" placeholder="password" name="password">
                         <input type="submit">
                     </form>
 
                     <button class="user_registration_button" id="user_registration_button">
-
+                        register
                     </button>
                     <div class="register">
 
