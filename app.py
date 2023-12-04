@@ -1,9 +1,11 @@
 import mysql.connector
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from tabulate import tabulate
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'my_secret'
+
 
 
 HOST = 'localhost'
@@ -28,74 +30,138 @@ def ___repr__(self):
         return '<logout %r>' % self.id
 
 
+'''
 
+LISTS
+
+'''
 # registration list
 reg_details = []
 
 # user details list
 user_details = []
 
-# user authentication function
+# session identification list
+session_identification = []
+
+
+'''
+
+FUNCTIONS
+
+'''
+# user authentication 
 def user_authentication():
+    username = request.form['username']
+    password = request.form['password']
+    user_details.append(username)
+    user_details.append(password)
+    print(username + password + 'appended to user_details')
+    
     sql_login_statement = "select exists (select * from user where username=%s and password=%s);"
     cursor.execute(sql_login_statement, user_details)
-    result = cursor.fetchall()
-    feedback= result[0]
+    returned = cursor.fetchall()
+    feedback = str(returned[0])
+    result = int(feedback[1])
     
-    if str(feedback) == '(1,)':       
-            print('user logged in')
+    if result == 1:
+      set_session()
+      user_details.clear()      
+      print('user exists')
+      return True
+
+    elif result == 0:
+      user_details.clear()
+      print('user does not exist')
+      return False
+    
+    else:
+         print('user_authentication function error')
+
+# set session
+def set_session():
+      sql_user_id_statement = "select id from user where username=%s and password=%s;"
+      cursor.execute(sql_user_id_statement, user_details)
+      returned = cursor.fetchall()
+      feedback = str(returned[0])
+      result = int(feedback[1])
+      value = result
+      session['id'] = value
+      print('session has been initiated')
+      return result
+
+# session authentication
+def session_authenticator():
+      session_id = session.get('id')
+      session_identification.append(session_id)
+      print(str(session_id) + ' appended to session_identification list')
+
+      sql_session_id_statement = "select exists (select id from user where id =%s);"
+      cursor.execute(sql_session_id_statement, session_identification)
+      returned = cursor.fetchall()
+      feedback= str(returned[0])
+      result= int(feedback[1])
+      session_identification.clear()
+      print('sql_session_id_statement returned: ' + str(result))
+
+      if result == 1:
             return True
+      
+      elif result == 0 :
+            return False
+      
+      else:
+            print('session_authentication functon error')
+      
+        
+'''
 
-    elif str(feedback) == '(0,)':
-          print('user does not exist')
-          return False
+APPLICATION ROUTES
 
-
+'''
 # user login
 @app.route('/login/',methods=['POST','GET'])
 def login():
     if request.method == 'POST':
-
-        username = request.form['username']
-        password = request.form['password']
-
-        def send_to_user_details(user_details):
-            user_details.append(username)
-            user_details.append(password)
-
-        send_to_user_details(user_details)
         
         if user_authentication() == True:
+             print('user logged on')
              return main()
         
         elif user_authentication() == False:
+              print('user login failed')
               return logout()
+
+        else:
+              print('login function error')
+              return main()
 
 
 # user logout
 @app.route('/logout/')
 def logout():
-      user_details.clear()
+      session.clear()
       return main()
 
 
-# application ignition
+# application start
 @app.route('/', methods = ['POST','GET'])
 def main():
-        if len(user_details) == 0:
+      
+      if session_authenticator() == True:
+            logout = 'logout'
+            dashboard = 'dashboard'
+            return render_template ('index.html',logout=logout,dashboard=dashboard)
+      
+      elif session_authenticator() == False:
              login = 'login'
              dashboard = 'dashboard'
              return render_template ('index.html',login=login)
-        
-        elif len(user_details) >= 1:
-             logout = 'logout'
-             dashboard = 'dashboard'
-             return render_template ('index.html',logout=logout,dashboard=dashboard)
-        
-        else:
-              print('failed')
-              return('index.html')
+      
+      else:
+            print('failed to start app')
+            return('an error occured')
              
     
 if __name__ == '__main__':
-    app.run (debug = True)
+    app.run (debug = False)
