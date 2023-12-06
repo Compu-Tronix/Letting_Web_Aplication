@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>letting App</title>
+{% endblock %}
+
+
+{% block body %}
+
+    <!--
+
+            body container:
+            -profile
+            -user_listing
+
+        -->
+        <div class="body_container">
+
+            <!--
+
+                profile:
+                -user_profile_container
+                -listing_form
+
+            -->
+            <div class="profile">
+
+                <!-- user_profile_container -->
+                <div class="user_profile_container">
+                    <div class="user_icon">
+                        <img src="" alt="user_icon" class="user_icon_img">
+                        <div class="available_funds">
+                            <p>
+                                placeholder
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="profile_values">
+                        <ul>
+                            <li>placeholder</li>
+                            <li>placeholder</li>
+                            <li>placeholder</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- listing_form -->
+                <div class="listing_form">
+                    <form action="/list" method="POST">
+                        <input type="text" placeholder="username" name="username">
+                        <input type="password" placeholder="password" name="password">
+                        <input type="submit">
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- 
+
+                user_listing_container:
+                -history_container
+                -active_listings_container
+                -pending_listings_container
+
+             -->
+            <div class="user_listing_container">
+
+                <!-- history_container -->
+                <div class="history_container">
+
+                </div>
+
+                <!-- active_listings_container -->
+                <div class="active_listings_container">
+
+                </div>
+                
+                <!-- pending_listings_container -->
+                <div class="pending_listings_container">
+                    
+                </div>
+
+            </div>
+        </div>
+
+{% endblock %}
