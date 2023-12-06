@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Information</title>
+{% endblock %}
+
+
+{% block body %}
+<div class="body_container">
+    <div class="user_information">
+        <p>
+            username: 
+            {% for username in username %}
+            {{ username }}
+            {% end for username %}
+            <a href="javascript:void(0)" id="edit_username"><img src="" alt="edit" class="edit"></a>
+            <div class="input_username">
+                <form>
+                    <input type="text" placeholder=" update username" name="username">
+                    <input type="submit" value="update">
+                    <button id="cancel_username_update">cancel</button>
+                </form>
+            </div>
+        </p>
+
+        <p>
+            surname:
+            {% for surname in surname %}
+            {{ username }}
+            {% end of username %}
+            <a href="javascript:void(0)" id="edit_surname"><img src="" alt="edit" class="edit_data"></a>
+            <div class="input_surname">
+                <form>
+                    <input type="text" placeholder="update surname" name="surname">
+                    <input type="submit" value="update">
+                    <button id="cancel_surname_update">cancel</button>
+                </form>
+            </div>
+        </p>
+
+        <p>
+            id number:
+            {% for id_number in id_number %}
+            {{ id_number }}
+            {% end of id_number %}
+            <a href="javascript:void(0)" id="edit_id_number"><img src="" alt="edit" class="edit_data"></a>
+            <div class="input_id_number">
+                <form>
+                    <input type="text" placeholder="update id number" name="id_number">
+                    <input type="file" name="id_img">
+                    <input type="submit" value="update">
+                    <button id="cancel_id_number_update">cancel</button>
+                </form>
+            </div>
+        </p>
+
+        <p>
+            residential address:
+            {% for residential_address in residential_address %}
+            {{ residential_address }}
+            {% end of residential_address %}
+            <a href="javascript:void(0)" id="edit_residential_address"><img src="" alt="edit" class="edit_data"></a>
+            <div class="input_residential_address">
+                <form>
+                    <input type="text" placeholder="street" name="street_address">
+                    <input type="text" placeholder="town/city" name="town_city">
+                    <input type="text" placeholder="postal code" name="postal_code">
+                    <input type="file" name="proof_of_residence">
+                    <input type="submit" value="update">
+                    <button id="cancel_residential_address_update">cancel</button>
+                </form>
+            </div>
+        </p> 
+
+        <p>
+            phone number:
+            {% for cel_number in cel_number %}
+            {{ cel_number }}
+            {% end of cel_number %}
+            <a href="javascript:void(0)" id="edit_phone_number"><img src="" alt="edit" class="edit_data"></a>
+            <div class="input_phone_number">
+                <form>
+                    <input type="text" placeholder="update phone number" name="cel_number">
+                    <input type="submit" value="update">
+                    <button id="cancel_phone_number_update">cancel</button>
+                </form>
+            </div>
+        </p>
+
+        <p>
+            email address:
+            {% for email_address in email_address %}
+            {{ email_address }}
+            {% end for email_address %}
+            <a href="javascript:void(0)" id="edit_email_address"><img src="" alt="edit" class="edit_data"></a>
+            <div class="input_email_address">
+                <form>
+                    <input type="email" placeholder="update email address">
+                    <input type="submit" value="update">
+                    <button id="cancel_email_address_update">cancel</button>
+                </form>
+            </div>
+        </p>
+       
+    </div>
+</div>
+{% endblock %}
