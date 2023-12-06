@@ -11,6 +11,7 @@ html {
     height: 100%;
 }
 
+
 /* 
 navigation bar:
 -logo
@@ -85,6 +86,11 @@ nav {
 }
 
 
+/*
+
+body:
+
+*/
 body {
     display: flex;
     flex-direction: column;
@@ -92,8 +98,47 @@ body {
 }
 .body_container {
     display: flex;
+    height: 100vh;
 }
 
+
+/*
+footer:
+-additiional documents
+-copyright
+-help center
+*/
+footer {
+    margin-top: auto;
+    border: 2px solid black;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/*additional documents*/
+.additional_documents {
+    border: 2px solid blue;
+}
+
+
+/*copyright*/
+.copyright {
+    border: 2px solid red;
+}
+
+
+/*help center*/
+.help_center {
+    border: 2px solid green;
+}
+
+
+/* 
+
+INDEX.HTML BODY
+
+*/
 
 /*summary*/
 .summary_container {
@@ -141,9 +186,7 @@ app widget:
 }
 
 
-/*
-associations
-*/
+/*associations*/
 .associations {
     border: 2px solid black;
     height: 100vh;
@@ -153,34 +196,117 @@ associations
     margin: auto;
 }
 
-
 /*
-footer:
--additiional documents
--copyright
--help center
+
+DASHBOARD.HTML BODY
+
 */
-footer {
-    margin-top: auto;
-    border: 2px solid black;
-    display: flex;
-    justify-content: space-between;
+
+/* 
+profile:
+-user_profile_container
+-listing_form
+*/
+.profile {
+    border: 2px solid green;
+    width: 25%;
 }
 
+/*user_profile_container*/
+.user_profile_container {
+    border: 2px solid black;
+    display: flex;
+    width: 80%;
+}
+.user_icon {
+    border: 2px solid orange;
+}
+.profile_values {
+    border: 2px solid blue;
+}
 
-/*additional documents*/
-.additional_documents {
+/*listing_form*/
+.listing_form {
+    border: 2px solid red;
+    width: 80%;
+}
+
+/*
+user_listing_container:
+-history_container
+-active_listing_container
+-pending_listings_container
+*/
+.user_listing_container {
+    border: 2px solid orange;
+    width: 75%;
+}
+
+/*history_container*/
+.history_container {
+    border: 2px solid pink;
+    width: 80%;
+}
+
+/*active_listing_container*/
+.active_listing_container {
+    border: 2px solid purple;
+    width: 80%;
+}
+
+/*pending_lidtings*/
+.pending_listings {
     border: 2px solid blue;
 }
 
 
-/*copyright*/
-.copyright {
-    border: 2px solid red;
+/*
+
+INFORMATION.HTML BODY
+
+*/
+.user_information {
+    margin: auto;
 }
-
-
-/*help center*/
-.help_center {
-    border: 2px solid green;
+/* username */
+.input_username {
+    visibility: hidden;
+}
+.input_username.visible {
+    visibility: visible;
+}
+/* surname */
+.input_surname {
+    visibility: hidden;
+}
+.input_surname.visible {
+    visibility: visible;
+}
+/* id number */
+.input_id_number {
+    visibility: hidden;
+}
+.input_id_number.visible {
+    visibility: visible;
+}
+/* residential address */
+.input_residential_address {
+    visibility: hidden;
+}
+.input_residential_address.visible {
+    visibility: visible;
+}
+/* phone number */
+.input_phone_number {
+    visibility: hidden;
+}
+.input_phone_number.visible {
+    visibility: visible;
+}
+/* email address */
+.input_email_address {
+    visibility: hidden;
+}
+.input_email_address.visible {
+    visibility: visible;
 }
