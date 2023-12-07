@@ -72,12 +72,11 @@
                             <button id="close_registration_popup">
                                 X
                             </button>
-                            <form action="/" method="POST" class="form">
-                                <input type="text" placeholder="username" name="username">
-                                <input type="text" placeholder="surname" name="surname">
-                                <input type="text" placeholder="cell no" name="cell_no">
-                                <input type="email" placeholder="email" name="email">
-                                <input type="password" placeholder="password" name="password">
+                            <form action="/register" method="POST" class="form">
+                                <input type="text" placeholder="name" name="username" required>
+                                <input type="email" placeholder="email" name="email" required>
+                                <input type="password" placeholder="password" name="password" required>
+                                <input type="password" placeholder="confirm password" name="confirm_password">
                                 <input type="submit" value="register">
                             </form>
                         </div>
