@@ -13,23 +13,6 @@ DATABASE = 'letting_app'
 USER = 'letting.app'
 PASSWORD = 'letting@database'
 
-db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
-cursor = db_connection.cursor()
-print(db_connection.get_server_info())
-
-def ___repr__(self):
-        
-        return '<dashboard %r>' % self.id
-
-def ___repr__(self):
-        
-        return '<login %r>' % self.id
-
-def ___repr__(self):
-        
-        return '<logout %r>' % self.id
-
-
 '''
 
 LISTS
@@ -50,7 +33,114 @@ session_identification = []
 FUNCTIONS
 
 '''
-# user authentication 
+# clears special characters from strings pulled from database
+def clear_str(value):
+      x = str(value)
+      del_suffix = x[:-4]
+      del_prefix = del_suffix[:0] + del_suffix[3:]
+      cleared_data = del_prefix
+      return cleared_data
+
+# clears special characters from integers pulled from database
+def clear_int(value):
+      value = value
+      str_data = str(value[0])
+      int_data = int(str_data[1])
+      
+      return int_data
+
+# fecth data from database
+def fetch_data(sql_statement, data_source):
+
+      db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
+      cursor = db_connection.cursor()
+      print('connected to: ' + str(db_connection.get_server_info()))
+
+      sql_statement = sql_statement
+      print(sql_statement)
+
+      data_source = data_source
+      print(data_source)
+
+      cursor.execute(sql_statement, data_source)
+      db_data = cursor.fetchall()
+      cursor.close()
+
+      print(db_data)
+      return db_data
+
+# insert data into database
+def insert_data(sql_statement, data_source):
+      
+      db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
+      cursor = db_connection.cursor()
+      print('connected to: ' + str(db_connection.get_server_info()))
+
+      sql_statement = sql_statement
+      print(sql_statement)
+
+      data_source = data_source
+      print(data_source)
+
+      cursor.execute(sql_statement, data_source)
+      db_data = cursor.fetchall()
+
+      db_connection.commit()
+      cursor.close()
+      print(db_data)
+      return db_data
+
+
+# register new  application users
+def user_registratoin():
+      
+      username = request.form['username']
+      email = request.form['email']
+      password = request.form['password']
+      confirm_password = request.form['confirm_password']
+      
+      if password == confirm_password:
+            reg_details.append(username)
+            reg_details.append(email)
+            reg_details.append(password)
+            print(username + email + password + ' appended to reg_details')
+
+            sql_statement = "insert into user (username, email, password) values (%s, %s,%s)"
+            data_source = reg_details
+            insert_data(sql_statement, data_source)
+
+            reg_details.clear()
+            print(username + 'new user redistered')
+
+      else:
+            reg_details.clear()
+            print('passwords do not match')
+
+# validates email address to verify existance in the database
+def validate_email():
+            email = request.form['email']
+            reg_details.append(email)
+            print(email + 'appened to reg_details')
+
+            sql_statement = "select exists (select email from user where email=%s);"
+            data_source = reg_details                        
+            db_data = fetch_data(sql_statement, data_source)
+            data = clear_int(db_data)
+
+            if data == 1:
+                  print('email adress already exists')
+                  reg_details.clear()
+                  return True
+
+            elif data == 0:
+                  print('email address does not exist')
+                  reg_details.clear()
+                  return False
+            
+            else:
+                  print('validate email function error')
+
+# authenticates user username and password upon login 
 def user_authentication():
     username = request.form['username']
     password = request.form['password']
@@ -58,125 +148,115 @@ def user_authentication():
     user_details.append(password)
     print(username + password + 'appended to user_details')
     
-    sql_login_statement = "select exists (select * from user where username=%s and password=%s);"
-    cursor.execute(sql_login_statement, user_details)
-    returned = cursor.fetchall()
-    feedback = str(returned[0])
-    result = int(feedback[1])
+    sql_statement = "select exists (select * from user where username=%s and password=%s);"
+    data_source = user_details
+    db_data = fetch_data(sql_statement, data_source)
+    data = clear_int(db_data)
     
-    if result == 1:
+    if data == 1:
       set_session()
-      user_details.clear()      
-      print('user exists')
+      user_details.clear()
+      print('user match found')
       return True
 
     elif result == 0:
       user_details.clear()
-      print('user does not exist')
+      print('user match not found')
       return False
     
     else:
          print('user_authentication function error')
 
-# set session
+# initiates session upon successful login
 def set_session():
-      sql_user_id_statement = "select id from user where username=%s and password=%s;"
-      cursor.execute(sql_user_id_statement, user_details)
-      returned = cursor.fetchall()
-      feedback = str(returned[0])
-      result = int(feedback[1])
-      value = result
-      session['id'] = value
-      print('session has been initiated')
-      return result
+
+      sql_statement = "select id from user where username=%s and password=%s;"
+      data_source = user_details
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_int(db_data)
+      session['id'] = data
+      print('session initiated')
 
 # session authentication
 def session_authenticator():
+
       session_id = session.get('id')
       session_identification.append(session_id)
       print(str(session_id) + ' appended to session_identification list')
 
-      sql_session_id_statement = "select exists (select id from user where id =%s);"
-      cursor.execute(sql_session_id_statement, session_identification)
-      returned = cursor.fetchall()
-      feedback= str(returned[0])
-      result= int(feedback[1])
-      session_identification.clear()
-      print('sql_session_id_statement returned: ' + str(result))
-
-      if result == 1:
-            return True
-      
-      elif result == 0 :
+      if str(session_id) == 'None':
+            print('no session id')
+            session_identification.clear()
             return False
       
       else:
-            print('session_authentication functon error')
+            sql_statement = "select exists (select id from user where id =%s);"
+            data_source = session_identification
+            db_data = fetch_data(sql_statement, data_source)
+            data = clear_int(db_data)
 
-# clean data
-def clean_data(value):
-      x = value
-      del_suffix = x[:-3]
-      del_prefix = del_suffix[:0] + del_suffix[2:]
-      cleaned_data = del_prefix
-      return cleaned_data
+            if data == 1:
+                  print('session match found')
+                  session_identification.clear()
+                  return True
+            
+            elif data == 0:
+                  print('session match not found')
+                  session_identification.clear()
+                  return False
 
-# username
+
+# pulls user username from database
 def get_username():
       session_id = session.get('id')
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_get_username = "select username from user where id =%s;"
-      cursor.execute(sql_get_username, session_identification)
-      returned = cursor.fetchall()
-      session_identification.clear()
-      user_name = str(returned[0])
-      print(clean_data(user_name))
+      sql_statement = "select username from user where id =%s;"
+      data_source = session_identification
      
-      return  clean_data(user_name)
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_str(db_data)
+     
+      session_identification.clear()
 
-# surname
+      print(data)
+      return  data
+
+# pulls  user surname from database 
 def get_surname():
       session_id = session.get('id')
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_get_surname = "select surname from user where id =%s;"
-      cursor.execute(sql_get_surname, session_identification)
-      returned = cursor.fetchall()
-      session_identification.clear()
-      surname = str(returned[0])
-      print(clean_data(surname))
+      sql_statement = "select surname from user where id =%s;"
+      data_source = session_identification
       
-      return clean_data(surname)
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_str(db_data)
+      
+      session_identification.clear()
 
-# id_number
+      print(data)
+      return  data
+
+# pulls user id number from database
 def get_id_number():
       session_id = session.get('id')
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_get_id_number = "select id_no from user where id =%s;"
-      cursor.execute(sql_get_id_number, session_identification)
-      returned = cursor.fetchall()
+      sql_statement = "select id_no from user where id =%s;"
+      data_source = session_identification
+      
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_str(db_data)
+      
       session_identification.clear()
-      id_number = str(returned[0])
-      print(clean_data(id_number))
 
-      return clean_data(id_number)
+      print(data)
+      return  data
 
-# residential address
-def get_residential_address():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      street_address = get_street_address()
-      town_city = get_town_city()
-      postal_code = get_postal_code()
-      session_identification.clear()
-      return street_address, town_city, postal_code
 '''
 
 get_residential function broken up into 3 parts:
@@ -185,65 +265,94 @@ get_residential function broken up into 3 parts:
 - get_postal_code
 
 '''
-# get street address
+def get_residential_address():
+      street_address = get_street_address()
+      town_city = get_town_city()
+      postal_code = get_postal_code()
+
+      return street_address, town_city, postal_code
+# pulls users street address from database
 def get_street_address():
-      sql_get_street_address = "select street_address from user where id =%s;"
-      cursor.execute(sql_get_street_address, session_identification)
-      returned = cursor.fetchall()
-      street_address = str(returned[0])
-      print(clean_data(street_address))
+      session_id = session.get('id')
+      session_identification.append(session_id)
+      print(str(session_id) + 'appended to session_identification list')
 
-      return clean_data(street_address)
-#get town city
+      sql_statement = "select street_address from user where id =%s;"
+      data_source = session_identification
+      
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_str(db_data)
+      
+      session_identification.clear()
+
+      print(data)
+      return  data
+# pulls users town city from database
 def get_town_city():
-      sql_get_town_city = "select town_city from user where id =%s;"
-      cursor.execute(sql_get_town_city, session_identification)
-      returned = cursor.fetchall()
-      town_city = str(returned[0])
-      print(clean_data(town_city))
+      session_id = session.get('id')
+      session_identification.append(session_id)
+      print(str(session_id) + 'appended to session_identification list')
 
-      return clean_data(town_city)
-#get postal code
+      sql_statement = "select town_city from user where id =%s;"
+      data_source = session_identification
+      
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_str(db_data)
+      
+      session_identification.clear()
+
+      print(data)
+      return  data
+# pulls users postal code from database
 def get_postal_code():
-      sql_get_postal_code = "select postal_code from user where id =%s;"
-      cursor.execute(sql_get_postal_code, session_identification)
-      returned = cursor.fetchall()
-      postal_code = str(returned[0])
-      print(postal_code)
+      session_id = session.get('id')
+      session_identification.append(session_id)
+      print(str(session_id) + 'appended to session_identification list')
 
-      return clean_data(postal_code)
+      sql_statement = "select postal_code from user where id =%s;"
+      data_source = session_identification
+      
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_str(db_data)
+      
+      session_identification.clear()
 
+      print(data)
+      return  data
 
-# phone number
+# pulls users phone number from database
 def get_phone_number():
       session_id = session.get('id')
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_get_phone_number = "select cell_no from user where id =%s;"
-      cursor.execute(sql_get_phone_number, session_identification)
-      returned = cursor.fetchall()
-      session_identification.clear()
-      phone_number = str(returned[0])
-      print(clean_data(phone_number))
+      sql_statement = "select cell_no from user where id =%s;"
+      data_source = session_identification
       
-      return clean_data(phone_number)
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_str(db_data)
+      
+      session_identification.clear()
 
-# email address
+      print(data)
+      return  data
+
+# pulls users email address from database
 def get_email_address():
       session_id = session.get('id')
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_get_email_address = "select email from user where id =%s;"
-      cursor.execute(sql_get_email_address, session_identification)
-      returned = cursor.fetchall()
-      session_identification.clear()
-      email_address = str(returned[0])
-      print(clean_data(email_address))
+      sql_statement = "select email from user where id =%s;"
+      data_source = session_identification
       
-      return clean_data(email_address)
+      db_data = fetch_data(sql_statement, data_source)
+      data = clear_str(db_data)
+      
+      session_identification.clear()
 
+      print(data)
+      return  data
 
 
 '''
@@ -269,11 +378,26 @@ def user_profile():
       
       elif session_authenticator() == False:
             return main()
-      
+
+@app.route('/register/', methods=['POST', 'GET'])
+def register():
+            
+            if request.method == 'POST':
+                  
+                  if validate_email() == True:
+                        print('email address belongs to a user that already exsits')
+                        return main()
+
+                  elif validate_email() == False:
+                        user_registratoin()
+                        return main()
+                  
+                  else:
+                        print('register function error')
+
 # user login
 @app.route('/login/',methods=['POST','GET'])
 def login():
-    
     if request.method == 'POST':
         
         if user_authentication() == True:
@@ -304,11 +428,13 @@ def main():
       if session_authenticator() == True:
             logout = 'logout'
             dashboard = 'dashboard'
+            print('session authentication success')
             return render_template ('app.html',logout=logout,dashboard=dashboard)
       
       elif session_authenticator() == False:
              login = 'login'
              dashboard = 'dashboard'
+             print('session authentication faild')
              return render_template ('index.html',login=login)
       
       else:
