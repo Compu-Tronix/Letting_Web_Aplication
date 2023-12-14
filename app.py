@@ -36,18 +36,35 @@ FUNCTIONS
 # clears special characters from strings pulled from database
 def clear_str(value):
       x = str(value)
+      print('clear_str raw value is: ' + x)
       del_suffix = x[:-4]
       del_prefix = del_suffix[:0] + del_suffix[3:]
-      cleared_data = del_prefix
-      return cleared_data
+      str_data = del_prefix
+      return str_data
 
 # clears special characters from integers pulled from database
 def clear_int(value):
       value = value
-      str_data = str(value[0])
-      int_data = int(str_data[1])
+      print('clear_int raw value is: ' + str(value))
+
+      string = ''
+      for item in value:
+            string = string + str(item)
+            del_suffix = string[:-2]
+            print(del_suffix)
+            del_prefix = del_suffix[1:]
+            print(del_prefix)
+            data = del_prefix
+            return int(data)
       
-      return int_data
+      data = str_data
+      print('int data to string data before processing is: ' + str(data))
+      del_suffix = data[:-2] + data[:]
+      print('data after del_suffix is: '+ del_suffix)
+      print('data after del_prefix is: ' + str(del_prefix))
+      int_data = del_prefix
+      print('clear_int value is: ' + str(int_data))
+      return int(data)
 
 # fecth data from database
 def fetch_data(sql_statement, data_source):
@@ -159,7 +176,7 @@ def user_authentication():
       print('user match found')
       return True
 
-    elif result == 0:
+    elif data == 0:
       user_details.clear()
       print('user match not found')
       return False
@@ -173,6 +190,7 @@ def set_session():
       sql_statement = "select id from user where username=%s and password=%s;"
       data_source = user_details
       db_data = fetch_data(sql_statement, data_source)
+      print('set session data before clear int is: ' + str(db_data))
       data = clear_int(db_data)
       session['id'] = data
       print('session initiated')
@@ -188,7 +206,7 @@ def session_authenticator():
             print('no session id')
             session_identification.clear()
             return False
-      
+
       else:
             sql_statement = "select exists (select id from user where id =%s);"
             data_source = session_identification
@@ -417,6 +435,9 @@ def login():
 @app.route('/logout/')
 def logout():
       session.clear()
+      reg_details.clear()
+      user_details.clear()
+      session_identification.clear()
       print('user logged off')
       return main()
 
@@ -426,20 +447,22 @@ def logout():
 def main():
 
       if session_authenticator() == True:
+            
             logout = 'logout'
             dashboard = 'dashboard'
             print('session authentication success')
             return render_template ('app.html',logout=logout,dashboard=dashboard)
       
       elif session_authenticator() == False:
-             login = 'login'
-             dashboard = 'dashboard'
-             print('session authentication faild')
-             return render_template ('index.html',login=login)
+            
+            login = 'login'
+            print('no session exists')
+            return render_template ('index.html',login=login)
       
       else:
-            print('failed to start app')
-            return('an error occured')
+            login = 'login'
+            print('failed to start app: session authenticator did not return true or false')
+            return render_template('index.html', login=login)
              
     
 if __name__ == '__main__':
