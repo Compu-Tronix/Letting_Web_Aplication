@@ -45,9 +45,9 @@
             {% endfor %}
             <a href="javascript:void(0)" id="edit_id_number"><img src="" alt="edit" class="edit_data"></a>
             <div class="input_id_number">
-                <form>
+                <form action="/update_id_number/" method="POST" enctype="multipart/form-data">
                     <input type="text" placeholder="update id number" name="id_number" required>
-                    <input type="file" name="id_img">
+                    <input type="file" name="id_img" required>
                     <input type="submit" value="update">
                     <button id="cancel_id_number_update">cancel</button>
                 </form>
@@ -61,11 +61,11 @@
             {% endfor %}
             <a href="javascript:void(0)" id="edit_residential_address"><img src="" alt="edit" class="edit_data"></a>
             <div class="input_residential_address">
-                <form action="/update_residential_address/" method="POST">
+                <form action="/update_residential_address/" method="POST" enctype="multipart/form-data">
                     <input type="text" placeholder="street" name="street_address" required>
                     <input type="text" placeholder="town/city" name="town_city" required>
                     <input type="text" placeholder="postal code" name="postal_code" required>
-                    <input type="file" name="proof_of_residence">
+                    <input type="file" name="proof_of_residence" required>
                     <input type="submit" value="update">
                     <button id="cancel_residential_address_update">cancel</button>
                 </form>

@@ -1,6 +1,7 @@
 import mysql.connector
 from flask import Flask, render_template, request, redirect, session
 from tabulate import tabulate
+from PIL import Image
 
 
 app = Flask(__name__)
@@ -447,6 +448,13 @@ def user_profile():
       elif session_authenticator() == False:
             return main()
 
+# user dashboard
+@app.route('/dashboard/', methods=['POST','GET'])
+def user_dashboard():
+      return render_template('dashboard.html')
+
+
+
 '''
  update user information
  { 
@@ -455,7 +463,7 @@ def user_profile():
 '''
 # update username
 @app.route('/update/', methods=['POST','GET'])
-def update_username():   
+def update_username():
       
       username = request.form['username']
       session_id = session.get('id')
@@ -471,7 +479,7 @@ def update_username():
       return user_profile()
 # update user surname
 @app.route('/update_surname/', methods=['POST','GET'])
-def update_surname():   
+def update_surname():
       
       surname = request.form['surname']
       session_id = session.get('id')
@@ -487,27 +495,60 @@ def update_surname():
       return user_profile()
 # update residential address
 @app.route('/update_residential_address/', methods=['POST','GET'])
-def update_residental_address():   
+def update_residental_address():
       
       street = request.form['street_address']
       town_city = request.form['town_city']
       postal_code = request.form['postal_code']
       session_id = session.get('id')
+
+      name = str(session_id) + '.jpg'
+      path = 'assets/user_assets/proof_of_residence/'
+
+      img = Image.open(request.files['proof_of_residence'])
+      img = img.save(f'{path}/{name}')
+
       user_info_update.append(street)
       user_info_update.append(town_city)
       user_info_update.append(postal_code)
+      user_info_update.append(path + name)
       user_info_update.append(session_id)
-
-      sql_statement = "update user set street_address = %s, town_city = %s, postal_code = %s where id = %s"
+      
+      sql_statement = "update user set street_address = %s, town_city = %s, postal_code = %s, proof_of_residence = %s where id = %s"
       data_source = user_info_update
 
       update_data(sql_statement, data_source)
       user_info_update.clear()
 
       return user_profile()
+# update id number
+@app.route('/update_id_number/', methods=['POST', 'GET'])
+def update_id_number():
+
+      id_number = request.form['id_number']
+      session_id = session.get('id')
+
+      name = str(session_id) + '.jpg'
+      path = 'assets/user_assets/id_copies/'
+
+      img = Image.open(request.files['id_img'])
+      img = img.save(f'{path}/{name}')
+
+      user_info_update.append(id_number)
+      user_info_update.append(path + name)
+      user_info_update.append(session_id)
+
+      sql_statement = "update user set id_no = %s, id_img = %s where id = %s"
+      data_source = user_info_update
+
+      update_data(sql_statement, data_source)
+      user_info_update.clear()
+
+      return user_profile()
+
 # update phone number
 @app.route('/update_phone/', methods=['POST','GET'])
-def update_phone():   
+def update_phone():
       
       phone = request.form['cel_number']
       session_id = session.get('id')
@@ -523,7 +564,7 @@ def update_phone():
       return user_profile()
 # update email address
 @app.route('/update_email/', methods=['POST','GET'])
-def update_email():   
+def update_email():
       
       email = request.form['email_address']
       session_id = session.get('id')
@@ -582,7 +623,7 @@ def logout():
       print('user logged off')
       return main()
 
-   
+  
 
 
 
