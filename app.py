@@ -27,6 +27,9 @@ user_details = []
 # session identification list
 session_identification = []
 
+# update user information
+user_info_update = []
+
 
 '''
 
@@ -36,42 +39,33 @@ FUNCTIONS
 # clears special characters from strings pulled from database
 def clear_str(value):
       x = str(value)
-      print('clear_str raw value is: ' + x)
+
       del_suffix = x[:-4]
       del_prefix = del_suffix[:0] + del_suffix[3:]
       str_data = del_prefix
+
       return str_data
 
 # clears special characters from integers pulled from database
 def clear_int(value):
       value = value
-      print('clear_int raw value is: ' + str(value))
-
       string = ''
+
       for item in value:
             string = string + str(item)
+
             del_suffix = string[:-2]
-            print(del_suffix)
             del_prefix = del_suffix[1:]
-            print(del_prefix)
             data = del_prefix
+
             return int(data)
       
-      data = str_data
-      print('int data to string data before processing is: ' + str(data))
-      del_suffix = data[:-2] + data[:]
-      print('data after del_suffix is: '+ del_suffix)
-      print('data after del_prefix is: ' + str(del_prefix))
-      int_data = del_prefix
-      print('clear_int value is: ' + str(int_data))
-      return int(data)
 
 # fecth data from database
 def fetch_data(sql_statement, data_source):
 
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
-      print('connected to: ' + str(db_connection.get_server_info()))
 
       sql_statement = sql_statement
       print(sql_statement)
@@ -97,16 +91,29 @@ def insert_data(sql_statement, data_source):
       print(sql_statement)
 
       data_source = data_source
-      print(data_source)
 
       cursor.execute(sql_statement, data_source)
       db_data = cursor.fetchall()
 
       db_connection.commit()
       cursor.close()
-      print(db_data)
       return db_data
 
+# update user data on database
+def update_data(sql_statement, data_source):
+
+      db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
+      cursor = db_connection.cursor()
+      print('connected to: ' + str(db_connection.get_server_info()))
+
+      sql_statement = sql_statement
+      print(sql_statement)
+
+      data_source = data_source
+
+      cursor.execute(sql_statement, data_source)
+      db_connection.commit()
+      cursor.close
 
 # register new  application users
 def user_registratoin():
@@ -163,7 +170,6 @@ def user_authentication():
     password = request.form['password']
     user_details.append(username)
     user_details.append(password)
-    print(username + password + 'appended to user_details')
     
     sql_statement = "select exists (select * from user where username=%s and password=%s);"
     data_source = user_details
@@ -190,8 +196,9 @@ def set_session():
       sql_statement = "select id from user where username=%s and password=%s;"
       data_source = user_details
       db_data = fetch_data(sql_statement, data_source)
-      print('set session data before clear int is: ' + str(db_data))
+      
       data = clear_int(db_data)
+
       session['id'] = data
       print('session initiated')
 
@@ -238,8 +245,13 @@ def get_username():
      
       session_identification.clear()
 
-      print(data)
-      return  data
+      if data == 'on':
+            print(data)
+            return  'none'
+
+      else:
+            print(data)
+            return data
 
 # pulls  user surname from database 
 def get_surname():
@@ -255,8 +267,16 @@ def get_surname():
       
       session_identification.clear()
 
-      print(data)
-      return  data
+      if data == 'on':
+            print(data)
+            return  'none'
+
+      else:
+            print(data)
+            return data
+# updates user surname in database
+def update_surname():
+      print('running update_surname function')
 
 # pulls user id number from database
 def get_id_number():
@@ -272,8 +292,13 @@ def get_id_number():
       
       session_identification.clear()
 
-      print(data)
-      return  data
+      if data == 'on':
+            print(data)
+            return  'none'
+
+      else:
+            print(data)
+            return data
 
 '''
 
@@ -303,8 +328,13 @@ def get_street_address():
       
       session_identification.clear()
 
-      print(data)
-      return  data
+      if data == 'on':
+            print(data)
+            return  'none'
+
+      else:
+            print(data)
+            return data
 # pulls users town city from database
 def get_town_city():
       session_id = session.get('id')
@@ -319,8 +349,13 @@ def get_town_city():
       
       session_identification.clear()
 
-      print(data)
-      return  data
+      if data == 'on':
+            print(data)
+            return  'none'
+
+      else:
+            print(data)
+            return data
 # pulls users postal code from database
 def get_postal_code():
       session_id = session.get('id')
@@ -335,8 +370,13 @@ def get_postal_code():
       
       session_identification.clear()
 
-      print(data)
-      return  data
+      if data == 'on':
+            print(data)
+            return  'none'
+
+      else:
+            print(data)
+            return data
 
 # pulls users phone number from database
 def get_phone_number():
@@ -352,8 +392,13 @@ def get_phone_number():
       
       session_identification.clear()
 
-      print(data)
-      return  data
+      if data == 'on':
+            print(data)
+            return  'none'
+
+      else:
+            print(data)
+            return data
 
 # pulls users email address from database
 def get_email_address():
@@ -369,8 +414,13 @@ def get_email_address():
       
       session_identification.clear()
 
-      print(data)
-      return  data
+      if data == 'on':
+            print(data)
+            return  'none'
+
+      else:
+            print(data)
+            return data
 
 
 '''
@@ -397,6 +447,98 @@ def user_profile():
       elif session_authenticator() == False:
             return main()
 
+'''
+ update user information
+ { 
+      username, surname, id number, residential address, phone number, email address 
+ }
+'''
+# update username
+@app.route('/update/', methods=['POST','GET'])
+def update_username():   
+      
+      username = request.form['username']
+      session_id = session.get('id')
+      user_info_update.append(username)
+      user_info_update.append(session_id)
+
+      sql_statement = "update user set username = %s where id = %s"
+      data_source = user_info_update
+
+      update_data(sql_statement, data_source)
+      user_info_update.clear()
+
+      return user_profile()
+# update user surname
+@app.route('/update_surname/', methods=['POST','GET'])
+def update_surname():   
+      
+      surname = request.form['surname']
+      session_id = session.get('id')
+      user_info_update.append(surname)
+      user_info_update.append(session_id)
+
+      sql_statement = "update user set surname = %s where id = %s"
+      data_source = user_info_update
+
+      update_data(sql_statement, data_source)
+      user_info_update.clear()
+
+      return user_profile()
+# update residential address
+@app.route('/update_residential_address/', methods=['POST','GET'])
+def update_residental_address():   
+      
+      street = request.form['street_address']
+      town_city = request.form['town_city']
+      postal_code = request.form['postal_code']
+      session_id = session.get('id')
+      user_info_update.append(street)
+      user_info_update.append(town_city)
+      user_info_update.append(postal_code)
+      user_info_update.append(session_id)
+
+      sql_statement = "update user set street_address = %s, town_city = %s, postal_code = %s where id = %s"
+      data_source = user_info_update
+
+      update_data(sql_statement, data_source)
+      user_info_update.clear()
+
+      return user_profile()
+# update phone number
+@app.route('/update_phone/', methods=['POST','GET'])
+def update_phone():   
+      
+      phone = request.form['cel_number']
+      session_id = session.get('id')
+      user_info_update.append(phone)
+      user_info_update.append(session_id)
+
+      sql_statement = "update user set cell_no = %s where id = %s"
+      data_source = user_info_update
+
+      update_data(sql_statement, data_source)
+      user_info_update.clear()
+
+      return user_profile()
+# update email address
+@app.route('/update_email/', methods=['POST','GET'])
+def update_email():   
+      
+      email = request.form['email_address']
+      session_id = session.get('id')
+      user_info_update.append(email)
+      user_info_update.append(session_id)
+
+      sql_statement = "update user set email = %s where id = %s"
+      data_source = user_info_update
+
+      update_data(sql_statement, data_source)
+      user_info_update.clear()
+
+      return user_profile()
+
+# user registration
 @app.route('/register/', methods=['POST', 'GET'])
 def register():
             
@@ -430,7 +572,6 @@ def login():
               print('login function error')
               return main()
 
-
 # user logout
 @app.route('/logout/')
 def logout():
@@ -440,6 +581,9 @@ def logout():
       session_identification.clear()
       print('user logged off')
       return main()
+
+   
+
 
 
 # application start
