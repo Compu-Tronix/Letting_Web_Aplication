@@ -31,6 +31,7 @@ session_identification = []
 # update user information
 user_info_update = []
 
+listing = []
 
 '''
 
@@ -81,7 +82,7 @@ def fetch_data(sql_statement, data_source):
       print(db_data)
       return db_data
 
-# insert data into database
+# insert new data into database
 def insert_data(sql_statement, data_source):
       
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
@@ -448,11 +449,61 @@ def user_profile():
       elif session_authenticator() == False:
             return main()
 
-# user dashboard
+
+
+'''
+user dashboard
+{
+list new item, item history, listed items, pending items
+}
+'''
 @app.route('/dashboard/', methods=['POST','GET'])
 def user_dashboard():
-      return render_template('dashboard.html')
 
+      if session_authenticator() == True:
+            
+            # pending items
+            session_identification.append(session.get('id'))
+            sql_statement = 'select image from listings where item_id=%s'
+            data_source = session_identification
+            pending_img = fetch_data(sql_statement, data_source)
+
+            session_identification.clear()
+            return render_template('dashboard.html', pending_img = pending_img)
+
+# upload listing item 
+@app.route('/list_item/', methods = ['POST', 'GET'])
+def list_item():
+      
+      
+
+      if session_authenticator() == True:
+            session_id = session.get('id')
+            item_name = request.form['item_name']
+            description = request.form['model_description']
+
+            listing.append(session_id)
+            listing.append(item_name)
+            listing.append(description)
+
+            name = item_name + '_' + description + str(len(item_name)) + str(len(description)) + '.jpg'
+            path = 'static/user_uploads/listings/'
+            img = Image.open(request.files['item_img'])
+            img = img.save(f'{path}/{name}')
+            
+            listing.append(name)
+
+            sql_statement = "insert into listings (item_id, item_name, description, image) values (%s, %s, %s, %s)"
+            data_source = listing
+            
+            insert_data(sql_statement, data_source)
+            
+            listing.clear()
+            print('item listed pending approval')
+            return user_dashboard()
+      
+      else:
+            return main()
 
 
 '''

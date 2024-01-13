@@ -310,3 +310,14 @@ INFORMATION.HTML BODY
 .input_email_address.visible {
     visibility: visible;
 }
+
+
+/*
+
+DASHBOARD.HTML BODY
+
+*/
+/* pending items*/
+.pending_item {
+    max-width: 10% ;
+}

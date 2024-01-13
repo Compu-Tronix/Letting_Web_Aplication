@@ -48,10 +48,11 @@
 
                 <!-- listing_form -->
                 <div class="listing_form">
-                    <form action="/list" method="POST">
-                        <input type="text" placeholder="username" name="username">
-                        <input type="password" placeholder="password" name="password">
-                        <input type="submit">
+                    <form action="/list_item/" method="POST" enctype="multipart/form-data">
+                        <input type="text" placeholder="name of item" name="item_name" required>
+                        <input type="text" placeholder="model description" name="model_description" required>
+                        <input type="file" placeholder="upload item image" name="item_img" required>
+                        <input type="submit" value="upload">
                     </form>
                 </div>
 
@@ -79,9 +80,19 @@
                 
                 <!-- pending_listings_container -->
                 <div class="pending_listings_container">
-                    
+                    {% for pending_img in pending_img %}
+                    {% set x = pending_img|string %}
+                    {% set y = x.replace("(", "") %}
+                    {% set z = y.replace(")", "") %}
+                    {% set a = z.replace("'", "") %}
+                    {% set b = a.replace(",", "") %}
+                    {% set directory = 'user_uploads/listings/' %}
+                    {% set c = directory + b %}
+                    <div class="container">
+                        <img src="{{ url_for('static', filename=c) }}" alt="Image Upload Display" class="pending_item">
+                    </div>
+                     {% endfor %}
                 </div>
-
             </div>
         </div>
 
