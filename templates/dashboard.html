@@ -2,6 +2,7 @@
 
 {% block head %}
 <title>dashboard</title>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='dashboard.css')}}">
 {% endblock %}
 
 
@@ -70,16 +71,39 @@
 
                 <!-- history_container -->
                 <div class="history_container">
+                    <div class="history_list_container">
 
+                    </div>
                 </div>
 
                 <!-- active_listings_container -->
                 <div class="active_listings_container">
-
+                    <div class="dashboard_listing_text">
+                        <h2>
+                             Active
+                        </h2>
+                    </div>
+                    {% for approved_img in approved_img %}
+                    {% set x = approved_img|string %}
+                    {% set y = x.replace("(", "") %}
+                    {% set z = y.replace(")", "") %}
+                    {% set a = z.replace("'", "") %}
+                    {% set b = a.replace(",", "") %}
+                    {% set directory = 'user_uploads/listings/' %}
+                    {% set c = directory + b %}
+                    <div class="container">
+                        <img src="{{ url_for('static', filename=c) }}" alt="Image Upload Display" class="approved_img">
+                    </div>
+                     {% endfor %}
                 </div>
                 
                 <!-- pending_listings_container -->
                 <div class="pending_listings_container">
+                    <div class="dashboard_listing_text">
+                        <h2>
+                            Pending Approval
+                        </h2>
+                    </div>
                     {% for pending_img in pending_img %}
                     {% set x = pending_img|string %}
                     {% set y = x.replace("(", "") %}

@@ -1,0 +1,61 @@
+/* 
+
+INDEX.HTML BODY
+
+*/
+
+/*summary*/
+.summary_container {
+    border: 2px solid pink;
+    height: 100vh;
+    display: flex;
+}
+.summary_text {
+    border: 2px solid green;
+    width: 80%;
+    margin: auto;
+}
+.scroll {
+    width: 50%;
+}
+
+
+/*
+app widget:
+-upload shortcut
+-catagory division shortcuts
+*/
+.app_widget {
+    border: 2px solid blue;
+    height: 100vh;
+    display: flex;
+}
+
+
+/*upload shortcut*/
+.upload_shortcut {
+    border: 2px solid red;
+    min-width: 25%;
+}
+
+
+/*catagory division shortcuts*/
+.catagory_division_shortcuts {
+    border: 2px solid green;
+    display: flex;
+}
+.catagory_summary {
+    border: 2px solid pink;
+    width: 100%;
+}
+
+
+/*associations*/
+.associations {
+    border: 2px solid black;
+    height: 100vh;
+    display: flex;
+}
+.associates_container {
+    margin: auto;
+}

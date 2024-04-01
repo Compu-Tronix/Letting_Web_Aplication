@@ -462,14 +462,20 @@ def user_dashboard():
 
       if session_authenticator() == True:
             
+            logout = 'Logout'
+            dashboard = 'Dashboard'
             # pending items
             session_identification.append(session.get('id'))
-            sql_statement = 'select image from listings where item_id=%s'
             data_source = session_identification
-            pending_img = fetch_data(sql_statement, data_source)
+            
+            pending_img_sql_statement = 'select image from listings where item_id=%s and status="pending"'
+            pending_img = fetch_data(pending_img_sql_statement, data_source)
+
+            approved_img_sql_statement = 'select image from listings where item_id=%s and status="approved"'
+            approved_img = fetch_data(approved_img_sql_statement, data_source)
 
             session_identification.clear()
-            return render_template('dashboard.html', pending_img = pending_img)
+            return render_template('dashboard.html', logout=logout, dashboard=dashboard, pending_img = pending_img, approved_img=approved_img)
 
 # upload listing item 
 @app.route('/list_item/', methods = ['POST', 'GET'])

@@ -1,0 +1,50 @@
+/*
+
+INFORMATION.HTML BODY
+
+*/
+.user_information {
+    margin: auto;
+}
+/* username */
+.input_username {
+    visibility: hidden;
+}
+.input_username.visible {
+    visibility: visible;
+}
+/* surname */
+.input_surname {
+    visibility: hidden;
+}
+.input_surname.visible {
+    visibility: visible;
+}
+/* id number */
+.input_id_number {
+    visibility: hidden;
+}
+.input_id_number.visible {
+    visibility: visible;
+}
+/* residential address */
+.input_residential_address {
+    visibility: hidden;
+}
+.input_residential_address.visible {
+    visibility: visible;
+}
+/* phone number */
+.input_phone_number {
+    visibility: hidden;
+}
+.input_phone_number.visible {
+    visibility: visible;
+}
+/* email address */
+.input_email_address {
+    visibility: hidden;
+}
+.input_email_address.visible {
+    visibility: visible;
+}

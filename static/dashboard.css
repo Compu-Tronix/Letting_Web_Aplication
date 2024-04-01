@@ -1,0 +1,62 @@
+/*
+
+DASHBOARD.HTML BODY
+
+*/
+
+/* 
+profile:
+-user_profile_container
+-listing_form
+*/
+.profile {
+    border: 2px solid green;
+    width: 25%;
+}
+
+/*user_profile_container*/
+.user_profile_container {
+    border: 2px solid black;
+    display: flex;
+    width: 80%;
+}
+.user_icon {
+    border: 2px solid orange;
+}
+.profile_values {
+    border: 2px solid blue;
+}
+
+/*listing_form*/
+.listing_form {
+    border: 2px solid red;
+    width: 80%;
+}
+
+/*
+user_listing_container:
+-history_container
+-active_listing_container
+-pending_listings_container
+*/
+.user_listing_container {
+    border: 2px solid orange;
+    width: 75%;
+}
+
+/*history_container*/
+.history_container {
+    border: 2px solid pink;
+    width: 80%;
+}
+
+/*active_listing_container*/
+.active_listing_container {
+    background: orange;
+}
+
+/*pending_lidtings*/
+.pending_listings {
+    border: 2px solid blue;
+}
+/*
