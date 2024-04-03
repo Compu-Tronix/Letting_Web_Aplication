@@ -51,12 +51,15 @@ user_listing_container:
 }
 
 /*active_listing_container*/
-.active_listing_container {
-    background: orange;
+.active_listings_container {
+    border: 2px solid orange;
 }
 
 /*pending_lidtings*/
-.pending_listings {
+.pending_listings_container {
     border: 2px solid blue;
+}
+.pending_item {
+    max-width: 25%;
 }
 /*
