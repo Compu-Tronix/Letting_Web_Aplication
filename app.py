@@ -66,12 +66,15 @@ def clear_int(value):
 # fecth data from database
 def fetch_data(sql_statement, data_source):
 
+      # connect to database 
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
 
+      # sql statement to fetch requested data
       sql_statement = sql_statement
       print(sql_statement)
 
+      # requested data 
       data_source = data_source
       print(data_source)
 
@@ -117,14 +120,16 @@ def update_data(sql_statement, data_source):
       db_connection.commit()
       cursor.close
 
-# register new  application users
+# register new users
 def user_registratoin():
       
+      # pass user registation form data to variables
       username = request.form['username']
       email = request.form['email']
       password = request.form['password']
       confirm_password = request.form['confirm_password']
       
+      # validate password entry to confirm user account registration
       if password == confirm_password:
             reg_details.append(username)
             reg_details.append(email)
@@ -142,8 +147,9 @@ def user_registratoin():
             reg_details.clear()
             print('passwords do not match')
 
-# validates email address to verify existance in the database
+# validates email address to verify user account existance on the database or if email address is linked to another user
 def validate_email():
+
             email = request.form['email']
             reg_details.append(email)
             print(email + 'appened to reg_details')
@@ -168,16 +174,20 @@ def validate_email():
 
 # authenticates user username and password upon login 
 def user_authentication():
+
+      #pass login form data to variables
     username = request.form['username']
     password = request.form['password']
     user_details.append(username)
     user_details.append(password)
     
+    # accesss database to complete user authentication
     sql_statement = "select exists (select * from user where username=%s and password=%s);"
     data_source = user_details
     db_data = fetch_data(sql_statement, data_source)
     data = clear_int(db_data)
     
+
     if data == 1:
       set_session()
       user_details.clear()
