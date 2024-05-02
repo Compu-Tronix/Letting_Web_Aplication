@@ -474,6 +474,10 @@ def user_dashboard():
             approved_img_sql_statement = 'select image from listings where item_id=%s and status="approved"'
             approved_img = fetch_data(approved_img_sql_statement, data_source)
 
+            with open('filename.html','w') as newfile:
+                  newfile.write('<img src="{{ url_for(\'static\', filename=img_value) }}" alt="Image Upload Display" class="approved_img">')
+                  
+
             session_identification.clear()
             return render_template('dashboard.html', logout=logout, dashboard=dashboard, pending_img = pending_img, approved_img=approved_img)
 

@@ -2,7 +2,8 @@
 
 {% block head %}
 <title>dashboard</title>
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='dashboard.css')}}">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/dashboard.css')}}">
+<script src="{{url_for('static', filename='scripts/dashboard.js')}}"></script>
 {% endblock %}
 
 
@@ -90,9 +91,10 @@
                     {% set a = z.replace("'", "") %}
                     {% set b = a.replace(",", "") %}
                     {% set directory = 'user_uploads/listings/' %}
-                    {% set c = directory + b %}
+                    {% set img_value = directory + b %}
+                    
                     <div class="container">
-                        <img src="{{ url_for('static', filename=c) }}" alt="Image Upload Display" class="approved_img">
+                        
                     </div>
                      {% endfor %}
                 </div>
