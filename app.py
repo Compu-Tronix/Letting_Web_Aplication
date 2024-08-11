@@ -136,7 +136,7 @@ def user_registratoin():
             reg_details.append(password)
             print(username + email + password + ' appended to reg_details')
 
-            sql_statement = "insert into user (username, email, password) values (%s, %s,%s)"
+            sql_statement = "insert into users (username, email, password) values (%s, %s,%s)"
             data_source = reg_details
             insert_data(sql_statement, data_source)
 
@@ -154,7 +154,7 @@ def validate_email():
             reg_details.append(email)
             print(email + 'appened to reg_details')
 
-            sql_statement = "select exists (select email from user where email=%s);"
+            sql_statement = "select exists (select email from users where email=%s);"
             data_source = reg_details                        
             db_data = fetch_data(sql_statement, data_source)
             data = clear_int(db_data)
@@ -182,7 +182,7 @@ def user_authentication():
     user_details.append(password)
     
     # accesss database to complete user authentication
-    sql_statement = "select exists (select * from user where username=%s and password=%s);"
+    sql_statement = "select exists (select * from users where username=%s and password=%s);"
     data_source = user_details
     db_data = fetch_data(sql_statement, data_source)
     data = clear_int(db_data)
@@ -205,7 +205,7 @@ def user_authentication():
 # initiates session upon successful login
 def set_session():
 
-      sql_statement = "select id from user where username=%s and password=%s;"
+      sql_statement = "select id from users where username=%s and password=%s;"
       data_source = user_details
       db_data = fetch_data(sql_statement, data_source)
       
@@ -227,7 +227,7 @@ def session_authenticator():
             return False
 
       else:
-            sql_statement = "select exists (select id from user where id =%s);"
+            sql_statement = "select exists (select id from users where id =%s);"
             data_source = session_identification
             db_data = fetch_data(sql_statement, data_source)
             data = clear_int(db_data)
@@ -249,7 +249,7 @@ def get_username():
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_statement = "select username from user where id =%s;"
+      sql_statement = "select username from users where id =%s;"
       data_source = session_identification
      
       db_data = fetch_data(sql_statement, data_source)
@@ -271,7 +271,7 @@ def get_surname():
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_statement = "select surname from user where id =%s;"
+      sql_statement = "select surname from users where id =%s;"
       data_source = session_identification
       
       db_data = fetch_data(sql_statement, data_source)
@@ -296,7 +296,7 @@ def get_id_number():
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_statement = "select id_no from user where id =%s;"
+      sql_statement = "select id_no from users where id =%s;"
       data_source = session_identification
       
       db_data = fetch_data(sql_statement, data_source)
@@ -332,7 +332,7 @@ def get_street_address():
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_statement = "select street_address from user where id =%s;"
+      sql_statement = "select street_address from users where id =%s;"
       data_source = session_identification
       
       db_data = fetch_data(sql_statement, data_source)
@@ -353,7 +353,7 @@ def get_town_city():
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_statement = "select town_city from user where id =%s;"
+      sql_statement = "select town_city from users where id =%s;"
       data_source = session_identification
       
       db_data = fetch_data(sql_statement, data_source)
@@ -374,7 +374,7 @@ def get_postal_code():
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_statement = "select postal_code from user where id =%s;"
+      sql_statement = "select postal_code from users where id =%s;"
       data_source = session_identification
       
       db_data = fetch_data(sql_statement, data_source)
@@ -396,7 +396,7 @@ def get_phone_number():
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_statement = "select cell_no from user where id =%s;"
+      sql_statement = "select cell_no from users where id =%s;"
       data_source = session_identification
       
       db_data = fetch_data(sql_statement, data_source)
@@ -418,7 +418,7 @@ def get_email_address():
       session_identification.append(session_id)
       print(str(session_id) + 'appended to session_identification list')
 
-      sql_statement = "select email from user where id =%s;"
+      sql_statement = "select email from users where id =%s;"
       data_source = session_identification
       
       db_data = fetch_data(sql_statement, data_source)
@@ -541,7 +541,7 @@ def update_username():
       user_info_update.append(username)
       user_info_update.append(session_id)
 
-      sql_statement = "update user set username = %s where id = %s"
+      sql_statement = "update users set username = %s where id = %s"
       data_source = user_info_update
 
       update_data(sql_statement, data_source)
@@ -557,7 +557,7 @@ def update_surname():
       user_info_update.append(surname)
       user_info_update.append(session_id)
 
-      sql_statement = "update user set surname = %s where id = %s"
+      sql_statement = "update users set surname = %s where id = %s"
       data_source = user_info_update
 
       update_data(sql_statement, data_source)
@@ -585,7 +585,7 @@ def update_residental_address():
       user_info_update.append(path + name)
       user_info_update.append(session_id)
       
-      sql_statement = "update user set street_address = %s, town_city = %s, postal_code = %s, proof_of_residence = %s where id = %s"
+      sql_statement = "update users set street_address = %s, town_city = %s, postal_code = %s, proof_of_residence = %s where id = %s"
       data_source = user_info_update
 
       update_data(sql_statement, data_source)
@@ -609,7 +609,7 @@ def update_id_number():
       user_info_update.append(path + name)
       user_info_update.append(session_id)
 
-      sql_statement = "update user set id_no = %s, id_img = %s where id = %s"
+      sql_statement = "update users set id_no = %s, id_img = %s where id = %s"
       data_source = user_info_update
 
       update_data(sql_statement, data_source)
@@ -626,7 +626,7 @@ def update_phone():
       user_info_update.append(phone)
       user_info_update.append(session_id)
 
-      sql_statement = "update user set cell_no = %s where id = %s"
+      sql_statement = "update users set cell_no = %s where id = %s"
       data_source = user_info_update
 
       update_data(sql_statement, data_source)
@@ -642,7 +642,7 @@ def update_email():
       user_info_update.append(email)
       user_info_update.append(session_id)
 
-      sql_statement = "update user set email = %s where id = %s"
+      sql_statement = "update users set email = %s where id = %s"
       data_source = user_info_update
 
       update_data(sql_statement, data_source)
