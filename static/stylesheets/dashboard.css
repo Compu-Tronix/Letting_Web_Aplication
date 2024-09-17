@@ -59,7 +59,7 @@ user_listing_container:
 .pending_listings_container {
     border: 2px solid blue;
 }
-.pending_item {
-    max-width: 25%;
+.dashboard-img {
+    width: 5rem;
 }
 /*

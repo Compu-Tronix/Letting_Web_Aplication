@@ -9,7 +9,7 @@ app.config['SECRET_KEY'] = 'my_secret'
 
 
 
-HOST = 'localhost'
+HOST = '192.168.0.103'
 DATABASE = 'letting_app'
 USER = 'letting.app'
 PASSWORD = 'letting@database'
@@ -434,6 +434,7 @@ def get_email_address():
             print(data)
             return data
 
+# pulls approved items from db
 
 '''
 
@@ -484,9 +485,7 @@ def user_dashboard():
             approved_img_sql_statement = 'select image from listings where item_id=%s and status="approved"'
             approved_img = fetch_data(approved_img_sql_statement, data_source)
 
-            with open('filename.html','w') as newfile:
-                  newfile.write('<img src="{{ url_for(\'static\', filename=img_value) }}" alt="Image Upload Display" class="approved_img">')
-                  
+                
 
             session_identification.clear()
             return render_template('dashboard.html', logout=logout, dashboard=dashboard, pending_img = pending_img, approved_img=approved_img)
@@ -499,19 +498,22 @@ def list_item():
 
       if session_authenticator() == True:
             session_id = session.get('id')
-            item_name = request.form['item_name']
-            description = request.form['model_description']
+            item_name = request.form['item_name'].replace(" ","_")
+            description = request.form['model_description'].replace(" ","_")
 
             listing.append(session_id)
             listing.append(item_name)
             listing.append(description)
 
-            name = item_name + '_' + description + str(len(item_name)) + str(len(description)) + '.jpg'
-            path = 'static/user_uploads/listings/'
-            img = Image.open(request.files['item_img'])
-            img = img.save(f'{path}/{name}')
+            filename = item_name + '_' + str(len(item_name)) + str(len(description)) + '.jpg'
+            path = 'static/assets/img'
+            img_file = Image.open(request.files['item_img'])
+            img = img_file.save(f'{path}/{filename}')
             
-            listing.append(name)
+            backup_path = '/media/administrator/file storage/letting-rentals/listings'
+            backup = img_file.save(f'{backup_path}/{filename}')
+            
+            listing.append(filename)
 
             sql_statement = "insert into listings (item_id, item_name, description, image) values (%s, %s, %s, %s)"
             data_source = listing
@@ -707,7 +709,11 @@ def main():
             logout = 'logout'
             dashboard = 'dashboard'
             print('session authentication success')
-            return render_template ('app.html',logout=logout,dashboard=dashboard)
+            approved_img_sql_statement = 'select image from listings where status=%s'
+            data_source = ['approved']
+            approved_img = fetch_data(approved_img_sql_statement, data_source)
+
+            return render_template ('app.html',logout=logout,dashboard=dashboard, approved_img=approved_img)
       
       elif session_authenticator() == False:
             
@@ -722,4 +728,4 @@ def main():
              
     
 if __name__ == '__main__':
-    app.run (debug = True)
+    app.run (debug = True, host='0.0.0.0')

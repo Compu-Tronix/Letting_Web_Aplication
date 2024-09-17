@@ -1,0 +1,13 @@
+.search {
+    border: 2px solid brown;
+    width: 25%;
+}
+
+.search_results {
+    border: 2px solid black;
+    width: 75%;
+}
+
+.img {
+    width: 5rem;
+}

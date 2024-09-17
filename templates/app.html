@@ -2,6 +2,7 @@
 
 {% block head %}
 <title>letting App</title>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/app.css')}}">
 {% endblock %}
 
 
@@ -15,11 +16,6 @@
     -->
     <div class="body_container">
 
-        <!-- catagory division -->
-        <div class="catagory_division">
-
-        </div>
-
         <!-- search -->
         <div class="search">
             <div class="search_bar">
@@ -30,8 +26,33 @@
 
         <!-- search results -->
         <div class="search_results">
-            
+            <div class="active_listings_container">
+                <div class="catagory_text">
+                    <h2>
+                         Active
+                    </h2>
+                </div>
+                {% for approved_img in approved_img %}
+
+                {% set x = approved_img|string %}
+
+                {% set y = x.replace("(", "") %}
+                {% set z = y.replace(")", "") %}
+                {% set a = z.replace("'", "") %}
+                {% set b = a.replace(",", "") %}
+
+                {% set directory = 'assets/img/' %}
+
+                {% set img_value = directory + b %}
+                
+                <div class="container">
+                    <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="img">
+                </div>
+
+                 {% endfor %}
+            </div>
         </div>
+         
     </div>
 
 {% endblock %}
