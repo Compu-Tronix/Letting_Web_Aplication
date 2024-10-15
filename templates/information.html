@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/information.css')}}">
+<script src="{{url_for('static', filename='scripts/information.js')}}"></script>
 <title>Information</title>
 {% endblock %}
 
@@ -16,7 +18,7 @@
             <a href="javascript:void(0)" id="edit_username"><img src="" alt="edit" class="edit"></a>
             <div class="input_username">
                 <form action="/update_username/" method="POST">
-                    <input type="text" placeholder=" update username" name="username" required>
+                    <input type="text" placeholder=" update name" name="username" required>
                     <input type="submit" value="update">
                     <button id="cancel_username_update">cancel</button>
                 </form>
@@ -34,6 +36,21 @@
                     <input type="text" placeholder="update surname" name="surname" required>
                     <input type="submit" value="update">
                     <button id="cancel_surname_update">cancel</button>
+                </form>
+            </div>
+        </p>
+
+        <p>
+            email address:
+            {% for email_address in email_address %}
+            {{ email_address }}
+            {% endfor %}
+            <a href="javascript:void(0)" id="edit_email_address"><img src="" alt="edit" class="edit_data"></a>
+            <div class="input_email_address">
+                <form action="/update_email/" method="POST">
+                    <input type="email" placeholder="update email address" name="email_address" required>
+                    <input type="submit" value="update">
+                    <button id="cancel_email_address_update">cancel</button>
                 </form>
             </div>
         </p>
@@ -87,20 +104,7 @@
             </div>
         </p>
 
-        <p>
-            email address:
-            {% for email_address in email_address %}
-            {{ email_address }}
-            {% endfor %}
-            <a href="javascript:void(0)" id="edit_email_address"><img src="" alt="edit" class="edit_data"></a>
-            <div class="input_email_address">
-                <form action="/update_email/" method="POST">
-                    <input type="email" placeholder="update email address" name="email_address" required>
-                    <input type="submit" value="update">
-                    <button id="cancel_email_address_update">cancel</button>
-                </form>
-            </div>
-        </p>
+        
        
     </div>
 </div>
