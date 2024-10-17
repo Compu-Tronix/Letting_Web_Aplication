@@ -235,9 +235,10 @@ def set_session():
       session_identification.append(username)
       session_identification.append(password)
       
-      update_data('update users set session_id =%s where username=%s and password=%s', session_identification)
+      update_data('update users set session_id =%s where username =%s and password =%s', session_identification) 
       session['id'] = session_id
       session_identification.clear()
+
       print(str(session_id) + ' session initiated')
 
 # session authentication
@@ -501,20 +502,34 @@ def user_dashboard():
             
             logout = 'Logout'
             dashboard = 'Dashboard'
-            # pending items
+            
             session_identification.append(session.get('id'))
             data_source = session_identification
             
-            pending_img_sql_statement = 'select image from listings where item_id=%s and status="pending"'
-            pending_img = fetch_data(pending_img_sql_statement, data_source)
 
-            approved_img_sql_statement = 'select image from listings where item_id=%s and status="approved"'
-            approved_img = fetch_data(approved_img_sql_statement, data_source)
-
-                
-
+            
+            db_data = fetch_data('select id from users where session_id = %s', data_source)
+            user_id = clear_int(db_data)
+            
             session_identification.clear()
+            
+            application_data.append(user_id)
+            
+            # pending items
+            pending_img = fetch_data('select image from listings where item_id=%s and status="pending"', application_data)
+            # approved items
+            approved_img = fetch_data('select image from listings where item_id=%s and status="approved"', application_data)
+            
+            application_data.clear()
+
             return render_template('dashboard.html', logout=logout, dashboard=dashboard, pending_img = pending_img, approved_img=approved_img)
+
+      elif session_authenticator() == False:
+            return main()
+      
+      else:
+            print('user dashbord function failed')
+            return main()
 
 # upload listing item 
 @app.route('/list_item/', methods = ['POST', 'GET'])
