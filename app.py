@@ -2,6 +2,7 @@ import mysql.connector
 from flask import Flask, render_template, request, redirect, session
 from tabulate import tabulate
 from PIL import Image
+import random
 
 
 app = Flask(__name__)
@@ -32,6 +33,8 @@ session_identification = []
 user_info_update = []
 
 listing = []
+
+application_data = []
 
 '''
 
@@ -204,15 +207,38 @@ def user_authentication():
 
 # initiates session upon successful login
 def set_session():
+      def fetch_count():
+             # connect to database 
+            db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
+            cursor = db_connection.cursor()
 
-      sql_statement = "select id from users where username=%s and password=%s;"
-      data_source = user_details
-      db_data = fetch_data(sql_statement, data_source)
+            # sql statement to fetch requested data
+            sql_statement = 'select count(*) from log;'
+            print(sql_statement)
+
+            cursor.execute(sql_statement)
+            db_data = cursor.fetchall()
+            cursor.close()
+
+            print(db_data)
+            return db_data
       
-      data = clear_int(db_data)
+      username = request.form['username']
+      password = request.form['password']
+      db_data = fetch_count()
+      log = clear_int(db_data)
 
-      session['id'] = data
-      print('session initiated')
+      number = random.randint(1,1000000)
+
+      session_id = str(log) + str(number)
+      session_identification.append(int(session_id))
+      session_identification.append(username)
+      session_identification.append(password)
+      
+      update_data('update users set session_id =%s where username=%s and password=%s', session_identification)
+      session['id'] = session_id
+      session_identification.clear()
+      print(str(session_id) + ' session initiated')
 
 # session authentication
 def session_authenticator():
@@ -227,7 +253,7 @@ def session_authenticator():
             return False
 
       else:
-            sql_statement = "select exists (select id from users where id =%s);"
+            sql_statement = "select exists (select session_id from users where session_id =%s);"
             data_source = session_identification
             db_data = fetch_data(sql_statement, data_source)
             data = clear_int(db_data)
@@ -675,8 +701,25 @@ def login():
     if request.method == 'POST':
         
         if user_authentication() == True:
-             print('user logged on')
-             return main()
+            
+            session_id = session.get('id')
+            session_identification.append(session_id)
+            db_data = fetch_data('select username from users where session_id=%s', session_identification)
+            username = clear_str(db_data)
+            
+
+            details = str(username) + ' logged on'
+            application_data.append(session_id)
+            application_data.append(details)
+
+            sql_statement = 'insert into log (session_id, details) values (%s, %s)'
+            insert_data(sql_statement, application_data)
+
+            application_data.clear()
+            session_identification.clear()
+            
+            print(username + ' is logged on')
+            return main()
         
         elif user_authentication() == False:
               print('user login failed')
@@ -704,6 +747,8 @@ def logout():
 @app.route('/', methods = ['POST','GET'])
 def main():
 
+      
+
       if session_authenticator() == True:
             
             logout = 'logout'
@@ -716,6 +761,15 @@ def main():
             return render_template ('app.html',logout=logout,dashboard=dashboard, approved_img=approved_img)
       
       elif session_authenticator() == False:
+            def get_ip():
+                  ip_address = request.remote_addr
+                  return f'{ip_address}'
+
+            details = str(get_ip()) + ' ran application'
+            application_data.append(details)
+            sql_statement = 'insert into log (details) values (%s)'
+            insert_data(sql_statement, application_data)
+            application_data.clear()
             
             login = 'login'
             print('no session exists')
