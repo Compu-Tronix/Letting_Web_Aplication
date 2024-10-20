@@ -269,6 +269,24 @@ def session_authenticator():
                   session_identification.clear()
                   return False
 
+# application log
+def app_log(details):
+      
+      session_id = session.get('id')
+      session_identification.append(session_id)
+      user_id = clear_int(fetch_data('select id from users where session_id=%s', session_identification))
+
+      details = details
+      application_data.append(user_id)
+      application_data.append(details)
+
+      sql_statement = 'insert into log (user_id, details) values (%s, %s)'
+      insert_data(sql_statement, application_data)
+
+      application_data.clear()
+      session_identification.clear()
+      
+      print( str(user_id) + str(details))
 
 # pulls user username from database
 def get_username():
@@ -511,10 +529,10 @@ def user_dashboard():
             db_data = fetch_data('select id from users where session_id = %s', data_source)
             user_id = clear_int(db_data)
             
-            session_identification.clear()
+            
             
             application_data.append(user_id)
-            
+            session_identification.clear()
             # pending items
             pending_img = fetch_data('select image from listings where item_id=%s and status="pending"', application_data)
             # approved items
@@ -534,19 +552,24 @@ def user_dashboard():
 # upload listing item 
 @app.route('/list_item/', methods = ['POST', 'GET'])
 def list_item():
-      
-      
 
       if session_authenticator() == True:
             session_id = session.get('id')
+            application_data.append(session_id)
+            item_id = clear_int(fetch_data('select id from users where session_id=%s;', application_data))
+            application_data.clear()
+
             item_name = request.form['item_name'].replace(" ","_")
             description = request.form['model_description'].replace(" ","_")
+            price = request.form['price']
 
-            listing.append(session_id)
+            listing.append(item_id)
             listing.append(item_name)
             listing.append(description)
 
-            filename = item_name + '_' + str(len(item_name)) + str(len(description)) + '.jpg'
+            number = random.randint(1, 1000000) + random.randint(1,1000000)
+
+            filename = item_name + '_' + str(number) + str(len(description)) + str(len(item_name)) + '.jpg'
             path = 'static/assets/img'
             img_file = Image.open(request.files['item_img'])
             img = img_file.save(f'{path}/{filename}')
@@ -555,13 +578,16 @@ def list_item():
             backup = img_file.save(f'{backup_path}/{filename}')
             
             listing.append(filename)
+            listing.append(price)
 
-            sql_statement = "insert into listings (item_id, item_name, description, image) values (%s, %s, %s, %s)"
+            sql_statement = "insert into listings (item_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)"
             data_source = listing
             
             insert_data(sql_statement, data_source)
             
             listing.clear()
+
+            app_log('listed item')
             print('item listed pending approval')
             return user_dashboard()
       
@@ -716,29 +742,13 @@ def login():
     if request.method == 'POST':
         
         if user_authentication() == True:
-            
-            session_id = session.get('id')
-            session_identification.append(session_id)
-            db_data = fetch_data('select username from users where session_id=%s', session_identification)
-            username = clear_str(db_data)
-            
-
-            details = str(username) + ' logged on'
-            application_data.append(session_id)
-            application_data.append(details)
-
-            sql_statement = 'insert into log (session_id, details) values (%s, %s)'
-            insert_data(sql_statement, application_data)
-
-            application_data.clear()
-            session_identification.clear()
-            
-            print(username + ' is logged on')
+            app_log('logged in')
             return main()
         
         elif user_authentication() == False:
-              print('user login failed')
-              return logout()
+            app_log('logged out')
+            print('user login failed')
+            return logout()
 
         else:
               print('login function error')
