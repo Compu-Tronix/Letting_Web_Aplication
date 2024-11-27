@@ -12,7 +12,7 @@
         body container:
         -category divisions
         -search 
-        -searrch results
+        -search results
     -->
     <div class="body_container">
 
@@ -32,24 +32,42 @@
                          Active
                     </h2>
                 </div>
-                {% for approved_img in approved_img %}
+                <div class="productContainer">
+                    <div class="container">
+                    
+                        {% for item_data in item_data %}
 
-                {% set x = approved_img|string %}
+                        {% set x = item_data[0]|string %}
 
-                {% set y = x.replace("(", "") %}
-                {% set z = y.replace(")", "") %}
-                {% set a = z.replace("'", "") %}
-                {% set b = a.replace(",", "") %}
+                        {% set y = x.replace("(", "") %}
+                        {% set z = y.replace(")", "") %}
+                        {% set a = z.replace("'", "") %}
+                        {% set b = a.replace(",", "") %}
 
-                {% set directory = 'assets/img/' %}
+                        {% set directory = 'assets/img/' %}
 
-                {% set img_value = directory + b %}
-                
-                <div class="container">
-                    <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="img">
+                        {% set img_value = directory + b %}
+                        
+                        <div class="card">    
+                            <div class="card-header">
+                                <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="img">
+                            </div>
+                            <div class="card-body">    
+                                <p> {{ item_data[1] }} </p>
+                                <p> {{'R ' + item_data[2]|string }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <form action="/product/" method="POST">
+                                    <input type="text" value={{item_data[0]}} name="product_name">
+                                    <input type="submit" value="more">
+                                </form>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-
-                 {% endfor %}
+                
+                 
             </div>
         </div>
          

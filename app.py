@@ -587,7 +587,7 @@ def list_item():
             
             listing.clear()
 
-            app_log('listed item')
+            app_log(str(item_name) + ' listed')
             print('item listed pending approval')
             return user_dashboard()
       
@@ -764,7 +764,12 @@ def logout():
       print('user logged off')
       return main()
 
-  
+# Product information
+@app.route('/product/', methods=['POST','GET'])
+def product_info():
+      product_name = request.form['product_name']
+      print('this is product name:'+str(product_name))
+      return str(product_name)
 
 
 
@@ -779,11 +784,12 @@ def main():
             logout = 'logout'
             dashboard = 'dashboard'
             print('session authentication success')
-            approved_img_sql_statement = 'select image from listings where status=%s'
-            data_source = ['approved']
-            approved_img = fetch_data(approved_img_sql_statement, data_source)
+            
+            data_source= ['approved']
+            item_data = fetch_data('select image, item_name, price from listings where status=%s', data_source )
+            
 
-            return render_template ('app.html',logout=logout,dashboard=dashboard, approved_img=approved_img)
+            return render_template ('app.html',logout=logout,dashboard=dashboard, item_data=item_data)
       
       elif session_authenticator() == False:
             def get_ip():
