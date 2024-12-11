@@ -4,7 +4,7 @@
 
 // dashboard function
 function dashboard() {
-  document.getElementById('dashboard').innerHTML = '<button class="exit_dashboard" onclick="exit_dashboard(document.getElementById(\'dashboard\'))">X</button> <ul> <li><a href="/dashboard/">User Dashboard</a></li> <li><a href="/user_information/">Information</a></li> <li><a href="/notifications/">Notifications</a></li> </ul>'
+  document.getElementById('dashboard').innerHTML = '<button class="exit_dashboard" onclick="exit_dashboard(document.getElementById(\'dashboard\'))">X</button> <ul> <li><a href="/dashboard/">User Dashboard</a></li> <li><a href="/user_information/">Information</a></li> <li><a href="/notifications/">Notifications</a></li> <li> <a href="/logout/" >logout</a> </ul></ul> '
 }
 
 //exit dashboard function

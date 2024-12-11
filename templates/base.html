@@ -21,73 +21,74 @@
             -user access & user registration function
         -->
         <div class="nav">
+            <!-- main app -->
+             <span class="home_page_container">
+                <a href="/"><img src="" class="home_page" alt="home_page"></a>
+             </span>
 
             <!-- logo -->
             <span class="logo_container">
-                <a href="/"><img src="" class="logo_img" alt="logo"></a>
+                <img src="" class="logo_img" alt="logo">
             </span>
 
             <!-- dashboard -->
             <span class="dashboard">
-                <a href="javascript:void(0)" onclick="dashboard(document.getElementById('dashboard'))">
-                    {% for dashboard in dashboard %}
-
-                    {{ dashboard }}
-
-                    {% endfor %}
-                </a>
-            </span>
-
-            <!-- user access & user registration function -->
-            <span class="user_access_button_container">
-                <a href="javascript:void(0)" id="user_access_button">
-                    {% for login in login %}
-                    
-                    {{ login }}
-                    
-                    {% endfor %}
-                </a>
-                <a href="/logout/" >
-                    {% for logout in logout %}
-                    
-                    {{ logout }}
-                    
-                    {% endfor %}
-                </a>
                 
-                <div class="login" id="login">
+                    {% for usr_data in usr_data %}
+                    {% set directory = 'assets/img/' %}
 
-                    <button id="close_login_popup">
-                        X
-                    </button>
-                    <form action="/login/" method="POST" class="form">
-                        <input type="text" placeholder="username" name="username">
-                        <input type="password" placeholder="password" name="password">
-                        <input type="submit">
-                    </form>
-
-                    <button class="user_registration_button" id="user_registration_button">
-                        register
-                    </button>
-                    <div class="register">
-
-                        <div class="registration_form">
-                            <button id="close_registration_popup">
-                                X
-                            </button>
-                            <form action="/register" method="POST" class="form">
-                                <input type="text" placeholder="name" name="username" required>
-                                <input type="email" placeholder="email" name="email" required>
-                                <input type="password" placeholder="password" name="password" required>
-                                <input type="password" placeholder="confirm password" name="confirm_password" required>
-                                <input type="submit" value="register">
-                            </form>
-                        </div>
-                        
-                    </div>
-                </div>
+                    {% set img_value = directory + usr_data[0] %}
+                    <a href="javascript:void(0)" onclick="dashboard(document.getElementById('dashboard'))">
+                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                    </a>
+                    {% endfor %}
+               
             </span>
+            {% for login in login %}
+                <!-- user access & user registration function -->
+                <span class="user_access_button_container">
+                    <a href="javascript:void(0)" id="user_access_button">
+                        
+                        
+                        {{ login }}
+                        
+                        
+                    </a>
+                    
+                    
+                    <div class="login" id="login">
 
+                        <button id="close_login_popup">
+                            X
+                        </button>
+                        <form action="/login/" method="POST" class="form">
+                            <input type="text" placeholder="username" name="username">
+                            <input type="password" placeholder="password" name="password">
+                            <input type="submit">
+                        </form>
+
+                        <button class="user_registration_button" id="user_registration_button">
+                            register
+                        </button>
+                        <div class="register">
+
+                            <div class="registration_form">
+                                <button id="close_registration_popup">
+                                    X
+                                </button>
+                                <form action="/register" method="POST" class="form">
+                                    <input type="text" placeholder="name" name="username" required>
+                                    <input type="email" placeholder="email" name="email" required>
+                                    <input type="password" placeholder="password" name="password" required>
+                                    <input type="password" placeholder="confirm password" name="confirm_password" required>
+                                    <input type="submit" value="register">
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </span>
+            {% endfor %}
         </div>
 
         <div class="dashboard_container" id="dashboard">

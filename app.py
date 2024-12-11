@@ -20,21 +20,6 @@ PASSWORD = 'letting@database'
 LISTS
 
 '''
-# registration list
-reg_details = []
-
-# user details list
-user_details = []
-
-# session identification list
-session_identification = []
-
-# update user information
-user_info_update = []
-
-listing = []
-
-application_data = []
 
 '''
 
@@ -125,85 +110,59 @@ def update_data(sql_statement, data_source):
 
 # register new users
 def user_registratoin():
-      
       # pass user registation form data to variables
       username = request.form['username']
       email = request.form['email']
       password = request.form['password']
       confirm_password = request.form['confirm_password']
-      
       # validate password entry to confirm user account registration
       if password == confirm_password:
-            reg_details.append(username)
-            reg_details.append(email)
-            reg_details.append(password)
-            print(username + email + password + ' appended to reg_details')
-
-            sql_statement = "insert into users (username, email, password) values (%s, %s,%s)"
-            data_source = reg_details
-            insert_data(sql_statement, data_source)
-
-            reg_details.clear()
-            print(username + 'new user redistered')
+            insert_data("insert into users (username, email, password) values (%s, %s,%s)", [username, email, password])
+            details = username + ': redistered'
+            app_log(details)
+            print(details)
 
       else:
-            reg_details.clear()
             print('passwords do not match')
 
 # validates email address to verify user account existance on the database or if email address is linked to another user
 def validate_email():
 
             email = request.form['email']
-            reg_details.append(email)
-            print(email + 'appened to reg_details')
 
-            sql_statement = "select exists (select email from users where email=%s);"
-            data_source = reg_details                        
-            db_data = fetch_data(sql_statement, data_source)
-            data = clear_int(db_data)
-
+            data = clear_int(fetch_data("select exists (select email from users where email=%s);", [email]))
+            
             if data == 1:
-                  print('email adress already exists')
-                  reg_details.clear()
+                  print(str(email) + ': address exists')
                   return True
 
             elif data == 0:
-                  print('email address does not exist')
+                  print(str(email) + ': address does not exist')
                   reg_details.clear()
                   return False
             
             else:
-                  print('validate email function error')
+                  print('Failed to run "validate_email" function')
 
 # authenticates user username and password upon login 
 def user_authentication():
-
       #pass login form data to variables
-    username = request.form['username']
-    password = request.form['password']
-    user_details.append(username)
-    user_details.append(password)
-    
-    # accesss database to complete user authentication
-    sql_statement = "select exists (select * from users where username=%s and password=%s);"
-    data_source = user_details
-    db_data = fetch_data(sql_statement, data_source)
-    data = clear_int(db_data)
-    
+      username = request.form['username']
+      password = request.form['password']
+      # accesss database to complete user authentication
+      data = clear_int(fetch_data("select exists (select * from users where username=%s and password=%s);", [username, password]))
+      
+      if data == 1:
+            set_session()
+            print('user match found')
+            return True
 
-    if data == 1:
-      set_session()
-      user_details.clear()
-      print('user match found')
-      return True
-
-    elif data == 0:
-      user_details.clear()
-      print('user match not found')
-      return False
-    
-    else:
-         print('user_authentication function error')
+      elif data == 0:
+            print('user match not found')
+            return False
+      
+      else:
+            print('Failed to run "user_authentication()" function')
 
 # initiates session upon successful login
 def set_session():
@@ -213,31 +172,22 @@ def set_session():
             cursor = db_connection.cursor()
 
             # sql statement to fetch requested data
-            sql_statement = 'select count(*) from log;'
-            print(sql_statement)
-
-            cursor.execute(sql_statement)
+            cursor.execute('select count(*) from log;')
             db_data = cursor.fetchall()
             cursor.close()
 
-            print(db_data)
             return db_data
       
       username = request.form['username']
       password = request.form['password']
-      db_data = fetch_count()
-      log = clear_int(db_data)
+      db_data = clear_int(fetch_count())
 
       number = random.randint(1,1000000)
 
-      session_id = str(log) + str(number)
-      session_identification.append(int(session_id))
-      session_identification.append(username)
-      session_identification.append(password)
+      session_id = str(db_data) + str(number)
       
-      update_data('update users set session_id =%s where username =%s and password =%s', session_identification) 
+      update_data('update users set session_id =%s where username =%s and password =%s', [session_id, username, password]) 
       session['id'] = session_id
-      session_identification.clear()
 
       print(str(session_id) + ' session initiated')
 
@@ -245,117 +195,34 @@ def set_session():
 def session_authenticator():
 
       session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + ' appended to session_identification list')
 
       if str(session_id) == 'None':
-            print('no session id')
-            session_identification.clear()
+            print('session id not set')
             return False
 
       else:
-            sql_statement = "select exists (select session_id from users where session_id =%s);"
-            data_source = session_identification
-            db_data = fetch_data(sql_statement, data_source)
-            data = clear_int(db_data)
+            data = clear_int(fetch_data("select exists (select session_id from users where session_id =%s);", [session_id]))
 
             if data == 1:
-                  print('session match found')
-                  session_identification.clear()
+                  print('session_id match found')
                   return True
             
             elif data == 0:
-                  print('session match not found')
-                  session_identification.clear()
+                  print('session_id match not found')
                   return False
-
+            
+            else:
+                  print('Failed to run "session_authenticator()" function')
 # application log
 def app_log(details):
       
       session_id = session.get('id')
-      session_identification.append(session_id)
-      user_id = clear_int(fetch_data('select id from users where session_id=%s', session_identification))
+      user_id = clear_int(fetch_data('select id from users where session_id=%s', [session_id]))
 
       details = details
-      application_data.append(user_id)
-      application_data.append(details)
+      insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
 
-      sql_statement = 'insert into log (user_id, details) values (%s, %s)'
-      insert_data(sql_statement, application_data)
-
-      application_data.clear()
-      session_identification.clear()
-      
       print( str(user_id) + str(details))
-
-# pulls user username from database
-def get_username():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      sql_statement = "select username from users where id =%s;"
-      data_source = session_identification
-     
-      db_data = fetch_data(sql_statement, data_source)
-      data = clear_str(db_data)
-     
-      session_identification.clear()
-
-      if data == 'on':
-            print(data)
-            return  'none'
-
-      else:
-            print(data)
-            return data
-
-# pulls  user surname from database 
-def get_surname():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      sql_statement = "select surname from users where id =%s;"
-      data_source = session_identification
-      
-      db_data = fetch_data(sql_statement, data_source)
-      data = clear_str(db_data)
-      
-      session_identification.clear()
-
-      if data == 'on':
-            print(data)
-            return  'none'
-
-      else:
-            print(data)
-            return data
-# updates user surname in database
-def update_surname():
-      print('running update_surname function')
-
-# pulls user id number from database
-def get_id_number():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      sql_statement = "select id_no from users where id =%s;"
-      data_source = session_identification
-      
-      db_data = fetch_data(sql_statement, data_source)
-      data = clear_str(db_data)
-      
-      session_identification.clear()
-
-      if data == 'on':
-            print(data)
-            return  'none'
-
-      else:
-            print(data)
-            return data
 
 '''
 
@@ -365,119 +232,6 @@ get_residential function broken up into 3 parts:
 - get_postal_code
 
 '''
-def get_residential_address():
-      street_address = get_street_address()
-      town_city = get_town_city()
-      postal_code = get_postal_code()
-
-      return street_address, town_city, postal_code
-# pulls users street address from database
-def get_street_address():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      sql_statement = "select street_address from users where id =%s;"
-      data_source = session_identification
-      
-      db_data = fetch_data(sql_statement, data_source)
-      data = clear_str(db_data)
-      
-      session_identification.clear()
-
-      if data == 'on':
-            print(data)
-            return  'none'
-
-      else:
-            print(data)
-            return data
-# pulls users town city from database
-def get_town_city():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      sql_statement = "select town_city from users where id =%s;"
-      data_source = session_identification
-      
-      db_data = fetch_data(sql_statement, data_source)
-      data = clear_str(db_data)
-      
-      session_identification.clear()
-
-      if data == 'on':
-            print(data)
-            return  'none'
-
-      else:
-            print(data)
-            return data
-# pulls users postal code from database
-def get_postal_code():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      sql_statement = "select postal_code from users where id =%s;"
-      data_source = session_identification
-      
-      db_data = fetch_data(sql_statement, data_source)
-      data = clear_str(db_data)
-      
-      session_identification.clear()
-
-      if data == 'on':
-            print(data)
-            return  'none'
-
-      else:
-            print(data)
-            return data
-
-# pulls users phone number from database
-def get_phone_number():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      sql_statement = "select cell_no from users where id =%s;"
-      data_source = session_identification
-      
-      db_data = fetch_data(sql_statement, data_source)
-      data = clear_str(db_data)
-      
-      session_identification.clear()
-
-      if data == 'on':
-            print(data)
-            return  'none'
-
-      else:
-            print(data)
-            return data
-
-# pulls users email address from database
-def get_email_address():
-      session_id = session.get('id')
-      session_identification.append(session_id)
-      print(str(session_id) + 'appended to session_identification list')
-
-      sql_statement = "select email from users where id =%s;"
-      data_source = session_identification
-      
-      db_data = fetch_data(sql_statement, data_source)
-      data = clear_str(db_data)
-      
-      session_identification.clear()
-
-      if data == 'on':
-            print(data)
-            return  'none'
-
-      else:
-            print(data)
-            return data
 
 # pulls approved items from db
 
@@ -491,21 +245,18 @@ APPLICATION ROUTES
 def user_profile():
       
       if session_authenticator() == True:
-            logout = 'logout'
-            dashboard = 'dashboard'
-            username = get_username()
-            surname = get_surname()
-            id_number = get_id_number()
-            residential_adress = get_residential_address()
-            cel_number = get_phone_number()
-            email_address = get_email_address()
+            session_id = session.get('id')
+            usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
+            #usr_icon = fetch_data('select user_icon from users where session_id=%s', session_id)
 
-            return render_template('information.html', logout=logout, dashboard=dashboard, username=username, surname=surname, id_number=id_number, cel_number=cel_number, email_address=email_address, residential_address=residential_adress)
+            return render_template('information.html', usr_data=usr_data, )
       
       elif session_authenticator() == False:
             return main()
 
-
+      else:
+            print('Failed to run "user_proile()" function')
+            return main()
 
 '''
 user dashboard
@@ -517,30 +268,18 @@ list new item, item history, listed items, pending items
 def user_dashboard():
 
       if session_authenticator() == True:
-            
-            logout = 'Logout'
-            dashboard = 'Dashboard'
-            
-            session_identification.append(session.get('id'))
-            data_source = session_identification
-            
-
-            
-            db_data = fetch_data('select id from users where session_id = %s', data_source)
-            user_id = clear_int(db_data)
+                       
+            session_id = session.get('id')
+            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id]) 
+            user_id = clear_int(fetch_data('select id from users where session_id = %s', [session_id]))
             
             
-            
-            application_data.append(user_id)
-            session_identification.clear()
             # pending items
-            pending_img = fetch_data('select image from listings where item_id=%s and status="pending"', application_data)
+            pending_img = fetch_data('select image from listings where user_id=%s and status="pending"', [user_id])
             # approved items
-            approved_img = fetch_data('select image from listings where item_id=%s and status="approved"', application_data)
-            
-            application_data.clear()
+            approved_img = fetch_data('select image from listings where user_id=%s and status="approved"', [user_id])
 
-            return render_template('dashboard.html', logout=logout, dashboard=dashboard, pending_img = pending_img, approved_img=approved_img)
+            return render_template('dashboard.html', usr_data=usr_data, pending_img=pending_img, approved_img=approved_img)
 
       elif session_authenticator() == False:
             return main()
@@ -555,17 +294,12 @@ def list_item():
 
       if session_authenticator() == True:
             session_id = session.get('id')
-            application_data.append(session_id)
-            item_id = clear_int(fetch_data('select id from users where session_id=%s;', application_data))
-            application_data.clear()
+            item_id = clear_int(fetch_data('select id from users where session_id=%s;', [session_id]))
+            
 
             item_name = request.form['item_name'].replace(" ","_")
             description = request.form['model_description'].replace(" ","_")
             price = request.form['price']
-
-            listing.append(item_id)
-            listing.append(item_name)
-            listing.append(description)
 
             number = random.randint(1, 1000000) + random.randint(1,1000000)
 
@@ -581,11 +315,10 @@ def list_item():
             listing.append(price)
 
             sql_statement = "insert into listings (item_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)"
-            data_source = listing
+            data_source = [item_id, item_name, description, filename, price]
             
             insert_data(sql_statement, data_source)
             
-            listing.clear()
 
             app_log(str(item_name) + ' listed')
             print('item listed pending approval')
@@ -758,9 +491,6 @@ def login():
 @app.route('/logout/')
 def logout():
       session.clear()
-      reg_details.clear()
-      user_details.clear()
-      session_identification.clear()
       print('user logged off')
       return main()
 
@@ -780,16 +510,14 @@ def main():
       
 
       if session_authenticator() == True:
-            
-            logout = 'logout'
-            dashboard = 'dashboard'
-            print('session authentication success')
-            
-            data_source= ['approved']
-            item_data = fetch_data('select image, item_name, price from listings where status=%s', data_source )
+
             
 
-            return render_template ('app.html',logout=logout,dashboard=dashboard, item_data=item_data)
+            item_data = fetch_data('select image, item_name, price from listings where status=%s', ['approved'] )
+            session_id = session.get('id')
+            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
+            print('session authentication success')
+            return render_template ('app.html', item_data=item_data, usr_data=usr_data)
       
       elif session_authenticator() == False:
             def get_ip():
@@ -797,14 +525,10 @@ def main():
                   return f'{ip_address}'
 
             details = str(get_ip()) + ' ran application'
-            application_data.append(details)
-            sql_statement = 'insert into log (details) values (%s)'
-            insert_data(sql_statement, application_data)
-            application_data.clear()
-            
-            login = 'login'
+            insert_data('insert into log (details) values (%s)', [details])
+            usr_data = [('default.jpg'),]
             print('no session exists')
-            return render_template ('index.html',login=login)
+            return render_template ('index.html', usr_data=usr_data)
       
       else:
             login = 'login'

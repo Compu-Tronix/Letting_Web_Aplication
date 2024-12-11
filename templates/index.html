@@ -1,101 +1,216 @@
-{% extends 'base.html' %}
-
-{% block head %}
-<title>index</title>
-{% endblock %}
-
-  
-
-{% block body %}
-  <!-- summary -->
-  <div class="summary_container">
-        
-    <div class="summary_text">
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Mauris pharetra et ultrices neque ornare aenean. 
-            Iaculis nunc sed augue lacus viverra vitae congue eu consequat. 
-            Sed vulputate odio ut enim blandit volutpat maecenas volutpat. 
-            Rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar.
-            Sem nulla pharetra diam sit. Mauris pellentesque pulvinar pellentesque habitant.
-            Congue nisi vitae suscipit tellus. Sit amet venenatis urna cursus eget nunc scelerisque viverra mauris. 
-            Sit amet nisl purus in mollis nunc sed. 
-            Bibendum ut tristique et egestas quis ipsum. 
-            Tortor id aliquet lectus proin. Enim nec dui nunc mattis enim. 
-            Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
-            Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
-            Pharetra sit amet aliquam id diam maecenas ultricies mi.
-        </p>
-        <button class="scroll" onclick="smoothScroll(document.getElementById('app_widget'))">
-            <h1>
-                V
-            </h1>
-        </button>
-    </div>
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>index</title>    
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale-1.0">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+        <script src="{{url_for('static', filename='jquery.js')}}"></script>
+        <script src="{{url_for('static', filename='script.js')}}"></script>
+    </header>
     
-</div>
+    <nav>
 
-<!-- 
-    app widget:
-    -upload shortcut
-    -catagory division shortcuts
--->
-<div class="app_widget" id="app_widget">
-    
-    <!-- upload shortcut -->
-    <div class="upload_shortcut">
-        <p>
-            Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
-            Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
-            Pharetra sit amet aliquam id diam maecenas ultricies mi.
-        </p>
-    </div>
+        <!--
+            navigaation bar:
+            -logo
+            -dashboard
+            -user access & user registration function
+        -->
+        <div class="nav">
+            <!-- main app -->
+            <span class="home_page_container">
+                <a href="/"><img src="" class="home_page" alt="home_page"></a>
+            </span>
 
-    <!-- catagory division shortcuts -->
-    <div class="catagory_division_shortcuts">
-        
-        <div class="catagory_summary">
-            <p>
-                Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
-                Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
-                Pharetra sit amet aliquam id diam maecenas ultricies mi.
-            </p>
-        </div>
-        <div class="catagory_summary">
-            <p>
-                Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
-                Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
-                Pharetra sit amet aliquam id diam maecenas ultricies mi.
-            </p>
-        </div>
-        <div class="catagory_summary">
-            <p>
-                Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
-                Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
-                Pharetra sit amet aliquam id diam maecenas ultricies mi.
-            </p>
-        </div>
-        
-        
-    </div>
-    <button class="scroll" onclick="smoothScroll(document.getElementById('associations'))">
-            <h1>
-                V
-            </h1>
-        </button>
-</div>
+            <!-- logo -->
+            <span class="logo_container">
+                <img src="" class="logo_img" alt="logo">
+            </span>
 
-<!-- 
-    associates
- -->
-<div class="associations" id="associations">
-    <div class="associates_container">
-        <div class="associate">
-            <img src="" class="associate_img" alt="associate">
+            <!-- dashboard -->
+            <span class="dashboard">
+                <script>
+                    function indexDashboard() {
+                        document.getElementById('dashboard').innerHTML = '<a href="javascript:void(0)" id="user_access_button">login</button></a>'
+                    }
+                </script>
+                    <a href="javascript:void(0)" onclick="indexDashboard(document.getElementById('dashboard'))">
+                        <img src="{{ url_for('static', filename='/assets/img/default_usr.jpg') }}" alt="Image Upload Display" class="dashboard-img">
+                    </a>
+            </span>
+                <!-- user access & user registration function -->
+                <span class="user_access_button_container">
+                    <a href="javascript:void(0)" id="user_access_button">
+                    </a>
+                    
+                    
+                    <div class="login" id="login">
+
+                        <button id="close_login_popup">
+                            X
+                        </button>
+                        <form action="/login/" method="POST" class="form">
+                            <input type="text" placeholder="username" name="username">
+                            <input type="password" placeholder="password" name="password">
+                            <input type="submit">
+                        </form>
+
+                        <button class="user_registration_button" id="user_registration_button">
+                            register
+                        </button>
+                        <div class="register">
+
+                            <div class="registration_form">
+                                <button id="close_registration_popup">
+                                    X
+                                </button>
+                                <form action="/register" method="POST" class="form">
+                                    <input type="text" placeholder="name" name="username" required>
+                                    <input type="email" placeholder="email" name="email" required>
+                                    <input type="password" placeholder="password" name="password" required>
+                                    <input type="password" placeholder="confirm password" name="confirm_password" required>
+                                    <input type="submit" value="register">
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </span>
         </div>
-        <div class="associate">
-            <img src="" class="associate_img" alt="associate">
+
+        <div class="dashboard_container" id="dashboard">
+
         </div>
-    </div>
-</div>
-{% endblock %}
+
+    </nav>
+    <body>
+        <!-- summary -->
+        <div class="summary_container">
+                
+            <div class="summary_text">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Mauris pharetra et ultrices neque ornare aenean. 
+                    Iaculis nunc sed augue lacus viverra vitae congue eu consequat. 
+                    Sed vulputate odio ut enim blandit volutpat maecenas volutpat. 
+                    Rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar.
+                    Sem nulla pharetra diam sit. Mauris pellentesque pulvinar pellentesque habitant.
+                    Congue nisi vitae suscipit tellus. Sit amet venenatis urna cursus eget nunc scelerisque viverra mauris. 
+                    Sit amet nisl purus in mollis nunc sed. 
+                    Bibendum ut tristique et egestas quis ipsum. 
+                    Tortor id aliquet lectus proin. Enim nec dui nunc mattis enim. 
+                    Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
+                    Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
+                    Pharetra sit amet aliquam id diam maecenas ultricies mi.
+                </p>
+                <button class="scroll" onclick="smoothScroll(document.getElementById('app_widget'))">
+                    <h1>
+                        V
+                    </h1>
+                </button>
+            </div>
+            
+        </div>
+
+        <!-- 
+            app widget:
+            -upload shortcut
+            -catagory division shortcuts
+        -->
+        <div class="app_widget" id="app_widget">
+            
+            <!-- upload shortcut -->
+            <div class="upload_shortcut">
+                <p>
+                    Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
+                    Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
+                    Pharetra sit amet aliquam id diam maecenas ultricies mi.
+                </p>
+            </div>
+
+            <!-- catagory division shortcuts -->
+            <div class="catagory_division_shortcuts">
+                
+                <div class="catagory_summary">
+                    <p>
+                        Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
+                        Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
+                        Pharetra sit amet aliquam id diam maecenas ultricies mi.
+                    </p>
+                </div>
+                <div class="catagory_summary">
+                    <p>
+                        Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
+                        Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
+                        Pharetra sit amet aliquam id diam maecenas ultricies mi.
+                    </p>
+                </div>
+                <div class="catagory_summary">
+                    <p>
+                        Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
+                        Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
+                        Pharetra sit amet aliquam id diam maecenas ultricies mi.
+                    </p>
+                </div>
+                
+                
+            </div>
+            <button class="scroll" onclick="smoothScroll(document.getElementById('associations'))">
+                    <h1>
+                        V
+                    </h1>
+            </button>
+        </div>
+
+        <!-- 
+            associates
+        -->
+        <div class="associations" id="associations">
+            <div class="associates_container">
+                <div class="associate">
+                    <img src="" class="associate_img" alt="associate">
+                </div>
+                <div class="associate">
+                    <img src="" class="associate_img" alt="associate">
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <footer>
+            
+            <!-- 
+                footer:
+                -additional documents
+                -copyright
+                -help center
+            -->
+            <!-- additional documents -->
+            <div class="additional_documents">
+                <ul>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                </ul>
+            </div>
+
+            <!-- copyright -->
+            <div class="copyright">
+                <ul>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                </ul>
+            </div>
+
+            <!-- help center -->
+            <div class="help_center">
+                <ul>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                </ul>
+            </div>
+        
+    </footer>
+</html>
