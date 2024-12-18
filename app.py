@@ -121,7 +121,7 @@ def user_registratoin():
             details = username + ': redistered'
             app_log(details)
             print(details)
-
+            return login()
       else:
             print('passwords do not match')
 
@@ -138,7 +138,6 @@ def validate_email():
 
             elif data == 0:
                   print(str(email) + ': address does not exist')
-                  reg_details.clear()
                   return False
             
             else:
@@ -335,19 +334,13 @@ def list_item():
  }
 '''
 # update username
-@app.route('/update/', methods=['POST','GET'])
+@app.route('/update_username/', methods=['POST','GET'])
 def update_username():
       
       username = request.form['username']
       session_id = session.get('id')
-      user_info_update.append(username)
-      user_info_update.append(session_id)
 
-      sql_statement = "update users set username = %s where id = %s"
-      data_source = user_info_update
-
-      update_data(sql_statement, data_source)
-      user_info_update.clear()
+      update_data("update users set username = %s where session_id = %s", [username, session_id])
 
       return user_profile()
 # update user surname
@@ -356,14 +349,8 @@ def update_surname():
       
       surname = request.form['surname']
       session_id = session.get('id')
-      user_info_update.append(surname)
-      user_info_update.append(session_id)
 
-      sql_statement = "update users set surname = %s where id = %s"
-      data_source = user_info_update
-
-      update_data(sql_statement, data_source)
-      user_info_update.clear()
+      update_data("update users set surname = %s where session_id = %s", [surname, session_id])
 
       return user_profile()
 # update residential address
@@ -380,42 +367,8 @@ def update_residental_address():
 
       img = Image.open(request.files['proof_of_residence'])
       img = img.save(f'{path}/{name}')
-
-      user_info_update.append(street)
-      user_info_update.append(town_city)
-      user_info_update.append(postal_code)
-      user_info_update.append(path + name)
-      user_info_update.append(session_id)
       
-      sql_statement = "update users set street_address = %s, town_city = %s, postal_code = %s, proof_of_residence = %s where id = %s"
-      data_source = user_info_update
-
-      update_data(sql_statement, data_source)
-      user_info_update.clear()
-
-      return user_profile()
-# update id number
-@app.route('/update_id_number/', methods=['POST', 'GET'])
-def update_id_number():
-
-      id_number = request.form['id_number']
-      session_id = session.get('id')
-
-      name = str(session_id) + '.jpg'
-      path = 'assets/user_assets/id_copies/'
-
-      img = Image.open(request.files['id_img'])
-      img = img.save(f'{path}/{name}')
-
-      user_info_update.append(id_number)
-      user_info_update.append(path + name)
-      user_info_update.append(session_id)
-
-      sql_statement = "update users set id_no = %s, id_img = %s where id = %s"
-      data_source = user_info_update
-
-      update_data(sql_statement, data_source)
-      user_info_update.clear()
+      update_data("update users set street_address = %s, town_city = %s, postal_code = %s where session_id = %s", [street, town_city, postal_code, session_id])
 
       return user_profile()
 
@@ -425,14 +378,8 @@ def update_phone():
       
       phone = request.form['cel_number']
       session_id = session.get('id')
-      user_info_update.append(phone)
-      user_info_update.append(session_id)
 
-      sql_statement = "update users set cell_no = %s where id = %s"
-      data_source = user_info_update
-
-      update_data(sql_statement, data_source)
-      user_info_update.clear()
+      update_data("update users set cell_no = %s where session_id = %s", [phone, session_id])
 
       return user_profile()
 # update email address
@@ -441,14 +388,8 @@ def update_email():
       
       email = request.form['email_address']
       session_id = session.get('id')
-      user_info_update.append(email)
-      user_info_update.append(session_id)
-
-      sql_statement = "update users set email = %s where id = %s"
-      data_source = user_info_update
-
-      update_data(sql_statement, data_source)
-      user_info_update.clear()
+      
+      update_data("update users set email = %s where session_id = %s", [email, session_id])
 
       return user_profile()
 

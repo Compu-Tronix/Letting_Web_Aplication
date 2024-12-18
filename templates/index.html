@@ -32,18 +32,12 @@
             <span class="dashboard">
                 <script>
                     function indexDashboard() {
-                        document.getElementById('dashboard').innerHTML = '<a href="javascript:void(0)" id="user_access_button">login</button></a>'
+                        document.getElementById('dashboard').innerHTML = '<button id="user_access_button">login</button>'
                     }
                 </script>
-                    <a href="javascript:void(0)" onclick="indexDashboard(document.getElementById('dashboard'))">
+                    <a href="javascript:void(0)" id="user_access_button">
                         <img src="{{ url_for('static', filename='/assets/img/default_usr.jpg') }}" alt="Image Upload Display" class="dashboard-img">
                     </a>
-            </span>
-                <!-- user access & user registration function -->
-                <span class="user_access_button_container">
-                    <a href="javascript:void(0)" id="user_access_button">
-                    </a>
-                    
                     
                     <div class="login" id="login">
 
@@ -76,13 +70,9 @@
                             
                         </div>
                     </div>
-                </span>
+            </span>
         </div>
-
-        <div class="dashboard_container" id="dashboard">
-
-        </div>
-
+        
     </nav>
     <body>
         <!-- summary -->
