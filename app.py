@@ -293,7 +293,7 @@ def list_item():
 
       if session_authenticator() == True:
             session_id = session.get('id')
-            item_id = clear_int(fetch_data('select id from users where session_id=%s;', [session_id]))
+            user_id = clear_int(fetch_data('select id from users where session_id=%s;', [session_id]))
             
 
             item_name = request.form['item_name'].replace(" ","_")
@@ -310,15 +310,8 @@ def list_item():
             backup_path = '/media/administrator/file storage/letting-rentals/listings'
             backup = img_file.save(f'{backup_path}/{filename}')
             
-            listing.append(filename)
-            listing.append(price)
-
-            sql_statement = "insert into listings (item_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)"
-            data_source = [item_id, item_name, description, filename, price]
-            
-            insert_data(sql_statement, data_source)
-            
-
+            insert_data("insert into listings (user_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)", [user_id, item_name, description, filename, price])
+      
             app_log(str(item_name) + ' listed')
             print('item listed pending approval')
             return user_dashboard()
@@ -388,7 +381,7 @@ def update_email():
       
       email = request.form['email_address']
       session_id = session.get('id')
-      
+
       update_data("update users set email = %s where session_id = %s", [email, session_id])
 
       return user_profile()
