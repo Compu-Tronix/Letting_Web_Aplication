@@ -100,6 +100,12 @@
                     
                     <div class="container">
                         <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                        <form action="/delete_product/" method="POST">
+                            <div class="form_placeholder">
+                                <input type="text" value={{b}} name="product_name">
+                            </div>
+                            <input type="submit" value="delete">
+                        </form>
                     </div>
 
                      {% endfor %}
@@ -127,6 +133,12 @@
 
                     <div class="container">
                         <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                        <form action="/delete_product/" method="POST">
+                            <div class="form_placeholder">
+                                <input type="text" value={{b}} name="product_name">
+                            </div>
+                            <input type="submit" value="delete">
+                        </form>
                     </div>
 
                      {% endfor %}

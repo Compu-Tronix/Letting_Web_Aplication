@@ -62,4 +62,8 @@ user_listing_container:
 .dashboard-img {
     width: 5rem;
 }
-/*
+
+/*forms*/
+.form_placeholder {
+    visibility: hidden;
+}

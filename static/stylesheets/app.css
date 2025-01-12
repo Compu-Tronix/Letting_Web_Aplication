@@ -11,3 +11,7 @@
 .img {
     width: 5rem;
 }
+
+.form_placeholder {
+    visibility: hidden;
+}

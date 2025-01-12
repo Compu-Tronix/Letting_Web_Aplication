@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, session
 from tabulate import tabulate
 from PIL import Image
 import random
+import os
 
 
 app = Flask(__name__)
@@ -107,6 +108,22 @@ def update_data(sql_statement, data_source):
       cursor.execute(sql_statement, data_source)
       db_connection.commit()
       cursor.close
+
+# delete data from database
+def delete_data(sql_statement, data_source):
+
+      db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
+      cursor = db_connection.cursor()
+      print('connected to: ' + str(db_connection.get_server_info()))
+
+      sql_statement = sql_statement
+      print(sql_statement)
+
+      data_source = data_source
+
+      cursor.execute(sql_statement, data_source)
+      db_connection.commit()
+      cursor.close      
 
 # register new users
 def user_registratoin():
@@ -305,10 +322,10 @@ def list_item():
             filename = item_name + '_' + str(number) + str(len(description)) + str(len(item_name)) + '.jpg'
             path = 'static/assets/img'
             img_file = Image.open(request.files['item_img'])
-            img = img_file.save(f'{path}/{filename}')
+            img_file.save(f'{path}/{filename}')
             
             backup_path = '/media/administrator/file storage/letting-rentals/listings'
-            backup = img_file.save(f'{backup_path}/{filename}')
+            img_file.save(f'{backup_path}/{filename}')
             
             insert_data("insert into listings (user_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)", [user_id, item_name, description, filename, price])
       
@@ -318,6 +335,19 @@ def list_item():
       
       else:
             return main()
+
+# delist item
+@app.route('/delete_product/', methods = ['POST', 'GET'])
+def delist_item():
+      product_name = request.form['product_name']
+      path = 'static/assets/img/' + str(product_name)
+      external_path = '/media/administrator/file storage/letting-rentals/listings/' + str(product_name)
+
+      os.remove(path)
+      os.remove(external_path)
+      delete_data('delete from listings where image = %s;', [str(product_name)])
+      
+      return user_dashboard()
 
 
 '''
