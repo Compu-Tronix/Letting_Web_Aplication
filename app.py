@@ -12,9 +12,9 @@ app.config['SECRET_KEY'] = 'my_secret'
 
 
 HOST = '192.168.0.103'
-DATABASE = 'letting_app'
-USER = 'letting.app'
-PASSWORD = 'letting@database'
+DATABASE = 'letting'
+USER = 'liveserver'
+PASSWORD = 'liveserver1'
 
 '''
 
