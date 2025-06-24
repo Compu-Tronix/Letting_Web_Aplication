@@ -135,10 +135,11 @@ def user_registratoin():
       # validate password entry to confirm user account registration
       if password == confirm_password:
             insert_data("insert into users (username, email, password) values (%s, %s,%s)", [username, email, password])
-            details = username + ': redistered'
+            set_session()
+            details = username + ': registered'
             app_log(details)
             print(details)
-            return login()
+            return main()
       else:
             print('passwords do not match')
 
@@ -463,7 +464,10 @@ def logout():
 def product_info():
       product_name = request.form['product_name']
       print('this is product name:'+str(product_name))
-      return str(product_name)
+      item_data = fetch_data('select item_name, verification, description, price from listings where image=%s', [product_name] )
+      session_id = session.get('id')
+      usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
+      return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data)
 
 
 
@@ -487,9 +491,9 @@ def main():
             def get_ip():
                   ip_address = request.remote_addr
                   return f'{ip_address}'
-
-            details = str(get_ip()) + ' ran application'
-            insert_data('insert into log (details) values (%s)', [details])
+            user_id = str(get_ip())
+            details = 'interaction initiated'
+            insert_data('insert into log (user_id, details) values (%s,%s)', [user_id, details])
             usr_data = [('default.jpg'),]
             print('no session exists')
             return render_template ('index.html', usr_data=usr_data)

@@ -41,25 +41,28 @@
                     
                     <div class="login" id="login">
 
-                        <button id="close_login_popup">
-                            X
-                        </button>
+                        
                         <form action="/login/" method="POST" class="form">
+                            <button id="close_login_popup">
+                                X
+                            </button>
                             <input type="text" placeholder="username" name="username">
                             <input type="password" placeholder="password" name="password">
-                            <input type="submit">
+                            <input type="submit" value="Login">
+                            <button class="user_registration_button" id="user_registration_button">
+                                Register
+                            </button>
                         </form>
 
-                        <button class="user_registration_button" id="user_registration_button">
-                            register
-                        </button>
+                        
                         <div class="register">
 
                             <div class="registration_form">
-                                <button id="close_registration_popup">
-                                    X
-                                </button>
+                                
                                 <form action="/register" method="POST" class="form">
+                                    <button id="close_registration_popup">
+                                        X
+                                    </button>
                                     <input type="text" placeholder="name" name="username" required>
                                     <input type="email" placeholder="email" name="email" required>
                                     <input type="password" placeholder="password" name="password" required>

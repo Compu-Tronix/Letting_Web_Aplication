@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>letting App</title>
+{% endblock %}
+
+{% block body %}
+<div class="cantainer">
+    <div class="producImgContainer">
+        {% set product_name = product_name %}
+        <img src="{{url_for('static', filename=product_name)}}">
+    </div>
+    <div class="productInfoContainer">
+        <div class="productInfo">
+            <h1>
+                {{ item_data[0] }}
+            </h1>
+            <p>
+                verification: {{ item_data[1] }}
+            </p>
+            <h2>
+            Description
+            </h2>
+            <p>
+                {{ item_data[2] }}
+            </p>
+            <h2>
+                {{ item_data[3] }}
+            </h2>
+        </div>
+    </div>
+</div>
+{% endblock %}
