@@ -2,32 +2,45 @@
 
 {% block head %}
 <title>letting App</title>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/product.css')}}">
 {% endblock %}
 
 {% block body %}
-<div class="cantainer">
-    <div class="producImgContainer">
-        {% set product_name = product_name %}
-        <img src="{{url_for('static', filename=product_name)}}">
+<div class="container">
+    <div class="productImgContainer">
+        {% set product_name = 'assets/img/'+ product_name %}
+        <img src="{{url_for('static', filename=product_name)}}" class="img">
     </div>
     <div class="productInfoContainer">
+        {% for item_data in item_data %}
         <div class="productInfo">
             <h1>
                 {{ item_data[0] }}
             </h1>
             <p>
-                verification: {{ item_data[1] }}
+                verification: {{ item_data[1]|string }}
             </p>
-            <h2>
-            Description
-            </h2>
-            <p>
-                {{ item_data[2] }}
-            </p>
+            
             <h2>
                 {{ item_data[3] }}
             </h2>
+            <a href="javascript:void(0)" onclick="">
+                {{ lease/purchase }}
+            </a>
+            <a href="javascript:void(0)" onclick="">
+                {{ lease/purchase }}
+            </a>
+            <a href="javascript:void(0)" onclick="">
+                {{ item_data }}
+            </a>
         </div>
+      
+        
     </div>
 </div>
+<div class="ContainerSec">
+
+</div>
+    
+{% endfor %}
 {% endblock %}

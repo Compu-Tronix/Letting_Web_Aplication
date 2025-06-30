@@ -1,0 +1,21 @@
+
+
+.container {
+    display: flex;
+}
+
+
+
+.productImgContainer {
+    width: 50%;
+    display: flex;
+}
+
+.img {
+    margin: auto;    
+    width: 90%;
+}
+
+.productInfoContainer {
+    width: 50%;
+}
