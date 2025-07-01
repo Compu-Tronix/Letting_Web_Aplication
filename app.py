@@ -464,13 +464,19 @@ def logout():
 def product_info():
       product_name = request.form['product_name']
       print('this is product name:'+str(product_name))
-      item_data = fetch_data('select item_name, verification, description, price, type from listings where image=%s', [product_name] )
+      item_data = fetch_data('select item_name, verification, description, price from listings where image=%s', [product_name] )
       session_id = session.get('id')
       usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
-      print(fetch_data('select type from listings where image=%s;', [product_name]))
-      return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data)
-
-
+      ex_type = clear_str((fetch_data('select type from listings where image=%s;', [product_name])))
+      print(str(ex_type))
+      if ex_type == 'lease':
+            return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data, lease=ex_type)
+      
+      elif ex_type == 'purchase':
+            return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data, purchase=ex_type)
+      
+      elif ex_type == 'not specified':
+            return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data, error=ex_type)
 
 # application start
 @app.route('/', methods = ['POST','GET'])
@@ -506,4 +512,4 @@ def main():
              
     
 if __name__ == '__main__':
-    app.run (debug = True, host='0.0.0.0:5100')
+    app.run (debug = True, host='0.0.0.0')

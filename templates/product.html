@@ -25,13 +25,13 @@
                 {{ item_data[3] }}
             </h2>
             <a href="javascript:void(0)" onclick="">
-                {{ lease/purchase }}
+                {{ lease }}
             </a>
             <a href="javascript:void(0)" onclick="">
-                {{ lease/purchase }}
+                {{ purchase }}
             </a>
             <a href="javascript:void(0)" onclick="">
-                {{ item_data }}
+                {{ error }}
             </a>
         </div>
       
@@ -39,7 +39,10 @@
     </div>
 </div>
 <div class="ContainerSec">
-
+    <h2>description</h2>
+    <p>
+        {{ item_data[2] }}
+    </p>
 </div>
     
 {% endfor %}
