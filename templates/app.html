@@ -3,6 +3,7 @@
 {% block head %}
 <title>letting App</title>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/app.css')}}">
+<script src="/static/scripts/app.js"></script>
 {% endblock %}
 
 
@@ -18,10 +19,7 @@
 
         <!-- search -->
         <div class="search">
-            <div class="search_bar">
-                <input type="text" placeholder="input type">
-                <input type="submit" value="search">
-            </div>
+            <button onclick="catagoryOne(document.getElementById('productContainer'))">catagoryOne</button>
         </div>
 
         <!-- search results -->
@@ -32,7 +30,7 @@
                          Active
                     </h2>
                 </div>
-                <div class="productContainer">
+                <div class="productContainer" id="productContainer">
                     <div class="container">
                     
                         {% for item_data in item_data %}
