@@ -53,7 +53,7 @@
                     <form action="/list_item/" method="POST" enctype="multipart/form-data">
                         <input type="text" placeholder="name of item" name="item_name" required>
                         <input type="text" placeholder="model description" name="model_description" required>
-                        <input type="text" placeholder="price per 24hrs" name="price" required>
+                        <input type="number" placeholder="price per 24hrs" name="price" required>
                         <input type="file" placeholder="upload item image" name="item_img" required>
                         <input type="submit" value="upload">
                     </form>
@@ -121,6 +121,38 @@
                     {% for pending_img in pending_img %}
 
                     {% set x = pending_img|string %}
+
+                    {% set y = x.replace("(", "") %}
+                    {% set z = y.replace(")", "") %}
+                    {% set a = z.replace("'", "") %}
+                    {% set b = a.replace(",", "") %}
+
+                    {% set directory = 'assets/img/' %}
+
+                    {% set img_value = directory + b %}
+
+                    <div class="container">
+                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                        <form action="/delete_product/" method="POST">
+                            <div class="form_placeholder">
+                                <input type="text" value={{b}} name="product_name">
+                            </div>
+                            <input type="submit" value="delete">
+                        </form>
+                    </div>
+
+                     {% endfor %}
+                </div>
+
+                <div class="pending_listings_container">
+                    <div class="dashboard_listing_text">
+                        <h2>
+                             Denied
+                        </h2>
+                    </div>
+                    {% for denied_img in denied_img %}
+
+                    {% set x = denied_img|string %}
 
                     {% set y = x.replace("(", "") %}
                     {% set z = y.replace(")", "") %}
