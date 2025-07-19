@@ -295,8 +295,9 @@ def user_dashboard():
             pending_img = fetch_data('select image from listings where user_id=%s and status="pending"', [user_id])
             # approved items
             approved_img = fetch_data('select image from listings where user_id=%s and status="approved"', [user_id])
-
-            return render_template('dashboard.html', usr_data=usr_data, pending_img=pending_img, approved_img=approved_img)
+            # denied items
+            denied_img = fetch_data('select image from listings where user_id=%s and status="denied"', [user_id])
+            return render_template('dashboard.html', usr_data=usr_data, pending_img=pending_img, approved_img=approved_img, denied_img=denied_img)
 
       elif session_authenticator() == False:
             return main()
@@ -482,11 +483,7 @@ def product_info():
 @app.route('/', methods = ['POST','GET'])
 def main():
 
-      
-
       if session_authenticator() == True:
-
-            
 
             item_data = fetch_data('select image, item_name, price from listings where status=%s', ['approved'] )
             session_id = session.get('id')
@@ -509,7 +506,12 @@ def main():
             login = 'login'
             print('failed to start app: session authenticator did not return true or false')
             return render_template('index.html', login=login)
-             
-    
+
+# item catagory filter 
+@app.route('/enable_filter/', methods=['POST','GET'])
+def filter():
+      cat_filter = request.form['catagory']
+      item_data = fetch_data('select ')
+
 if __name__ == '__main__':
     app.run (debug = True, host='0.0.0.0')
