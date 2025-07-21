@@ -1,9 +1,14 @@
+.body_container {
+
+}
+
 .search {
     border: 2px solid brown;
     width: 25%;
 }
 
 .search_results {
+    overflow: auto;
     border: 2px solid black;
     width: 75%;
 }
