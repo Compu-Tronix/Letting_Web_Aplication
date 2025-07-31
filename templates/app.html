@@ -17,11 +17,29 @@
     -->
     <div class="body_container">
 
-        <!-- search
+        <!-- search -->
         <div class="search">
-            <form action="/enable_fiter/" method="POST">
-                <button onclick="">catagoryOne</button>
-                <input type="text" value=''>
+            <a href="/">{{remove_filter}}</a>
+            <!-- catagot 1 -->
+            <form action="/enable_filter/" method="POST">
+                <div class="form_placeholder">
+                    <input type="text" value='catagory_1' name="catagory">
+                </div>
+                <input type="submit" value="catagory 1">
+            </form>
+            <!-- catagory 2 -->
+            <form action="/enable_filter/" method="POST">
+                <div class="form_placeholder">
+                    <input type="text" value='catagory_2' name="catagory">
+                </div>
+                <input type="submit" value="catagory 2">
+            </form>
+            <!-- catagory 3 -->
+            <form action="/enable_filter/" method="POST">
+                <div class="form_placeholder">
+                    <input type="text" value='catagory_3' name="catagory">
+                </div>
+                <input type="submit" value="catagory 3">
             </form>
         </div>
 
@@ -64,14 +82,13 @@
                                     </div>
                                     <input type="submit" value="more">
                                 </form>
-                            </div>
-                            {% endfor %}
+                            </div> 
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
          
     </div>
-
 {% endblock %}
