@@ -18,7 +18,7 @@ PASSWORD = 'liveserver1'
 
 '''
 
-LISTS
+LIST
 
 '''
 
