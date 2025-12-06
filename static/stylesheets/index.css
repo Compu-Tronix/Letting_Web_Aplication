@@ -9,17 +9,31 @@ INDEX.HTML BODY
     border: 2px solid pink;
     height: 100vh;
     display: flex;
+    flex-direction: column;
 }
 .summary_text {
     border: 2px solid green;
     width: 90%;
-    height: 90%;
+    height: 50%;
+    margin: auto;
+    display: flex;
+}
+.text-summary {
+    border: 2px solid blue;
+    width: 90%;
+    margin: auto;
+}
+
+.scroll-container {
+    border: 2px solid orange;
+    display: flex;
+    width: 90%;
     margin: auto;
 }
 .scroll {
     width: 50%;
+    margin: auto;
 }
-
 
 /*
 app widget:
