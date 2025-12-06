@@ -21,6 +21,7 @@ navigation bar:
 nav {
     width: 100%;
     border: 2px solid blue;
+    position:fixed
 }
 .nav {
     border: 2px solid green;
