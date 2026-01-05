@@ -44,18 +44,32 @@ app widget:
     border: 2px solid blue;
     height: 100vh;
     display: flex;
+    flex-direction: column;
 }
 
-
+.app-widget-container{
+    border: 2px solid yellow;
+    display: flex;
+    flex-direction: column;
+    height: 75%;
+    margin: auto;
+}
+.upload-shortcut-container {
+    border: 2px solid purple;
+    margin: auto;
+}
 /*upload shortcut*/
 .upload_shortcut {
     border: 2px solid red;
+    height: 100%;
     min-width: 25%;
+    display: flex;
 }
 
 
 /*catagory division shortcuts*/
 .catagory_division_shortcuts {
+    height: 100%;
     border: 2px solid green;
     display: flex;
 }

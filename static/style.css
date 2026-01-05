@@ -8,6 +8,7 @@ variables
 }
 
 html {
+    width: 100%;
     height: 100%;
 }
 
@@ -20,8 +21,8 @@ navigation bar:
 */
 nav {
     width: 100%;
-    border: 2px solid blue;
-    position:fixed
+    
+    position: fixed;
 }
 .nav {
     border: 2px solid green;
@@ -29,16 +30,27 @@ nav {
     justify-content: space-between;
 }
 
-
+.home_page_container {
+    border: 2px solid brown;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+}
 /*logo*/
 .logo_container {
     border: 2px solid orange;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 
 /* dashboard*/
 .dashboard {
     border: 2px solid red;
+    width: 100%;
+    display: flex;
+    justify-content: right;
 }
 .dashboard_container {
     width: 100%;
@@ -57,11 +69,15 @@ nav {
     border: 2px solid brown;
 }
 .login {
-    position: absolute;
+    backdrop-filter: blur(10px);
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
+    height: 100%;
     visibility: hidden;
+    display: flex;
 }
 .login.visible {
     visibility: visible
@@ -69,7 +85,6 @@ nav {
 .register {
     visibility: hidden;
     position: fixed;
-    background: maroon;
     width: 100%;
     height: 100%;
     top: 0;
@@ -80,20 +95,21 @@ nav {
 .register.visible {
     visibility: visible;
 }
-.registration_form {
-    margin: auto;
-    background: blue;
-}
+
 
 .form{
-    position: fixed;
-    background: gray;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
+    
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
 }
+
+.btn {
+    width: 50%;
+    margin: auto;
+}
+
 
 /*
 
@@ -101,6 +117,8 @@ body:
 
 */
 body {
+    margin: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
     min-height:100%

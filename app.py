@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'my_secret'
 
 
 
-HOST = '192.168.0.103'
+HOST = 'localhost'
 DATABASE = 'letting'
 USER = 'liveserver'
 PASSWORD = 'liveserver1'
@@ -79,7 +79,6 @@ def insert_data(sql_statement, data_source):
       
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
-      print('connected to: ' + str(db_connection.get_server_info()))
 
       sql_statement = sql_statement
       print(sql_statement)
@@ -98,7 +97,6 @@ def update_data(sql_statement, data_source):
 
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
-      print('connected to: ' + str(db_connection.get_server_info()))
 
       sql_statement = sql_statement
       print(sql_statement)
@@ -114,7 +112,6 @@ def delete_data(sql_statement, data_source):
 
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
-      print('connected to: ' + str(db_connection.get_server_info()))
 
       sql_statement = sql_statement
       print(sql_statement)
@@ -232,13 +229,14 @@ def session_authenticator():
                   print('Failed to run "session_authenticator()" function')
 # application log
 def app_log(details):
-      
-      session_id = session.get('id')
-      user_id = clear_int(fetch_data('select id from users where session_id=%s', [session_id]))
-
-      details = details
-      insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
-
+      if session_authenticator() == True:
+            user_id = clear_int(fetch_data('select id from users where session_id=%s', [session_id]))
+            details = details
+            insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
+      elif session_authenticator() == False:
+            user_id = 'Guest'
+            details = details
+            insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
       print( str(user_id) + str(details))
 
 '''
