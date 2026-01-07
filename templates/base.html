@@ -23,7 +23,7 @@
         <div class="nav">
             <!-- main app -->
              <span class="home_page_container">
-                <a href="/"><img src="" class="home_page" alt="main"></a>
+                <a href="/"><img src="{{url_for('static', filename='assets/icons/home-icon.png')}}" class="home_page" alt="main"></a>
              </span>
 
             <!-- logo -->
@@ -39,7 +39,7 @@
 
                     {% set img_value = directory + usr_data[0] %}
                     <a href="javascript:void(0)" onclick="dashboard(document.getElementById('dashboard'))">
-                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                        <img src="{{ url_for('static', filename='/assets/icons/user-acc-icon.png') }}" alt="Image Upload Display" class="dashboard-img">
                     </a>
                     {% endfor %}
                

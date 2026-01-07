@@ -230,6 +230,7 @@ def session_authenticator():
 # application log
 def app_log(details):
       if session_authenticator() == True:
+            session_id = session.get('id')
             user_id = clear_int(fetch_data('select id from users where session_id=%s', [session_id]))
             details = details
             insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
