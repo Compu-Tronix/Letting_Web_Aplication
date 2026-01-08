@@ -16,43 +16,39 @@
         -search results
     -->
     <div class="body_container">
-
         <!-- search -->
-        <div class="search">
-            <a href="/">{{remove_filter}}</a>
-            <!-- catagot 1 -->
-            <form action="/enable_filter/" method="POST">
-                <div class="form_placeholder">
-                    <input type="text" value='catagory_1' name="catagory">
-                </div>
-                <input type="submit" value="catagory 1">
-            </form>
-            <!-- catagory 2 -->
-            <form action="/enable_filter/" method="POST">
-                <div class="form_placeholder">
-                    <input type="text" value='catagory_2' name="catagory">
-                </div>
-                <input type="submit" value="catagory 2">
-            </form>
-            <!-- catagory 3 -->
-            <form action="/enable_filter/" method="POST">
-                <div class="form_placeholder">
-                    <input type="text" value='catagory_3' name="catagory">
-                </div>
-                <input type="submit" value="catagory 3">
-            </form>
+        <div class="filter-container">
+            <div class="filter-container-child">
+                <a href="/">{{remove_filter}}</a>
+                <!-- catagot 1 -->
+                <form action="/enable_filter/" method="POST">
+                    <div class="catagory-placeholder">
+                        <input type="text" value='catagory_1' name="catagory" style="width: 0;">
+                    </div>
+                    <input type="submit" value="catagory 1">
+                </form>
+                <!-- catagory 2 -->
+                <form action="/enable_filter/" method="POST">
+                    <div class="catagory-placeholder">
+                        <input type="text" value='catagory_2' name="catagory" style="width: 0;">
+                    </div>
+                    <input type="submit" value="catagory 2">
+                </form>
+                <!-- catagory 3 -->
+                <form action="/enable_filter/" method="POST">
+                    <div class="catagory-placeholder">
+                        <input type="text" value='catagory_3' name="catagory" style="width: 0;">
+                    </div>
+                    <input type="submit" value="catagory 3">
+                </form>
+            </div>
         </div>
 
         <!-- search results -->
-        <div class="search_results">
-            <div class="active_listings_container">
-                <div class="catagory_text">
-                    <h2>
-                         Active
-                    </h2>
-                </div>
+        <div class="filter-results-container">
+            <div class="filter-results-container-child">
                 <div class="productContainer" id="productContainer">
-                    <div class="container">
+                    <div class="product-card-container">
                     
                         {% for item_data in item_data %}
 

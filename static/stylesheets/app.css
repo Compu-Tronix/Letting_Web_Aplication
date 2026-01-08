@@ -2,21 +2,43 @@
 
 }
 
-.search {
+.filter-container {
     border: 2px solid brown;
+    display: flex;
     width: 25%;
+    height: 100vh;
+}
+.filter-container-child{
+    margin: auto;
+    background: blue;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
-.search_results {
+.filter-results-container {
     overflow: auto;
     border: 2px solid black;
     width: 75%;
+    height: 100vh;
+    display: flex;
+}
+.filter-results-container-child {
+    margin: auto;
+    background: red;
+    width: 100%;
+    height: 80%;
 }
 
 .img {
     width: 5rem;
 }
 
-.form_placeholder {
+.catagory-placeholder {
+    position: absolute;
+    width: 0;
     visibility: hidden;
 }
