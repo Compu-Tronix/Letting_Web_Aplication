@@ -135,8 +135,11 @@ footer:
 -copyright
 -help center
 */
-footer {
-    margin-top: auto;
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /*margin-top: auto;*/
     border: 2px solid black;
     display: flex;
     justify-content: space-between;
