@@ -26,6 +26,7 @@ nav {
 }
 .nav {
     border: 2px solid green;
+    background: white;
     display: flex;
     justify-content: space-between;
 }
@@ -54,13 +55,20 @@ nav {
 }
 .dashboard_container {
     width: 100%;
-    border: 2px solid lime;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid blue;
 }
 .dashboard_container ul{
     display: flex;
     border: 2px solid orange;
     justify-content: space-around;
     list-style: none;
+}
+.exit_dashboard {
+    margin: auto;
+    width: 20%;
 }
 
 
