@@ -17,15 +17,10 @@ USER = 'liveserver'
 PASSWORD = 'liveserver1'
 
 '''
-
 LIST
-
 '''
-
 '''
-
 FUNCTIONS
-
 '''
 # clears special characters from strings pulled from database
 def clear_str(value):
@@ -50,7 +45,6 @@ def clear_int(value):
             data = del_prefix
 
             return int(data)
-      
 
 # fecth data from database
 def fetch_data(sql_statement, data_source):
@@ -144,7 +138,6 @@ def user_registratoin():
 def validate_email():
 
             email = request.form['email']
-
             data = clear_int(fetch_data("select exists (select email from users where email=%s);", [email]))
             
             if data == 1:
@@ -229,11 +222,13 @@ def session_authenticator():
                   print('Failed to run "session_authenticator()" function')
 # application log
 def app_log(details):
+
       if session_authenticator() == True:
             session_id = session.get('id')
             user_id = clear_int(fetch_data('select id from users where session_id=%s', [session_id]))
             details = details
             insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
+
       elif session_authenticator() == False:
             user_id = 'Guest'
             details = details
@@ -241,20 +236,13 @@ def app_log(details):
       print( str(user_id) + str(details))
 
 '''
-
 get_residential function broken up into 3 parts:
 - get_street_address
 - get_town_city
 - get_postal_code
-
 '''
-
-# pulls approved items from db
-
 '''
-
 APPLICATION ROUTES
-
 '''
 # user profile
 @app.route('/user_information/')
@@ -367,6 +355,7 @@ def update_username():
       update_data("update users set username = %s where session_id = %s", [username, session_id])
 
       return user_profile()
+
 # update user surname
 @app.route('/update_surname/', methods=['POST','GET'])
 def update_surname():
@@ -377,6 +366,7 @@ def update_surname():
       update_data("update users set surname = %s where session_id = %s", [surname, session_id])
 
       return user_profile()
+
 # update residential address
 @app.route('/update_residential_address/', methods=['POST','GET'])
 def update_residental_address():
@@ -399,13 +389,13 @@ def update_residental_address():
 # update phone number
 @app.route('/update_phone/', methods=['POST','GET'])
 def update_phone():
-      
+
       phone = request.form['cel_number']
       session_id = session.get('id')
 
       update_data("update users set cell_no = %s where session_id = %s", [phone, session_id])
-
       return user_profile()
+
 # update email address
 @app.route('/update_email/', methods=['POST','GET'])
 def update_email():
@@ -414,7 +404,6 @@ def update_email():
       session_id = session.get('id')
 
       update_data("update users set email = %s where session_id = %s", [email, session_id])
-
       return user_profile()
 
 # user registration
@@ -469,6 +458,7 @@ def product_info():
       usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
       ex_type = clear_str((fetch_data('select type from listings where image=%s;', [product_name])))
       print(str(ex_type))
+      
       if ex_type == 'lease':
             return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data, lease=ex_type)
       
