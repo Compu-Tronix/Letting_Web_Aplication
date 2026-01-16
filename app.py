@@ -309,12 +309,12 @@ def list_item():
             number = random.randint(1, 1000000) + random.randint(1,1000000)
 
             filename = item_name + '_' + str(number) + str(len(description)) + str(len(item_name)) + '.jpg'
-            path = 'static/assets/img'
+            path = 'static/assets/product_img'
             img_file = Image.open(request.files['item_img'])
             img_file.save(f'{path}/{filename}')
             
-            backup_path = '/media/administrator/file storage/letting-rentals/listings'
-            img_file.save(f'{backup_path}/{filename}')
+            #backup_path = '/media/administrator/file storage/letting-rentals/listings'
+            #img_file.save(f'{backup_path}/{filename}')
             
             insert_data("insert into listings (user_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)", [user_id, item_name, description, filename, price])
       
