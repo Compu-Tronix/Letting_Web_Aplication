@@ -59,6 +59,18 @@
                     </form>
                 </div>
 
+                <btn class="" id="open-pending-activation">
+                    view pending activations
+                </btn>
+                <btn class="" id="open-actived">
+                    view actived
+                </btn>
+                <btn class="" id="open-history">
+                    view history
+                </btn>
+                <btn class="" id="clear">
+                    clear view
+                </btn>
             </div>
 
             <!-- 
@@ -79,7 +91,7 @@
                 </div>
 
                 <!-- active_listings_container -->
-                <div class="active_listings_container">
+                <div class="information-container" id="active-container">
                     <div class="dashboard_listing_text">
                         <h2>
                              Active
@@ -98,8 +110,8 @@
 
                     {% set img_value = directory + b %}
                     
-                    <div class="container">
-                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                    <div class="card-container">
+                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
                         <form action="/delete_product/" method="POST">
                             <div class="form_placeholder">
                                 <input type="text" value={{b}} name="product_name">
@@ -112,7 +124,7 @@
                 </div>
                 
                 <!-- pending_listings_container -->
-                <div class="pending_listings_container">
+                <div class="information-container" id="pending-activation-container">
                     <div class="dashboard_listing_text">
                         <h2>
                             Pending activation
@@ -131,8 +143,8 @@
 
                     {% set img_value = directory + b %}
 
-                    <div class="container">
-                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                    <div class="card-container">
+                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
                         <form action="/delete_product/" method="POST">
                             <div class="form_placeholder">
                                 <input type="text" value={{b}} name="product_name">
@@ -144,7 +156,7 @@
                      {% endfor %}
                 </div>
 
-                <div class="pending_listings_container">
+                <div class="information-container" id="denied-container">
                     <div class="dashboard_listing_text">
                         <h2>
                              Denied
@@ -164,7 +176,7 @@
                     {% set img_value = directory + b %}
 
                     <div class="container">
-                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
                         <form action="/delete_product/" method="POST">
                             <div class="form_placeholder">
                                 <input type="text" value={{b}} name="product_name">

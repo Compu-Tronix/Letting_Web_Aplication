@@ -136,7 +136,9 @@ body {
     height: 100vh;
 }
 
-
+.product-icon {
+    width: 5rem;
+}
 /*
 footer:
 -additiional documents

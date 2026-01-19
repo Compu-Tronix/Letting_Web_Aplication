@@ -56,11 +56,15 @@ user_listing_container:
 }
 
 /*pending_lidtings*/
-.pending_listings_container {
-    border: 2px solid blue;
+.information-container {
+    visibility: hidden;
 }
-.dashboard-img {
-    width: 5rem;
+.information-container.visible {
+    visibility: visible;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    border: 2px solid blue;
 }
 
 /*forms*/

@@ -53,9 +53,6 @@
     text-overflow: ellipsis;
 }
 
-.img {
-    width: 5rem;
-}
 .item-name-placeholder {
     position: absolute;
     width: 0;
