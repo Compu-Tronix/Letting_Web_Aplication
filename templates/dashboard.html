@@ -16,178 +16,127 @@
             -user_listing
 
         -->
-        <div class="body_container">
+<div class="body_container">
 
-            <!--
+    <!--
 
-                profile:
-                -user_profile_container
-                -listing_form
+        profile:
+        -user_profile_container
+        -listing_form
 
-            -->
-            <div class="profile">
+    -->
+    <div class="profile">
 
-                <!-- user_profile_container -->
-                <div class="user_profile_container">
-                    <div class="user_icon">
-                        <img src="" alt="user_icon" class="user_icon_img">
-                        <div class="available_funds">
-                            <p>
-                                placeholder
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="profile_values">
-                        <ul>
-                            <li>placeholder</li>
-                            <li>placeholder</li>
-                            <li>placeholder</li>
-                        </ul>
-                    </div>
-
-                </div>
-
-                <!-- listing_form -->
-                <div class="listing_form">
-                    <form action="/list_item/" method="POST" enctype="multipart/form-data">
-                        <input type="text" placeholder="name of item" name="item_name" required>
-                        <input type="text" placeholder="model description" name="model_description" required>
-                        <input type="number" placeholder="price per 24hrs" name="price" required>
-                        <input type="file" placeholder="upload item image" name="item_img" required>
-                        <input type="submit" value="upload">
-                    </form>
-                </div>
-
-                <btn class="" id="open-pending-activation">
-                    view pending activations
-                </btn>
-                <btn class="" id="open-actived">
-                    view actived
-                </btn>
-                <btn class="" id="open-history">
-                    view history
-                </btn>
-                <btn class="" id="clear">
-                    clear view
-                </btn>
-            </div>
-
-            <!-- 
-
-                user_listing_container:
-                -history_container
-                -active_listings_container
-                -pending_listings_container
-
-             -->
-            <div class="user_listing_container">
-
-                <!-- history_container -->
-                <div class="history_container">
-                    <div class="history_list_container">
-
-                    </div>
-                </div>
-
-                <!-- active_listings_container -->
-                <div class="information-container" id="active-container">
-                    <div class="dashboard_listing_text">
-                        <h2>
-                             Active
-                        </h2>
-                    </div>
-                    {% for approved_img in approved_img %}
-
-                    {% set x = approved_img|string %}
-
-                    {% set y = x.replace("(", "") %}
-                    {% set z = y.replace(")", "") %}
-                    {% set a = z.replace("'", "") %}
-                    {% set b = a.replace(",", "") %}
-
-                    {% set directory = 'assets/product_img/' %}
-
-                    {% set img_value = directory + b %}
-                    
-                    <div class="card-container">
-                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
-                        <form action="/delete_product/" method="POST">
-                            <div class="form_placeholder">
-                                <input type="text" value={{b}} name="product_name">
-                            </div>
-                            <input type="submit" value="delete">
-                        </form>
-                    </div>
-
-                     {% endfor %}
-                </div>
-                
-                <!-- pending_listings_container -->
-                <div class="information-container" id="pending-activation-container">
-                    <div class="dashboard_listing_text">
-                        <h2>
-                            Pending activation
-                        </h2>
-                    </div>
-                    {% for pending_img in pending_img %}
-
-                    {% set x = pending_img|string %}
-
-                    {% set y = x.replace("(", "") %}
-                    {% set z = y.replace(")", "") %}
-                    {% set a = z.replace("'", "") %}
-                    {% set b = a.replace(",", "") %}
-
-                    {% set directory = 'assets/product_img/' %}
-
-                    {% set img_value = directory + b %}
-
-                    <div class="card-container">
-                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
-                        <form action="/delete_product/" method="POST">
-                            <div class="form_placeholder">
-                                <input type="text" value={{b}} name="product_name">
-                            </div>
-                            <input type="submit" value="delete">
-                        </form>
-                    </div>
-
-                     {% endfor %}
-                </div>
-
-                <div class="information-container" id="denied-container">
-                    <div class="dashboard_listing_text">
-                        <h2>
-                             Denied
-                        </h2>
-                    </div>
-                    {% for denied_img in denied_img %}
-
-                    {% set x = denied_img|string %}
-
-                    {% set y = x.replace("(", "") %}
-                    {% set z = y.replace(")", "") %}
-                    {% set a = z.replace("'", "") %}
-                    {% set b = a.replace(",", "") %}
-
-                    {% set directory = 'assets/product_img/' %}
-
-                    {% set img_value = directory + b %}
-
-                    <div class="container">
-                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
-                        <form action="/delete_product/" method="POST">
-                            <div class="form_placeholder">
-                                <input type="text" value={{b}} name="product_name">
-                            </div>
-                            <input type="submit" value="delete">
-                        </form>
-                    </div>
-
-                     {% endfor %}
+        <!-- user_profile_container -->
+        <div class="user_profile_container">
+            <div class="user_icon">
+                <img src="" alt="user_icon" class="user_icon_img">
+                <div class="available_funds">
+                    <p>
+                        placeholder
+                    </p>
                 </div>
             </div>
+
+            <div class="profile_values">
+                <ul>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                </ul>
+            </div>
+
         </div>
+
+        <!-- listing_form -->
+        <div class="listing_form">
+            <form action="/list_item/" method="POST" enctype="multipart/form-data">
+                <input type="text" placeholder="name of item" name="item_name" required>
+                <input type="text" placeholder="model description" name="model_description" required>
+                <input type="number" placeholder="price per 24hrs" name="price" required>
+                <input type="file" placeholder="upload item image" name="item_img" required>
+                <input type="submit" value="upload">
+            </form>
+        </div>
+       
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='information' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="view information">
+        </form>
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='pending' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="view pending">
+        </form>
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='actived' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="view activated">
+        </form>
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='history' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="view history">
+        </form>
+        
+    </div>
+
+    <!-- 
+
+    user_listing_container:
+    -history_container
+    -active_listings_container
+    -pending_listings_container
+
+    -->
+    
+    <!-- information-container -->
+    <div class="information-container" id="pending-activation-container">
+        <div class="dashboard-title">
+            <h2>
+                {{ title }}
+            </h2>
+        </div>
+        <div class="product-card-container">
+        
+            {% for item_data in item_data %}
+
+            {% set x = item_data[0]|string %}
+
+            {% set y = x.replace("(", "") %}
+            {% set z = y.replace(")", "") %}
+            {% set a = z.replace("'", "") %}
+            {% set b = a.replace(",", "") %}
+
+            {% set directory = 'assets/product_img/' %}
+
+            {% set img_value = directory + b %}
+            
+            <div class="card-container">    
+                <div class="card-header">
+                    <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
+                </div>
+                <div class="card-body">    
+                    <p> {{ item_data[1] }} </p>
+                </div>
+                <div class="card-footer">
+                    <form action="/product/" method="POST">
+                        <div class="item-name-placeholder">
+                            <input type="text" value={{item_data[0]}} name="product_name" style="width: 0;">
+                        </div>
+                        <p> {{'R ' + item_data[2]|string }}</p>
+                        <input type="submit" value="more">
+                    </form>
+                </div> 
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

@@ -12,6 +12,7 @@ profile:
 .profile {
     border: 2px solid green;
     width: 25%;
+    max-height: 80%;
 }
 
 /*user_profile_container*/
@@ -39,32 +40,15 @@ user_listing_container:
 -active_listing_container
 -pending_listings_container
 */
-.user_listing_container {
-    border: 2px solid orange;
-    width: 75%;
+.dashboard-title {
+    margin: auto;
 }
-
-/*history_container*/
-.history_container {
-    border: 2px solid pink;
-    width: 80%;
-}
-
-/*active_listing_container*/
-.active_listings_container {
-    border: 2px solid orange;
-}
-
-/*pending_lidtings*/
 .information-container {
-    visibility: hidden;
-}
-.information-container.visible {
-    visibility: visible;
     display: flex;
-    flex-wrap: wrap;
-    overflow: auto;
-    border: 2px solid blue;
+    flex-direction: column;
+    background: red;
+    width: 70%;
+    max-height: 80vh;
 }
 
 /*forms*/

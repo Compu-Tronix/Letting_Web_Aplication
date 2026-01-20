@@ -506,5 +506,15 @@ def filter():
       remove_filter = 'remove-filter'
       return render_template ('app.html', item_data=item_data, usr_data=usr_data, remove_filter=remove_filter)
 
+#pending activation filter
+@app.route('/enable_dashboard_filter/', methods=['POST','GET'])
+def dashboard_filter():
+      catagory = request.form['catagory']
+      item_data = fetch_data('select image, item_name, price from listings where status=%s', [catagory])
+      session_id = session.get('id')
+      usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
+      return render_template ('dashboard.html', title=catagory, item_data=item_data, usr_data=usr_data,)
+      
+
 if __name__ == '__main__':
     app.run (debug = True, host='0.0.0.0')
