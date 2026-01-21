@@ -4,7 +4,42 @@
 
 // dashboard function
 function dashboard() {
-  document.getElementById('dashboard').innerHTML = '<ul> <li><a href="/dashboard/">User Dashboard</a></li> <li><a href="/user_information/">Information</a></li> <li><a href="/services/">Services</a></li> <li><a href="/real_estate/">Real estate</a></li> <li><a href="/notifications/">notification</a></li> <li> <a href="/logout/" >logout</a> </ul></ul> <button class="exit_dashboard" onclick="exit_dashboard(document.getElementById(\'dashboard\'))">X</button> '
+  document.getElementById('dashboard').innerHTML =
+   `<ul>
+      <li>
+        <a href="/dashboard/">
+          User Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/user_information/">
+          Information
+        </a>
+      </li> 
+      <li>
+        <a href="/services/">
+          Services
+        </a>
+      </li>
+      <li>
+        <a href="/real_estate/">
+          Real estate
+        </a>
+      </li>
+      <li>
+        <a href="/notifications/">
+          notification
+        </a>
+      </li>
+      <li>
+        <a href="/logout/" >
+          logout
+        </a> 
+      </li>
+    </ul>
+      <button class="exit_dashboard" onclick="exit_dashboard(document.getElementById(\'dashboard\'))">
+        X
+      </button>`
 }
 
 //exit dashboard function

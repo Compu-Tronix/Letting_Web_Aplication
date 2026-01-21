@@ -244,24 +244,6 @@ get_residential function broken up into 3 parts:
 '''
 APPLICATION ROUTES
 '''
-# user profile
-@app.route('/user_information/')
-def user_profile():
-      
-      if session_authenticator() == True:
-            session_id = session.get('id')
-            usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
-            #usr_icon = fetch_data('select user_icon from users where session_id=%s', session_id)
-
-            return render_template('information.html', usr_data=usr_data, )
-      
-      elif session_authenticator() == False:
-            return main()
-
-      else:
-            print('Failed to run "user_proile()" function')
-            return main()
-
 '''
 user dashboard
 {
@@ -284,7 +266,7 @@ def user_dashboard():
             approved_img = fetch_data('select image from listings where user_id=%s and status="approved"', [user_id])
             # denied items
             denied_img = fetch_data('select image from listings where user_id=%s and status="denied"', [user_id])
-            return render_template('dashboard.html', usr_data=usr_data, pending_img=pending_img, approved_img=approved_img, denied_img=denied_img)
+            return render_template('dashboard.html')
 
       elif session_authenticator() == False:
             return main()
@@ -499,21 +481,43 @@ def main():
 # item catagory filter 
 @app.route('/enable_filter/', methods=['POST','GET'])
 def filter():
-      catagory = request.form['catagory']
-      item_data = fetch_data('select image, item_name, price from listings where status=%s and catagory=%s', ['approved',catagory])
-      session_id = session.get('id')
-      usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
-      remove_filter = 'remove-filter'
-      return render_template ('app.html', item_data=item_data, usr_data=usr_data, remove_filter=remove_filter)
+      if session_authenticator() == True:
+            catagory = request.form['catagory']
+            item_data = fetch_data('select image, item_name, price from listings where status=%s and catagory=%s', ['approved',catagory])
+            session_id = session.get('id')
+            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
+            remove_filter = 'remove-filter'
+            return render_template ('app.html', item_data=item_data, usr_data=usr_data, remove_filter=remove_filter)
+      
+      elif session_authenticator() == False:
+            return main()
+      
+      else:
+            print('in-app filter failed')
+            return main()
 
 #pending activation filter
 @app.route('/enable_dashboard_filter/', methods=['POST','GET'])
 def dashboard_filter():
-      catagory = request.form['catagory']
-      item_data = fetch_data('select image, item_name, price from listings where status=%s', [catagory])
-      session_id = session.get('id')
-      usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
-      return render_template ('dashboard.html', title=catagory, item_data=item_data, usr_data=usr_data,)
+      if session_authenticator() == True:
+            catagory = request.form['catagory']
+            item_data = fetch_data('select image, item_name, price from listings where status=%s', [catagory])
+            session_id = session.get('id')
+            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
+
+            if catagory == 'information' or '':
+                  usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
+                  return render_template('information.html', usr_data=usr_data, title=catagory)
+
+            else:
+                  return render_template ('dashboard.html', title=catagory, item_data=item_data, usr_data=usr_data,)
+      
+      elif session_authenticator() == False:
+            return main()
+
+      else:
+            print('dashboard_filter function failed')
+            return main()
       
 
 if __name__ == '__main__':

@@ -1,134 +1,219 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/information.css')}}">
-<script src="{{url_for('static', filename='scripts/information.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/dashboard.css')}}">
+<script src="{{url_for('static', filename='scripts/dashboard.js')}}"></script>
 <title>Information</title>
 {% endblock %}
 
 
 {% block body %}
 <div class="body_container">
-    <div class="user_information">
-        <div>
-            {% for usr_data in usr_data %}
 
-                {% set directory = 'assets/img/' %}
+    <!--
 
-                {% set img_value = directory + usr_data[0] %}
-                
-                <div class="container">
-                    <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+        profile:
+        -user_profile_container
+        -listing_form
+
+    -->
+    <div class="profile">
+
+        <!-- user_profile_container -->
+        <div class="user_profile_container">
+            <div class="user_icon">
+                <img src="" alt="user_icon" class="user_icon_img">
+                <div class="available_funds">
+                    <p>
+                        placeholder
+                    </p>
                 </div>
-            {% endfor %}
+            </div>
+
+            <div class="profile_values">
+                <ul>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                    <li>placeholder</li>
+                </ul>
+            </div>
+
         </div>
-        <div>    
-            <!--
-            username
-            -->
-            <span>
-                <p>
-                    username: 
-                    {% for usr_data in usr_data %}
-                    {{ usr_data[1] }}
-                    {% endfor %}
-                </p>
-                <a href="javascript:void(0)" id="edit_username"><img src="" alt="edit" class="edit"></a>
-                <div class="input_username">
-                    <form action="/update_username/" method="POST">
-                        <input type="text" placeholder=" update name" name="username" required>
-                        <input type="submit" value="update">
-                        <button id="cancel_username_update">cancel</button>
-                    </form>
-                </div>
-            </span>
-            <!--
-            surname
-            -->
-            <span>
-                <p>
-                    surname:
-                    {% for usr_data in usr_data %}
-                    {{ usr_data[2] }}
-                    {% endfor %}
-                </p>
-                <a href="javascript:void(0)" id="edit_surname"><img src="" alt="edit" class="edit_data"></a>
-                <div class="input_surname">
-                    <form action="/update_surname/" method="POST">
-                        <input type="text" placeholder="update surname" name="surname" required>
-                        <input type="submit" value="update">
-                        <button id="cancel_surname_update">cancel</button>
-                    </form>
-                </div>
-            </span>
-            <!--
-            email address
-            -->
-            <span>
-                <p>
-                    email address:
-                    {% for usr_data in usr_data %}
-                    {{ usr_data[3] }}
-                    {% endfor %}
-                </p>
-                <a href="javascript:void(0)" id="edit_email_address"><img src="" alt="edit" class="edit_data"></a>
-                <div class="input_email_address">
-                    <form action="/update_email/" method="POST">
-                        <input type="email" placeholder="update email address" name="email_address" required>
-                        <input type="submit" value="update">
-                        <button id="cancel_email_address_update">cancel</button>
-                    </form>
-                </div>
-            </span>
-            <!--
-            residential address
-            -->
-            <span>
-                <p>
-                    residential address:
-                    <br>
-                    {% for usr_data in usr_data %}
-                    {{ usr_data[6] }}
-                    <br>
-                    {{ usr_data[7] }}
-                    <br>
-                    {{ usr_data[5] }}
-                    {% endfor %}
-                </p>
-                <a href="javascript:void(0)" id="edit_residential_address"><img src="" alt="edit" class="edit_data"></a>
-                <div class="input_residential_address">
-                    <form action="" method="POST" enctype="multipart/form-data">
-                        <input type="text" placeholder="street" name="street_address" required>
-                        <input type="text" placeholder="town/city" name="town_city" required>
-                        <input type="text" placeholder="postal code" name="postal_code" required>
-                        <input type="file" name="proof_of_residence" required>
-                        <input type="submit" value="update">
-                        <button id="cancel_residential_address_update">cancel</button>
-                    </form>
-                </div>
-            </span> 
-            <!--
-            phone number
-            -->
-            <span>
-                <p>
-                    phone number:
-                    {% for usr_data in usr_data %}
-                    {{ usr_data[4] }}
-                    {% endfor %}
-                </p>
-                <a href="javascript:void(0)" id="edit_phone_number"><img src="" alt="edit" class="edit_data"></a>
-                <div class="input_phone_number">
-                    <form action="/update_phone/" method="POST">
-                        <input type="text" placeholder="update phone number" name="cel_number" required>
-                        <input type="submit" value="update">
-                        <button id="cancel_phone_number_update">cancel</button>
-                    </form>
-                </div>
-            </span>
+
+        <!-- listing_form -->
+        <div class="listing_form">
+            <form action="/list_item/" method="POST" enctype="multipart/form-data">
+                <input type="text" placeholder="name of item" name="item_name" required>
+                <input type="text" placeholder="model description" name="model_description" required>
+                <input type="number" placeholder="price per 24hrs" name="price" required>
+                <input type="file" placeholder="upload item image" name="item_img" required>
+                <input type="submit" value="upload">
+            </form>
         </div>
-            
        
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='information' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="view information">
+        </form>
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='pending' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="view pending">
+        </form>
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='actived' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="view activated">
+        </form>
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='history' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="view history">
+        </form>
+        
+    </div>
+
+    <!-- 
+
+    user_listing_container:
+    -history_container
+    -active_listings_container
+    -pending_listings_container
+
+    -->
+    
+    <!-- information-container -->
+    <div class="information-container" id="information-container">
+        <div class="dashboard-title">
+                <h2>
+                    {{ title }}
+                </h2>
+            </div>
+        <div class="product-card-container">
+            
+            <div>
+                {% for usr_data in usr_data %}
+
+                    {% set directory = 'assets/img/' %}
+
+                    {% set img_value = directory + usr_data[0] %}
+                    
+                    <div class="container">
+                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                    </div>
+                {% endfor %}
+            </div>
+            <div>    
+                <!--
+                username
+                -->
+                <span>
+                    <p>
+                        username: 
+                        {% for usr_data in usr_data %}
+                        {{ usr_data[1] }}
+                        {% endfor %}
+                    </p>
+                    <a href="javascript:void(0)" id="edit_username"><img src="" alt="edit" class="edit"></a>
+                    <div class="input_username">
+                        <form action="/update_username/" method="POST">
+                            <input type="text" placeholder=" update name" name="username" required>
+                            <input type="submit" value="update">
+                            <button id="cancel_username_update">cancel</button>
+                        </form>
+                    </div>
+                </span>
+                <!--
+                surname
+                -->
+                <span>
+                    <p>
+                        surname:
+                        {% for usr_data in usr_data %}
+                        {{ usr_data[2] }}
+                        {% endfor %}
+                    </p>
+                    <a href="javascript:void(0)" id="edit_surname"><img src="" alt="edit" class="edit_data"></a>
+                    <div class="input_surname">
+                        <form action="/update_surname/" method="POST">
+                            <input type="text" placeholder="update surname" name="surname" required>
+                            <input type="submit" value="update">
+                            <button id="cancel_surname_update">cancel</button>
+                        </form>
+                    </div>
+                </span>
+                <!--
+                email address
+                -->
+                <span>
+                    <p>
+                        email address:
+                        {% for usr_data in usr_data %}
+                        {{ usr_data[3] }}
+                        {% endfor %}
+                    </p>
+                    <a href="javascript:void(0)" id="edit_email_address"><img src="" alt="edit" class="edit_data"></a>
+                    <div class="input_email_address">
+                        <form action="/update_email/" method="POST">
+                            <input type="email" placeholder="update email address" name="email_address" required>
+                            <input type="submit" value="update">
+                            <button id="cancel_email_address_update">cancel</button>
+                        </form>
+                    </div>
+                </span>
+                <!--
+                residential address
+                -->
+                <span>
+                    <p>
+                        residential address:
+                        <br>
+                        {% for usr_data in usr_data %}
+                        {{ usr_data[6] }}
+                        <br>
+                        {{ usr_data[7] }}
+                        <br>
+                        {{ usr_data[5] }}
+                        {% endfor %}
+                    </p>
+                    <a href="javascript:void(0)" id="edit_residential_address"><img src="" alt="edit" class="edit_data"></a>
+                    <div class="input_residential_address">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <input type="text" placeholder="street" name="street_address" required>
+                            <input type="text" placeholder="town/city" name="town_city" required>
+                            <input type="text" placeholder="postal code" name="postal_code" required>
+                            <input type="file" name="proof_of_residence" required>
+                            <input type="submit" value="update">
+                            <button id="cancel_residential_address_update">cancel</button>
+                        </form>
+                    </div>
+                </span> 
+                <!--
+                phone number
+                -->
+                <span>
+                    <p>
+                        phone number:
+                        {% for usr_data in usr_data %}
+                        {{ usr_data[4] }}
+                        {% endfor %}
+                    </p>
+                    <a href="javascript:void(0)" id="edit_phone_number"><img src="" alt="edit" class="edit_data"></a>
+                    <div class="input_phone_number">
+                        <form action="/update_phone/" method="POST">
+                            <input type="text" placeholder="update phone number" name="cel_number" required>
+                            <input type="submit" value="update">
+                            <button id="cancel_phone_number_update">cancel</button>
+                        </form>
+                    </div>
+                </span>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
