@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from tabulate import tabulate
 from PIL import Image
 import random
@@ -412,7 +412,7 @@ def login():
         
         if user_authentication() == True:
             app_log('logged in')
-            return main()
+            return redirect(url_for('main'))
         
         elif user_authentication() == False:
             app_log('logged out')
@@ -449,34 +449,6 @@ def product_info():
       
       elif ex_type == 'not specified':
             return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data, error=ex_type)
-
-# application start
-@app.route('/', methods = ['POST','GET'])
-def main():
-
-      if session_authenticator() == True:
-
-            item_data = fetch_data('select image, item_name, price from listings where status=%s', ['approved'] )
-            session_id = session.get('id')
-            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
-            print('session authentication success')
-            return render_template ('app.html', item_data=item_data, usr_data=usr_data)
-      
-      elif session_authenticator() == False:
-            def get_ip():
-                  ip_address = request.remote_addr
-                  return f'{ip_address}'
-            user_id = str(get_ip())
-            details = 'interaction initiated'
-            insert_data('insert into log (user_id, details) values (%s,%s)', [user_id, details])
-            usr_data = [('default.jpg'),]
-            print('no session exists')
-            return render_template ('index.html', usr_data=usr_data)
-      
-      else:
-            login = 'login'
-            print('failed to start app: session authenticator did not return true or false')
-            return render_template('index.html', login=login)
 
 # item catagory filter 
 @app.route('/enable_filter/', methods=['POST','GET'])
@@ -518,7 +490,35 @@ def dashboard_filter():
       else:
             print('dashboard_filter function failed')
             return main()
+
+# application start
+@app.route('/', methods = ['GET'])
+def main():
+
+      if session_authenticator() == True:
+
+            item_data = fetch_data('select image, item_name, price from listings where status=%s', ['approved'] )
+            session_id = session.get('id')
+            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
+            print('session authentication success')
+            return render_template ('app.html', item_data=item_data, usr_data=usr_data)
       
+      elif session_authenticator() == False:
+            def get_ip():
+                  ip_address = request.remote_addr
+                  return f'{ip_address}'
+            user_id = str(get_ip())
+            details = 'interaction initiated'
+            insert_data('insert into log (user_id, details) values (%s,%s)', [user_id, details])
+            usr_data = [('default.jpg'),]
+            print('no session exists')
+            return render_template ('index.html', usr_data=usr_data)
+      
+      else:
+            login = 'login'
+            print('failed to start app: session authenticator did not return true or false')
+            return render_template('index.html', login=login)
+
 
 if __name__ == '__main__':
     app.run (debug = True, host='0.0.0.0')
