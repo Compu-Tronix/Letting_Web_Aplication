@@ -408,20 +408,18 @@ def register():
 # user login
 @app.route('/login/',methods=['POST','GET'])
 def login():
-    if request.method == 'POST':
-        
-        if user_authentication() == True:
+      if user_authentication() == True:
             app_log('logged in')
             return redirect(url_for('main'))
-        
-        elif user_authentication() == False:
+      
+      elif user_authentication() == False:
             app_log('logged out')
             print('user login failed')
             return logout()
 
-        else:
-              print('login function error')
-              return main()
+      else:
+            print('login function error')
+            return main()
 
 # user logout
 @app.route('/logout/')
