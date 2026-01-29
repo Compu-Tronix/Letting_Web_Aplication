@@ -2,6 +2,7 @@ import mysql.connector
 from flask import Flask, render_template, request, redirect, session, url_for
 from tabulate import tabulate
 from PIL import Image
+import json
 import random
 import os
 
@@ -476,11 +477,13 @@ def dashboard_filter():
             #usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
 
             usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
-            #return render_template('information.html', usr_data=usr_data, title=catagory)
-            
-            return redirect(url_for('dashboard_filter_enabled', catagory=catagory, usr_data=usr_data, item_data=item_data))
+            usr_data_str = json.dumps(usr_data)
+            print('USER DATA STRING: ' + str(usr_data_str))
+            #return render_template('information.html', user_data=usr_data, title=catagory)
+            print('THIS IS THE FIRST USER DATA: ' + str(usr_data))
+            return redirect(url_for('dashboard_filter_enabled', catagory=catagory, user_data_str=usr_data_str, item_data=item_data))
             #else:
-                  #return render_template ('dashboard.html', title=catagory, item_data=item_data, usr_data=usr_data,)
+            #return render_template ('dashboard.html', title=catagory, item_data=item_data, usr_data=usr_data,)
       
       elif session_authenticator() == False:
             return main()
@@ -491,9 +494,10 @@ def dashboard_filter():
 @app.route('/dashboard_filter_enabled/')#, methods=['GET'])
 def dashboard_filter_enabled():
       catagory = request.args.get('catagory')
-      user_data = request.args.get('usr_data')
+      user_data_str = request.args.get('user_data_str')
       item_data = request.args.get('item_data')
-      
+      user_data = json.loads(user_data_str) if user_data_str else []
+      print ('THIS IS THE SECOND USER DATA: ' + str(user_data))
       if catagory == 'information':
             return render_template('information.html', title=catagory, user_data=user_data)
       else:
