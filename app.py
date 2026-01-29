@@ -470,17 +470,17 @@ def filter():
 @app.route('/enable_dashboard_filter/', methods=['POST','GET'])
 def dashboard_filter():
       if session_authenticator() == True:
-            catagory = request.form['catagory']
+            catagory = request.form.get('catagory')
             item_data = fetch_data('select image, item_name, price from listings where status=%s', [catagory])
             session_id = session.get('id')
-            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
+            #usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
 
-            if catagory == 'information' or '':
-                  usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
-                  return render_template('information.html', usr_data=usr_data, title=catagory)
-
-            else:
-                  return render_template ('dashboard.html', title=catagory, item_data=item_data, usr_data=usr_data,)
+            usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
+            #return render_template('information.html', usr_data=usr_data, title=catagory)
+            
+            return redirect(url_for('dashboard_filter_enabled', catagory=catagory, usr_data=usr_data, item_data=item_data))
+            #else:
+                  #return render_template ('dashboard.html', title=catagory, item_data=item_data, usr_data=usr_data,)
       
       elif session_authenticator() == False:
             return main()
@@ -488,7 +488,16 @@ def dashboard_filter():
       else:
             print('dashboard_filter function failed')
             return main()
-
+@app.route('/dashboard_filter_enabled/')#, methods=['GET'])
+def dashboard_filter_enabled():
+      catagory = request.args.get('catagory')
+      user_data = request.args.get('usr_data')
+      item_data = request.args.get('item_data')
+      
+      if catagory == 'information':
+            return render_template('information.html', title=catagory, user_data=user_data)
+      else:
+            return render_template ('dashboard.html', title=catagory, item_data=item_data, usr_data=usr_data,)
 # application start
 @app.route('/', methods = ['GET'])
 def main():

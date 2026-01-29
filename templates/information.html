@@ -115,8 +115,8 @@
                 <span>
                     <p>
                         username: 
-                        {% for usr_data in usr_data %}
-                        {{ usr_data[1] }}
+                        {% for user_data in user_data %}
+                        {{ user_data[1] }}
                         {% endfor %}
                     </p>
                     <a href="javascript:void(0)" id="edit_username"><img src="" alt="edit" class="edit"></a>
@@ -134,8 +134,8 @@
                 <span>
                     <p>
                         surname:
-                        {% for usr_data in usr_data %}
-                        {{ usr_data[2] }}
+                        {% for user_data in user_data %}
+                        {{ user_data[2] }}
                         {% endfor %}
                     </p>
                     <a href="javascript:void(0)" id="edit_surname"><img src="" alt="edit" class="edit_data"></a>
@@ -153,8 +153,8 @@
                 <span>
                     <p>
                         email address:
-                        {% for usr_data in usr_data %}
-                        {{ usr_data[3] }}
+                        {% for user_data in user_data %}
+                        {{ user_data[3] }}
                         {% endfor %}
                     </p>
                     <a href="javascript:void(0)" id="edit_email_address"><img src="" alt="edit" class="edit_data"></a>
@@ -173,12 +173,12 @@
                     <p>
                         residential address:
                         <br>
-                        {% for usr_data in usr_data %}
-                        {{ usr_data[6] }}
+                        {% for user_data in user_data %}
+                        {{ user_data[6] }}
                         <br>
-                        {{ usr_data[7] }}
+                        {{ user_data[7] }}
                         <br>
-                        {{ usr_data[5] }}
+                        {{ user_data[5] }}
                         {% endfor %}
                     </p>
                     <a href="javascript:void(0)" id="edit_residential_address"><img src="" alt="edit" class="edit_data"></a>
@@ -199,8 +199,8 @@
                 <span>
                     <p>
                         phone number:
-                        {% for usr_data in usr_data %}
-                        {{ usr_data[4] }}
+                        {% for user_data in user_data %}
+                        {{ user_data[4] }}
                         {% endfor %}
                     </p>
                     <a href="javascript:void(0)" id="edit_phone_number"><img src="" alt="edit" class="edit_data"></a>
