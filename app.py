@@ -347,25 +347,7 @@ def update_email():
       update_data("update users set email = %s where session_id = %s", [email, session_id])
       return user_profile()
 
-# register new users
-def user_registratoin():
-      # pass user registation form data to variables
-      username = request.form['username']
-      email = request.form['email']
-      password = request.form['password']
-      confirm_password = request.form['confirm_password']
-      # validate password entry to confirm user account registration
-      if password == confirm_password:
-            
-            set_session()
-            details = username + ': registered'
-            app_log(details)
-            print(details)
-            return main()
-      else:
-            print('passwords do not match')
-
-# user registration
+#new user registration
 @app.route('/register/', methods=['POST', 'GET'])
 def register():
       # get user registration form data
@@ -390,7 +372,6 @@ def register():
       else:
             print('passwords do not match')
             return redirect(url_for('main'))
-
 
 # Product information
 @app.route('/product/', methods=['POST','GET'])
