@@ -432,29 +432,14 @@ def logout():
 # Product information
 @app.route('/product/', methods=['POST','GET'])
 def product_info():
-      product_name = request.form['product_name']
-      print('this is product name:'+str(product_name))
-      item_data = fetch_data('select item_name, verification, description, price from listings where image=%s', [product_name] )
-      session_id = session.get('id')
-      usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
-      ex_type = clear_str((fetch_data('select type from listings where image=%s;', [product_name])))
-      print(str(ex_type))
-      
-      if ex_type == 'lease':
-            return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data, lease=ex_type)
-      
-      elif ex_type == 'purchase':
-            return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data, purchase=ex_type)
-      
-      elif ex_type == 'not specified':
-            return render_template('product.html', usr_data=usr_data, product_name=product_name, item_data=item_data, error=ex_type)
-
       if session_authenticator() == True:
-            catagory = request.form['catagory']
-            session_id = session.get('id')
-            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
-            remove_filter = 'remove-filter'
-            return render_template ('app.html', item_data=item_data, usr_data=usr_data, remove_filter=remove_filter)
+            #get product name from form
+            product_name = request.form['product_name']
+            #get product data from db
+            product_data = fetch_data('select item_name, verification, description, price, type from listings where image=%s', [product_name] )
+            #serialize product_data to json string
+            product_data_str = json.dumps(product_data)
+            return redirect(url_for ('product_infomation', product_data_str=product_data_str, product_name=product_name))
       
       elif session_authenticator() == False:
             return main()
@@ -462,8 +447,17 @@ def product_info():
       else:
             print('in-app filter failed')
             return main()
-
-#user dashboard
+#product information redirect
+@app.route('/product_info/')
+def product_infomation():
+      product_name = request.args.get('product_name')
+      product_data_str = request.args.get('product_data_str')
+      #deserialize json stirng back to python list
+      product_data = json.loads(product_data_str)
+      print('THIS IS TH EPRODUCT NAME: ' + str(product_name))
+      #render product.html with product data
+      return render_template('product.html', item_data=product_data, product_name=product_name)
+#user dashboard & filters
 @app.route('/enable_dashboard_filter/', methods=['POST','GET'])
 def dashboard_filter():
       if session_authenticator() == True:
@@ -496,7 +490,7 @@ def dashboard_filter():
       else:
             print('dashboard_filter function failed')
             return main()
-#user dashboard redirect   
+#user dashboard & filters redirect   
 @app.route('/dashboard_filter_enabled/')
 def dashboard_filter_enabled():
       catagory = request.args.get('catagory')

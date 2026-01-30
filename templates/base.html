@@ -33,16 +33,9 @@
 
             <!-- dashboard -->
             <span class="dashboard">
-                
-                    {% for usr_data in usr_data %}
-                    {% set directory = 'assets/img/' %}
-
-                    {% set img_value = directory + usr_data[0] %}
-                    <a href="javascript:void(0)" onclick="dashboard(document.getElementById('dashboard'))">
-                        <img src="{{ url_for('static', filename='/assets/icons/user-acc-icon.png') }}" alt="Image Upload Display" class="dashboard-img">
-                    </a>
-                    {% endfor %}
-               
+                <a href="javascript:void(0)" onclick="dashboard(document.getElementById('dashboard'))">
+                    <img src="{{ url_for('static', filename='assets/icons/user-acc-icon.png') }}" alt="Image Upload Display" class="dashboard-img">
+                </a>
             </span>
             {% for login in login %}
                 <!-- user access & user registration function -->

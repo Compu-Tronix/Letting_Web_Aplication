@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>letting App</title>
+<title>{{item_data[0]}}</title>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/product.css')}}">
 {% endblock %}
 
 {% block body %}
 <div class="container">
     <div class="productImgContainer">
-        {% set product_name = 'assets/img/'+ product_name %}
+        {% set product_name = 'assets/img/'+ product_name|string %}
         <img src="{{url_for('static', filename=product_name)}}" class="img">
     </div>
     <div class="productInfoContainer">
