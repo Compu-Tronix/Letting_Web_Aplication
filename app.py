@@ -17,12 +17,6 @@ DATABASE = 'letting'
 USER = 'liveserver'
 PASSWORD = 'liveserver1'
 
-'''
-LIST
-'''
-'''
-FUNCTIONS
-'''
 # clears special characters from strings pulled from database
 def clear_str(value):
       x = str(value)
@@ -117,29 +111,12 @@ def delete_data(sql_statement, data_source):
       db_connection.commit()
       cursor.close      
 
-# register new users
-def user_registratoin():
-      # pass user registation form data to variables
-      username = request.form['username']
-      email = request.form['email']
-      password = request.form['password']
-      confirm_password = request.form['confirm_password']
-      # validate password entry to confirm user account registration
-      if password == confirm_password:
-            insert_data("insert into users (username, email, password) values (%s, %s,%s)", [username, email, password])
-            set_session()
-            details = username + ': registered'
-            app_log(details)
-            print(details)
-            return main()
-      else:
-            print('passwords do not match')
 
 # validates email address to verify user account existance on the database or if email address is linked to another user
 def validate_email():
 
             email = request.form['email']
-            data = clear_int(fetch_data("select exists (select email from users where email=%s);", [email]))
+            
             
             if data == 1:
                   print(str(email) + ': address exists')
@@ -152,25 +129,6 @@ def validate_email():
             else:
                   print('Failed to run "validate_email" function')
 
-# authenticates user username and password upon login 
-def user_authentication():
-      #pass login form data to variables
-      username = request.form['username']
-      password = request.form['password']
-      # accesss database to complete user authentication
-      data = clear_int(fetch_data("select exists (select * from users where username=%s and password=%s);", [username, password]))
-      
-      if data == 1:
-            set_session()
-            print('user match found')
-            return True
-
-      elif data == 0:
-            print('user match not found')
-            return False
-      
-      else:
-            print('Failed to run "user_authentication()" function')
 
 # initiates session upon successful login
 def set_session():
@@ -389,45 +347,50 @@ def update_email():
       update_data("update users set email = %s where session_id = %s", [email, session_id])
       return user_profile()
 
+# register new users
+def user_registratoin():
+      # pass user registation form data to variables
+      username = request.form['username']
+      email = request.form['email']
+      password = request.form['password']
+      confirm_password = request.form['confirm_password']
+      # validate password entry to confirm user account registration
+      if password == confirm_password:
+            
+            set_session()
+            details = username + ': registered'
+            app_log(details)
+            print(details)
+            return main()
+      else:
+            print('passwords do not match')
+
 # user registration
 @app.route('/register/', methods=['POST', 'GET'])
 def register():
-            
-            if request.method == 'POST':
+      # get user registration form data
+      username = request.form['username']
+      email = request.form['email']
+      password = request.form['password']
+      confirm_password = request.form['confirm_password']
+      # validate password entry to confirm user account registration
+      if password == confirm_password:
+                  # check if email address already exists on database
+                  if clear_int(fetch_data("select exists (select email from users where email=%s);", [email])) == 0:
+                        insert_data("insert into users (username, email, password) values (%s, %s,%s);", [username, email, password])
+                        app_log(username + ': registered')
+                        return redirect(url_for('main'))
                   
-                  if validate_email() == True:
-                        print('email address belongs to a user that already exsits')
-                        return main()
-
-                  elif validate_email() == False:
-                        user_registratoin()
-                        return main()
+                  elif clear_int(fetch_data("select exists (select email from users where email=%s);", [email])) == 1:
+                        return redirect(url_for('main'))
                   
                   else:
                         print('register function error')
-
-# user login
-@app.route('/login/',methods=['POST','GET'])
-def login():
-      if user_authentication() == True:
-            app_log('logged in')
-            return redirect(url_for('main'))
-      
-      elif user_authentication() == False:
-            app_log('logged out')
-            print('user login failed')
-            return logout()
-
+                        return redirect(url_for('main'))
       else:
-            print('login function error')
-            return main()
+            print('passwords do not match')
+            return redirect(url_for('main'))
 
-# user logout
-@app.route('/logout/')
-def logout():
-      session.clear()
-      print('user logged off')
-      return main()
 
 # Product information
 @app.route('/product/', methods=['POST','GET'])
@@ -454,9 +417,9 @@ def product_infomation():
       product_data_str = request.args.get('product_data_str')
       #deserialize json stirng back to python list
       product_data = json.loads(product_data_str)
-      print('THIS IS TH EPRODUCT NAME: ' + str(product_name))
       #render product.html with product data
       return render_template('product.html', item_data=product_data, product_name=product_name)
+
 #user dashboard & filters
 @app.route('/enable_dashboard_filter/', methods=['POST','GET'])
 def dashboard_filter():
@@ -513,6 +476,34 @@ def dashboard_filter_enabled():
      
       return render_template ('dashboard.html', title=catagory, item_data=item_data, user_data=user_data,)
 
+#user login/logout
+# user logout
+@app.route('/logout/')
+def logout():
+      session.clear()
+      print('user logged off')
+      return redirect(url_for('main'))
+# user login
+@app.route('/login/',methods=['POST','GET'])
+def login():
+      #get data from login form
+      username = request.form['username']
+      password = request.form['password']
+      #validate user login credentials
+      if clear_int(fetch_data("select exists (select * from users where username=%s and password=%s);", [username, password])) == 1:
+            set_session()
+            app_log('logged in')
+            return redirect(url_for('main'))
+      
+      elif clear_int(fetch_data("select exists (select * from users where username=%s and password=%s);", [username, password])) == 0:
+            app_log('logged out')
+            print('user login failed')
+            return redirect(url_for('main'))
+
+      else:
+            print('login function error')
+            return redirect(url_for('main'))
+
 # application start
 @app.route('/', methods = ['GET'])
 def main():
@@ -539,7 +530,6 @@ def main():
             login = 'login'
             print('failed to start app: session authenticator did not return true or false')
             return render_template('index.html', login=login)
-
 
 if __name__ == '__main__':
     app.run (debug = True, host='0.0.0.0')
