@@ -140,8 +140,9 @@
                     </p>
                     <a href="javascript:void(0)" id="edit_surname"><img src="" alt="edit" class="edit_data"></a>
                     <div class="input_surname">
-                        <form action="/update_surname/" method="POST">
-                            <input type="text" placeholder="update surname" name="surname" required>
+                        <form action="/update_user_information/" method="POST">
+                            <input type="text" placeholder="update surname" name="user_data_value" required>
+                            <input type="hidden" name="user_data_type" value="surname">
                             <input type="submit" value="update">
                             <button id="cancel_surname_update">cancel</button>
                         </form>
@@ -159,8 +160,9 @@
                     </p>
                     <a href="javascript:void(0)" id="edit_email_address"><img src="" alt="edit" class="edit_data"></a>
                     <div class="input_email_address">
-                        <form action="/update_email/" method="POST">
-                            <input type="email" placeholder="update email address" name="email_address" required>
+                        <form action="/update_user_information/" method="POST">
+                            <input type="email" placeholder="email" name="user_data_value" required>
+                            <input type="hidden" name="user_data_type" value="email">
                             <input type="submit" value="update">
                             <button id="cancel_email_address_update">cancel</button>
                         </form>
@@ -183,10 +185,11 @@
                     </p>
                     <a href="javascript:void(0)" id="edit_residential_address"><img src="" alt="edit" class="edit_data"></a>
                     <div class="input_residential_address">
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <input type="text" placeholder="street" name="street_address" required>
-                            <input type="text" placeholder="town/city" name="town_city" required>
-                            <input type="text" placeholder="postal code" name="postal_code" required>
+                        <form action="/update_user_information/" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="user_data_type" value="address">
+                            <input type="text" placeholder="street" name="street_value" required>
+                            <input type="text" placeholder="town/city" name="town_value" required>
+                            <input type="text" placeholder="postal code" name="code_value" required>
                             <input type="file" name="proof_of_residence" required>
                             <input type="submit" value="update">
                             <button id="cancel_residential_address_update">cancel</button>

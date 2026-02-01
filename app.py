@@ -111,25 +111,6 @@ def delete_data(sql_statement, data_source):
       db_connection.commit()
       cursor.close      
 
-
-# validates email address to verify user account existance on the database or if email address is linked to another user
-def validate_email():
-
-            email = request.form['email']
-            
-            
-            if data == 1:
-                  print(str(email) + ': address exists')
-                  return True
-
-            elif data == 0:
-                  print(str(email) + ': address does not exist')
-                  return False
-            
-            else:
-                  print('Failed to run "validate_email" function')
-
-
 # initiates session upon successful login
 def set_session():
       def fetch_count():
@@ -346,7 +327,49 @@ def update_email():
 
       update_data("update users set email = %s where session_id = %s", [email, session_id])
       return user_profile()
-
+# update email address
+@app.route('/update_user_information/', methods=['POST','GET'])
+def update_user_infomation():
+      if session_authenticator() == True:
+            #get user data from form
+            user_data_type = request.form['user_data_type']
+            user_data_value = request.form['user_data_value']
+            session_id = session.get('id')
+            #construct sql statement to update user data
+            if user_data_type == 'address':
+                  street = request.form['street_value']
+                  town = request.form['town_value']
+                  code = request.form['code_value']
+                  sql_stament = "update users set street_address=%s, town_city=%s, postal_code=%s where session_id=%s;"
+                  #update user data on database
+                  update_data(sql_stament, [street, town, code, session_id])
+                  #log user action
+                  app_log('residential address updated to ' + str(street) + ', ' + str(town) + ', ' + str(code))
+                  #get user data
+                  usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
+                  #serialize user data to json string
+                  usr_data_str = json.dumps(usr_data)
+                  #redirect to dashboard
+                  return redirect(url_for('dashboard_filter_enabled', catagory='information', user_data_str=usr_data_str))
+            
+            sql_stament = "update users set " + str(user_data_type) + " = %s where session_id = %s"
+            #update user data on database
+            update_data(sql_stament, [user_data_value, session_id])
+            #log user action
+            app_log(str(user_data_type) + ' updated to ' + str(user_data_value))
+            #get user data
+            usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
+            #serialize user data to json string
+            usr_data_str = json.dumps(usr_data)
+            #redirect to dashboard
+            return redirect(url_for('dashboard_filter_enabled', catagory='information', user_data_str=usr_data_str))
+      
+      elif session_authenticator() == False:
+            return redirect(url_for('main'))
+      
+      else:
+            print('update_user_information function failed')
+            return redirect(url_for('main'))
 #new user registration
 @app.route('/register/', methods=['POST', 'GET'])
 def register():
@@ -454,9 +477,9 @@ def dashboard_filter_enabled():
       #reder app.html based on catagory selected
       elif catagory == 'catagory1' or catagory == 'catagory2' or catagory == 'catagory3':
             return render_template ('app.html', title=catagory, item_data=product_data, user_data=user_data,)
-     
-      return render_template ('dashboard.html', title=catagory, item_data=item_data, user_data=user_data,)
-
+      else:
+            print('dashboard_filter_enabled function failed')
+            return main()
 #user login/logout
 # user logout
 @app.route('/logout/')
