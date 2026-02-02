@@ -26,7 +26,6 @@ def clear_str(value):
       str_data = del_prefix
 
       return str_data
-
 # clears special characters from integers pulled from database
 def clear_int(value):
       value = value
@@ -40,7 +39,6 @@ def clear_int(value):
             data = del_prefix
 
             return int(data)
-
 # fecth data from database
 def fetch_data(sql_statement, data_source):
 
@@ -62,7 +60,6 @@ def fetch_data(sql_statement, data_source):
 
       print(db_data)
       return db_data
-
 # insert new data into database
 def insert_data(sql_statement, data_source):
       
@@ -80,7 +77,6 @@ def insert_data(sql_statement, data_source):
       db_connection.commit()
       cursor.close()
       return db_data
-
 # update user data on database
 def update_data(sql_statement, data_source):
 
@@ -95,7 +91,6 @@ def update_data(sql_statement, data_source):
       cursor.execute(sql_statement, data_source)
       db_connection.commit()
       cursor.close
-
 # delete data from database
 def delete_data(sql_statement, data_source):
 
@@ -110,7 +105,6 @@ def delete_data(sql_statement, data_source):
       cursor.execute(sql_statement, data_source)
       db_connection.commit()
       cursor.close      
-
 # initiates session upon successful login
 def set_session():
       def fetch_count():
@@ -137,7 +131,6 @@ def set_session():
       session['id'] = session_id
 
       print(str(session_id) + ' session initiated')
-
 # session authentication
 def session_authenticator():
 
@@ -176,19 +169,10 @@ def app_log(details):
       print( str(user_id) + str(details))
 
 '''
-get_residential function broken up into 3 parts:
-- get_street_address
-- get_town_city
-- get_postal_code
-'''
-'''
 APPLICATION ROUTES
 '''
 '''
 user dashboard
-{
-list new item, item history, listed items, pending items
-}
 '''
 @app.route('/dashboard/', methods=['POST','GET'])
 def user_dashboard():
@@ -250,6 +234,7 @@ def list_item():
 # delist item
 @app.route('/delete_product/', methods = ['POST', 'GET'])
 def delist_item():
+
       product_name = request.form['product_name']
       path = 'static/assets/img/' + str(product_name)
       external_path = '/media/administrator/file storage/letting-rentals/listings/' + str(product_name)
@@ -260,74 +245,7 @@ def delist_item():
       
       return user_dashboard()
 
-
-'''
- update user information
- { 
-      username, surname, id number, residential address, phone number, email address 
- }
-'''
-# update username
-@app.route('/update_username/', methods=['POST','GET'])
-def update_username():
-      
-      username = request.form['username']
-      session_id = session.get('id')
-
-      update_data("update users set username = %s where session_id = %s", [username, session_id])
-
-      return user_profile()
-
-# update user surname
-@app.route('/update_surname/', methods=['POST','GET'])
-def update_surname():
-      
-      surname = request.form['surname']
-      session_id = session.get('id')
-
-      update_data("update users set surname = %s where session_id = %s", [surname, session_id])
-
-      return user_profile()
-
-# update residential address
-@app.route('/update_residential_address/', methods=['POST','GET'])
-def update_residental_address():
-      
-      street = request.form['street_address']
-      town_city = request.form['town_city']
-      postal_code = request.form['postal_code']
-      session_id = session.get('id')
-
-      name = str(session_id) + '.jpg'
-      path = 'assets/user_assets/proof_of_residence/'
-
-      img = Image.open(request.files['proof_of_residence'])
-      img = img.save(f'{path}/{name}')
-      
-      update_data("update users set street_address = %s, town_city = %s, postal_code = %s where session_id = %s", [street, town_city, postal_code, session_id])
-
-      return user_profile()
-
-# update phone number
-@app.route('/update_phone/', methods=['POST','GET'])
-def update_phone():
-
-      phone = request.form['cel_number']
-      session_id = session.get('id')
-
-      update_data("update users set cell_no = %s where session_id = %s", [phone, session_id])
-      return user_profile()
-
-# update email address
-@app.route('/update_email/', methods=['POST','GET'])
-def update_email():
-      
-      email = request.form['email_address']
-      session_id = session.get('id')
-
-      update_data("update users set email = %s where session_id = %s", [email, session_id])
-      return user_profile()
-# update email address
+# update user information
 @app.route('/update_user_information/', methods=['POST','GET'])
 def update_user_infomation():
       if session_authenticator() == True:
