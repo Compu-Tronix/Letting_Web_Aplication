@@ -119,7 +119,7 @@
                         {{ user_data[1] }}
                         {% endfor %}
                     </p>
-                    <a href="javascript:void(0)" id="edit_username"><img src="" alt="edit" class="edit"></a>
+                    <a href="javascript:void(0)" id="edit_username"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit"></a>
                     <div class="input_username">
                         <form action="/update_username/" method="POST">
                             <input type="text" placeholder=" update name" name="username" required>
@@ -138,7 +138,7 @@
                         {{ user_data[2] }}
                         {% endfor %}
                     </p>
-                    <a href="javascript:void(0)" id="edit_surname"><img src="" alt="edit" class="edit_data"></a>
+                    <a href="javascript:void(0)" id="edit_surname"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit_data"></a>
                     <div class="input_surname">
                         <form action="/update_user_information/" method="POST">
                             <input type="text" placeholder="update surname" name="user_data_value" required>
@@ -158,7 +158,7 @@
                         {{ user_data[3] }}
                         {% endfor %}
                     </p>
-                    <a href="javascript:void(0)" id="edit_email_address"><img src="" alt="edit" class="edit_data"></a>
+                    <a href="javascript:void(0)" id="edit_email_address"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit_data"></a>
                     <div class="input_email_address">
                         <form action="/update_user_information/" method="POST">
                             <input type="email" placeholder="email" name="user_data_value" required>
@@ -183,7 +183,7 @@
                         {{ user_data[5] }}
                         {% endfor %}
                     </p>
-                    <a href="javascript:void(0)" id="edit_residential_address"><img src="" alt="edit" class="edit_data"></a>
+                    <a href="javascript:void(0)" id="edit_residential_address"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit_data"></a>
                     <div class="input_residential_address">
                         <form action="/update_user_information/" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="user_data_type" value="address">
@@ -206,10 +206,11 @@
                         {{ user_data[4] }}
                         {% endfor %}
                     </p>
-                    <a href="javascript:void(0)" id="edit_phone_number"><img src="" alt="edit" class="edit_data"></a>
+                    <a href="javascript:void(0)" id="edit_phone_number"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit_data"></a>
                     <div class="input_phone_number">
-                        <form action="/update_phone/" method="POST">
-                            <input type="text" placeholder="update phone number" name="cel_number" required>
+                        <form action="/update_user_information/" method="POST">
+                            <input type="hidden" name="user_data_type" value="cell_no">
+                            <input type="text" placeholder="update phone number" name="user_data_value" required>
                             <input type="submit" value="update">
                             <button id="cancel_phone_number_update">cancel</button>
                         </form>

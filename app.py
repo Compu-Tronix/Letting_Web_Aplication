@@ -269,18 +269,18 @@ def update_user_infomation():
                   usr_data_str = json.dumps(usr_data)
                   #redirect to dashboard
                   return redirect(url_for('dashboard_filter_enabled', catagory='information', user_data_str=usr_data_str))
-            
-            sql_stament = "update users set " + str(user_data_type) + " = %s where session_id = %s"
-            #update user data on database
-            update_data(sql_stament, [user_data_value, session_id])
-            #log user action
-            app_log(str(user_data_type) + ' updated to ' + str(user_data_value))
-            #get user data
-            usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
-            #serialize user data to json string
-            usr_data_str = json.dumps(usr_data)
-            #redirect to dashboard
-            return redirect(url_for('dashboard_filter_enabled', catagory='information', user_data_str=usr_data_str))
+            else:
+                  sql_stament = "update users set " + str(user_data_type) + " = %s where session_id = %s"
+                  #update user data on database
+                  update_data(sql_stament, [user_data_value, session_id])
+                  #log user action
+                  app_log(str(user_data_type) + ' updated to ' + str(user_data_value))
+                  #get user data
+                  usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
+                  #serialize user data to json string
+                  usr_data_str = json.dumps(usr_data)
+                  #redirect to dashboard
+                  return redirect(url_for('dashboard_filter_enabled', catagory='information', user_data_str=usr_data_str))
       
       elif session_authenticator() == False:
             return redirect(url_for('main'))
@@ -398,7 +398,7 @@ def dashboard_filter_enabled():
       else:
             print('dashboard_filter_enabled function failed')
             return main()
-#user login/logout
+
 # user logout
 @app.route('/logout/')
 def logout():
