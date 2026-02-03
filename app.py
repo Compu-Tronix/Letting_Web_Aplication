@@ -1,3 +1,4 @@
+# app.py
 import mysql.connector
 from flask import Flask, render_template, request, redirect, session, url_for
 from tabulate import tabulate
@@ -5,246 +6,187 @@ from PIL import Image
 import json
 import random
 import os
-
-
+# initialize flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'my_secret'
-
-
-
+# database connection details
 HOST = 'localhost'
 DATABASE = 'letting'
 USER = 'liveserver'
 PASSWORD = 'liveserver1'
-
-# clears special characters from strings pulled from database
+# return string without special characters
 def clear_str(value):
-      x = str(value)
-
-      del_suffix = x[:-4]
+      # remove first 3 and last 4 characters from string
+      del_suffix = str(value)[:-4]
       del_prefix = del_suffix[:0] + del_suffix[3:]
       str_data = del_prefix
-
       return str_data
-# clears special characters from integers pulled from database
+# return integer without special characters
 def clear_int(value):
       value = value
       string = ''
-
+      # iterate through tuple to extract integer value
       for item in value:
             string = string + str(item)
-
             del_suffix = string[:-2]
             del_prefix = del_suffix[1:]
             data = del_prefix
-
             return int(data)
 # fecth data from database
 def fetch_data(sql_statement, data_source):
-
       # connect to database 
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
-
-      # sql statement to fetch requested data
+      # fetch requested data
       sql_statement = sql_statement
-      print(sql_statement)
-
-      # requested data 
+      print('executing sql statement: ' + str(sql_statement))
       data_source = data_source
-      print(data_source)
-
+      print('data source for sql statement: ' +str(sql_statement) + ': ' + str(data_source))
       cursor.execute(sql_statement, data_source)
       db_data = cursor.fetchall()
       cursor.close()
-
-      print(db_data)
+      print('data returned from database: ' + str(db_data))
       return db_data
 # insert new data into database
 def insert_data(sql_statement, data_source):
-      
+      # connect to database
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
-
+      # insert new data
       sql_statement = sql_statement
-      print(sql_statement)
-
+      print('executing sql statement: ' + str(sql_statement))
       data_source = data_source
-
+      print('data source for sql statement: ' +str(sql_statement) + ': ' + str(data_source))
       cursor.execute(sql_statement, data_source)
       db_data = cursor.fetchall()
-
       db_connection.commit()
       cursor.close()
+      print('data inserted into database: ' + str(data_source))
       return db_data
 # update user data on database
 def update_data(sql_statement, data_source):
-
+      # connect to database
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
-
+      # update data
       sql_statement = sql_statement
-      print(sql_statement)
-
+      print('executing sql statement: ' + str(sql_statement))
       data_source = data_source
-
+      print('data source for sql statement: ' +str(sql_statement) + ': ' + str(data_source))
       cursor.execute(sql_statement, data_source)
       db_connection.commit()
       cursor.close
+      print('data updated on database: ' + str(data_source))
 # delete data from database
 def delete_data(sql_statement, data_source):
-
+      # connect to database
       db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
       cursor = db_connection.cursor()
-
+      # delete data
       sql_statement = sql_statement
-      print(sql_statement)
-
+      print('executing sql statement: ' + str(sql_statement))
       data_source = data_source
-
+      print('data source for sql statement: ' +str(sql_statement) + ': ' + str(data_source))
       cursor.execute(sql_statement, data_source)
       db_connection.commit()
-      cursor.close      
-# initiates session upon successful login
+      cursor.close
+      print('data deleted from database: ' + str(data_source))
+# set user session
 def set_session():
+      # fetch count of all entries in log table
       def fetch_count():
              # connect to database 
             db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
             cursor = db_connection.cursor()
-
-            # sql statement to fetch requested data
+            # fetch count of all entries in log table
             cursor.execute('select count(*) from log;')
             db_data = cursor.fetchall()
             cursor.close()
-
             return db_data
-      
+      # set session id to count of all entries in log table + random number between 1 and 1000000
       username = request.form['username']
       password = request.form['password']
       db_data = clear_int(fetch_count())
-
       number = random.randint(1,1000000)
-
       session_id = str(db_data) + str(number)
-      
       update_data('update users set session_id =%s where username =%s and password =%s', [session_id, username, password]) 
       session['id'] = session_id
-
-      print(str(session_id) + ' session initiated')
-# session authentication
+      print('session for user ' + str(username) + ' set to: ' + str(session_id))
+# authenticate user session
 def session_authenticator():
-
+      # check if session id exists on database and return true if match found, false if match not found, and print error message if function fails to run
       session_id = session.get('id')
-
       if str(session_id) == 'None':
-            print('session id not set')
             return False
-
       else:
             data = clear_int(fetch_data("select exists (select session_id from users where session_id =%s);", [session_id]))
-
             if data == 1:
                   print('session_id match found')
-                  return True
-            
+                  return True 
             elif data == 0:
                   print('session_id match not found')
                   return False
-            
             else:
                   print('Failed to run "session_authenticator()" function')
-# application log
+# log user actions
 def app_log(details):
-
+      # log user actions on database with user id and details of action, if no user session exists log user action with user ip address and details of action
       if session_authenticator() == True:
             session_id = session.get('id')
             user_id = clear_int(fetch_data('select id from users where session_id=%s', [session_id]))
             details = details
             insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
-
       elif session_authenticator() == False:
             user_id = 'Guest'
             details = details
             insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
       print( str(user_id) + str(details))
-
-'''
-APPLICATION ROUTES
-'''
-'''
-user dashboard
-'''
+# app routes
+# user dashboard
 @app.route('/dashboard/', methods=['POST','GET'])
 def user_dashboard():
-
+      # render user dashboard if session authentication returns true, redirect to main if session authentication returns false, and print error message if function fails to run
       if session_authenticator() == True:
-                       
             session_id = session.get('id')
             usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id]) 
             user_id = clear_int(fetch_data('select id from users where session_id = %s', [session_id]))
-            
-            
-            # pending items
-            pending_img = fetch_data('select image from listings where user_id=%s and status="pending"', [user_id])
-            # approved items
-            approved_img = fetch_data('select image from listings where user_id=%s and status="approved"', [user_id])
-            # denied items
-            denied_img = fetch_data('select image from listings where user_id=%s and status="denied"', [user_id])
             return render_template('dashboard.html')
-
       elif session_authenticator() == False:
             return main()
-      
       else:
             print('user dashbord function failed')
             return main()
-
-# upload listing item 
+# list
 @app.route('/list_item/', methods = ['POST', 'GET'])
 def list_item():
-
       if session_authenticator() == True:
+            # get form data
             session_id = session.get('id')
             user_id = clear_int(fetch_data('select id from users where session_id=%s;', [session_id]))
-            
-
             item_name = request.form['item_name'].replace(" ","_")
             description = request.form['model_description'].replace(" ","_")
             price = request.form['price']
-
+            # save item image to static/assets/product_img with unique filename
             number = random.randint(1, 1000000) + random.randint(1,1000000)
-
             filename = item_name + '_' + str(number) + str(len(description)) + str(len(item_name)) + '.jpg'
             path = 'static/assets/product_img'
             img_file = Image.open(request.files['item_img'])
             img_file.save(f'{path}/{filename}')
-            
-            #backup_path = '/media/administrator/file storage/letting-rentals/listings'
-            #img_file.save(f'{backup_path}/{filename}')
-            
+            # insert item data into database and log user action
             insert_data("insert into listings (user_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)", [user_id, item_name, description, filename, price])
-      
             app_log(str(item_name) + ' listed')
-            print('item listed pending approval')
             return user_dashboard()
-      
       else:
             return main()
-
-# delist item
+# delist
 @app.route('/delete_product/', methods = ['POST', 'GET'])
 def delist_item():
-
       product_name = request.form['product_name']
-      path = 'static/assets/img/' + str(product_name)
-      external_path = '/media/administrator/file storage/letting-rentals/listings/' + str(product_name)
-
+      path = 'static/assets/product_img/' + str(product_name)
       os.remove(path)
-      os.remove(external_path)
       delete_data('delete from listings where image = %s;', [str(product_name)])
-      
+      app_log(str(product_name) + ' delisted')
       return user_dashboard()
-
 # update user information
 @app.route('/update_user_information/', methods=['POST','GET'])
 def update_user_infomation():
@@ -291,29 +233,26 @@ def update_user_infomation():
 #new user registration
 @app.route('/register/', methods=['POST', 'GET'])
 def register():
-      # get user registration form data
+      # get form data
       username = request.form['username']
       email = request.form['email']
       password = request.form['password']
       confirm_password = request.form['confirm_password']
-      # validate password entry to confirm user account registration
+      # check if passwords match
       if password == confirm_password:
-                  # check if email address already exists on database
+                  # search database for existing email
                   if clear_int(fetch_data("select exists (select email from users where email=%s);", [email])) == 0:
                         insert_data("insert into users (username, email, password) values (%s, %s,%s);", [username, email, password])
                         app_log(username + ': registered')
                         return redirect(url_for('main'))
-                  
                   elif clear_int(fetch_data("select exists (select email from users where email=%s);", [email])) == 1:
                         return redirect(url_for('main'))
-                  
                   else:
                         print('register function error')
                         return redirect(url_for('main'))
       else:
             print('passwords do not match')
             return redirect(url_for('main'))
-
 # Product information
 @app.route('/product/', methods=['POST','GET'])
 def product_info():
@@ -325,10 +264,8 @@ def product_info():
             #serialize product_data to json string
             product_data_str = json.dumps(product_data)
             return redirect(url_for ('product_infomation', product_data_str=product_data_str, product_name=product_name))
-      
       elif session_authenticator() == False:
             return main()
-      
       else:
             print('in-app filter failed')
             return main()
@@ -341,7 +278,6 @@ def product_infomation():
       product_data = json.loads(product_data_str)
       #render product.html with product data
       return render_template('product.html', item_data=product_data, product_name=product_name)
-
 #user dashboard & filters
 @app.route('/enable_dashboard_filter/', methods=['POST','GET'])
 def dashboard_filter():
@@ -367,11 +303,9 @@ def dashboard_filter():
                   product_data = fetch_data('select image, item_name, price from listings where status=%s and catagory=%s', ['approved', catagory])
                   #serialize product_data to JSON string
                   product_data_str = json.dumps(product_data)
-                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, product_data_str=product_data_str))
-            
+                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, product_data_str=product_data_str))  
       elif session_authenticator() == False:
             return main()
-
       else:
             print('dashboard_filter function failed')
             return main()
@@ -398,7 +332,6 @@ def dashboard_filter_enabled():
       else:
             print('dashboard_filter_enabled function failed')
             return main()
-
 # user logout
 @app.route('/logout/')
 def logout():
@@ -425,7 +358,6 @@ def login():
       else:
             print('login function error')
             return redirect(url_for('main'))
-
 # application start
 @app.route('/', methods = ['GET'])
 def main():
