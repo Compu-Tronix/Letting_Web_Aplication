@@ -117,7 +117,6 @@ def set_session(session_name):
             usr = session_name
             session['usr'] = usr
             print('sesssion for user')
-
 # authenticate user session
 def session_authenticator():
       # check if session id exists on database and return true if match found, false if match not found, and print error message if function fails to run
@@ -234,7 +233,7 @@ def register():
       if password == confirm_password:
                   # search database for existing email
                   if clear_int(fetch_data("select exists (select email from users where email=%s);", [email])) == 0:
-                        insert_data("insert into users (username, email, password) values (%s, %s,%s);", [username, email, password])
+                        insert_data("insert into users (username, email, password, user_icon) values (%s, %s,%s, %s);", [username, email, password, 'default_user_icon.png'])
                         app_log(username + ': registered')
                         return redirect(url_for('main'))
                   elif clear_int(fetch_data("select exists (select email from users where email=%s);", [email])) == 1:
@@ -357,13 +356,11 @@ def login():
 @app.route('/', methods = ['GET'])
 def main():
       if session_authenticator() == True:
-
-            item_data = fetch_data('select image, item_name, price from listings where status=%s', ['approved'] )
+            item_data = fetch_data('select image, item_name, price from listings where status=%s', ['activated'] )
             session_id = session.get('id')
             usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
             print('session authentication success')
             return render_template ('app.html', item_data=item_data, usr_data=usr_data)
-      
       elif session_authenticator() == False:
             def get_ip():
                   ip_address = request.remote_addr
@@ -374,7 +371,6 @@ def main():
             usr_data = [('default.jpg'),]
             print('no session exists')
             return render_template ('index.html', usr_data=usr_data)
-      
       else:
             login = 'login'
             print('failed to start app: session authenticator did not return true or false')

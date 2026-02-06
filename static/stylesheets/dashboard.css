@@ -1,18 +1,11 @@
-/*
-
-DASHBOARD.HTML BODY
-
-*/
-
-/* 
-profile:
--user_profile_container
--listing_form
-*/
-.profile {
-    border: 2px solid green;
-    width: 25%;
+/*dashboard command container*/
+.dashboardCmdContainer {
+    display: flex;
     max-height: 80%;
+}
+.CmdContainer {
+    border: 2px solid green;
+    margin: auto;
 }
 
 /*user_profile_container*/
@@ -30,16 +23,11 @@ profile:
 
 /*listing_form*/
 .listing_form {
-    border: 2px solid red;
+    border: 2px solid green;
+    margin: auto;
     width: 80%;
 }
 
-/*
-user_listing_container:
--history_container
--active_listing_container
--pending_listings_container
-*/
 .dashboard-title {
     margin: auto;
 }
@@ -49,9 +37,4 @@ user_listing_container:
     background: red;
     width: 70%;
     max-height: 80vh;
-}
-
-/*forms*/
-.form_placeholder {
-    visibility: hidden;
 }

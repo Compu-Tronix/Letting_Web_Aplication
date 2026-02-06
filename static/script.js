@@ -9,7 +9,7 @@ function dashboard() {
       <li>
         <form action="/enable_dashboard_filter/" method="POST">
             <div class="catagory-placeholder">
-                <input type="text" value='information' name="catagory" style="width: 0;">
+                <input hidden="text" value='information' name="catagory">
             </div>
             <input type="submit" value="Dashboard">
         </form>

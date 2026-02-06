@@ -1,90 +1,63 @@
 {% extends 'base.html' %}
-
 {% block head %}
 <title>letting App</title>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/app.css')}}">
 <script src="/static/scripts/app.js"></script>
 {% endblock %}
-
-
 {% block body %}
-
-    <!--
-        body container:
-        -category divisions
-        -search 
-        -search results
-    -->
-    <div class="body_container">
-        <!-- search -->
-        <div class="filter-container">
-            <div class="filter-container-child">
-                <a href="/">{{remove_filter}}</a>
-                <!-- catagot 1 -->
-                <form action="/enable_filter/" method="POST">
-                    <div class="catagory-placeholder">
-                        <input type="text" value='catagory_1' name="catagory" style="width: 0;">
-                    </div>
-                    <input type="submit" value="catagory 1">
-                </form>
-                <!-- catagory 2 -->
-                <form action="/enable_filter/" method="POST">
-                    <div class="catagory-placeholder">
-                        <input type="text" value='catagory_2' name="catagory" style="width: 0;">
-                    </div>
-                    <input type="submit" value="catagory 2">
-                </form>
-                <!-- catagory 3 -->
-                <form action="/enable_filter/" method="POST">
-                    <div class="catagory-placeholder">
-                        <input type="text" value='catagory_3' name="catagory" style="width: 0;">
-                    </div>
-                    <input type="submit" value="catagory 3">
-                </form>
-            </div>
+<div class="body_container">
+    <!-- search -->
+    <div class="filter-container">
+        <div class="filter-container-child">
+            <form action="/enable_filter/" method="POST">
+                <input type="hidden" value='catagory_1' name="catagory" style="width: 0;">
+                <input type="submit" value="catagory 1">
+            </form>
+            <form action="/enable_filter/" method="POST">
+                <input type="hidden" value='catagory_2' name="catagory" style="width: 0;">
+                <input type="submit" value="catagory 2">
+            </form>
+            <form action="/enable_filter/" method="POST">
+                <input type="hidden" value='catagory_3' name="catagory" style="width: 0;">
+                <input type="submit" value="catagory 3">
+            </form>
         </div>
-
-        <!-- search results -->
-        <div class="filter-results-container">
-            <div class="filter-results-container-child">
-                <div class="productContainer" id="productContainer">
-                    <div class="product-card-container">
-                    
-                        {% for item_data in item_data %}
-
-                        {% set x = item_data[0]|string %}
-
-                        {% set y = x.replace("(", "") %}
-                        {% set z = y.replace(")", "") %}
-                        {% set a = z.replace("'", "") %}
-                        {% set b = a.replace(",", "") %}
-
-                        {% set directory = 'assets/img/' %}
-
-                        {% set img_value = directory + b %}
-                        
-                        <div class="card-container">    
-                            <div class="card-header">
-                                <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
-                            </div>
-                            <div class="card-body">    
-                                <p> {{ item_data[1] }} </p>
-                            </div>
-                            <div class="card-footer">
-                                <form action="/product/" method="POST">
-                                    <div class="item-name-placeholder">
-                                        <input type="text" value={{item_data[0]}} name="product_name" style="width: 0;">
-                                    </div>
-                                    <p> {{'R ' + item_data[2]|string }}</p>
-                                    <input type="submit" value="more">
-                                </form>
-                            </div> 
+    </div>
+    <!-- search results -->
+    <div class="filter-results-container">
+        <div class="filter-results-container-child">
+            <div class="productContainer" id="productContainer">
+                <div class="product-card-container">
+                    {% for item_data in item_data %}
+                    {% set x = item_data[0]|string %}
+                    {% set y = x.replace("(", "") %}
+                    {% set z = y.replace(")", "") %}
+                    {% set a = z.replace("'", "") %}
+                    {% set b = a.replace(",", "") %}
+                    {% set directory = 'assets/img/' %}
+                    {% set img_value = directory + b %}
+                    <div class="card-container">    
+                        <div class="card-header">
+                            <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
                         </div>
-                        {% endfor %}
+                        <div class="card-body">    
+                            <p> {{ item_data[1] }} </p>
+                        </div>
+                        <div class="card-footer">
+                            <form action="/product/" method="POST">
+                                <div class="item-name-placeholder">
+                                    <input type="text" value={{item_data[0]}} name="product_name" style="width: 0;">
+                                </div>
+                                <p> {{'R ' + item_data[2]|string }}</p>
+                                <input type="submit" value="more">
+                            </form>
+                        </div> 
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
-         
     </div>
+        
+</div>
 {% endblock %}
