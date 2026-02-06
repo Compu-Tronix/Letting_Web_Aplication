@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/dashboard.css')}}">
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/information.css')}}">
@@ -7,41 +6,11 @@
 <script src="{{url_for('static', filename='scripts/information.js')}}"></script>
 <title>Information</title>
 {% endblock %}
-
-
 {% block body %}
 <div class="body_container">
-
-    <!--
-
-        profile:
-        -user_profile_container
-        -listing_form
-
-    -->
     <div class="profile">
-
         <!-- user_profile_container -->
-        <div class="user_profile_container">
-            <div class="user_icon">
-                <img src="" alt="user_icon" class="user_icon_img">
-                <div class="available_funds">
-                    <p>
-                        placeholder
-                    </p>
-                </div>
-            </div>
-
-            <div class="profile_values">
-                <ul>
-                    <li>placeholder</li>
-                    <li>placeholder</li>
-                    <li>placeholder</li>
-                </ul>
-            </div>
-
-        </div>
-
+        
         <!-- listing_form -->
         <div class="listing_form">
             <form action="/list_item/" method="POST" enctype="multipart/form-data">
@@ -52,13 +21,6 @@
                 <input type="submit" value="upload">
             </form>
         </div>
-       
-        <form action="/enable_dashboard_filter/" method="POST">
-            <div class="catagory-placeholder">
-                <input type="text" value='information' name="catagory" style="width: 0;">
-            </div>
-            <input type="submit" value="view information">
-        </form>
         <form action="/enable_dashboard_filter/" method="POST">
             <div class="catagory-placeholder">
                 <input type="text" value='pending' name="catagory" style="width: 0;">
@@ -67,7 +29,7 @@
         </form>
         <form action="/enable_dashboard_filter/" method="POST">
             <div class="catagory-placeholder">
-                <input type="text" value='actived' name="catagory" style="width: 0;">
+                <input type="text" value='activated' name="catagory" style="width: 0;">
             </div>
             <input type="submit" value="view activated">
         </form>
@@ -77,19 +39,7 @@
             </div>
             <input type="submit" value="view history">
         </form>
-        
     </div>
-
-    <!-- 
-
-    user_listing_container:
-    -history_container
-    -active_listings_container
-    -pending_listings_container
-
-    -->
-    
-    <!-- information-container -->
     <div class="information-container" id="information-container">
         <div class="dashboard-title">
                 <h2>
@@ -97,23 +47,27 @@
                 </h2>
             </div>
         <div class="product-card-container">
-            
+
             <div>
-                {% for usr_data in usr_data %}
-
-                    {% set directory = 'assets/img/' %}
-
-                    {% set img_value = directory + usr_data[0] %}
-                    
-                    <div class="container">
-                        <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="dashboard-img">
+                <div class="user_profile_container">
+                    <div class="user_icon">
+                        <img src="" alt="user_icon" class="user_icon_img">
                     </div>
-                {% endfor %}
+                    <div class="available_funds">
+                        <p>
+                            placeholder
+                        </p>
+                    </div>
+                </div>
+                <div class="profile_values">
+                    <ul>
+                        <li>placeholder</li>
+                        <li>placeholder</li>
+                        <li>placeholder</li>
+                    </ul>
+                </div>
             </div>
-            <div>    
-                <!--
-                username
-                -->
+            <div>
                 <span>
                     <p>
                         username: 
@@ -130,9 +84,6 @@
                         </form>
                     </div>
                 </span>
-                <!--
-                surname
-                -->
                 <span>
                     <p>
                         surname:
@@ -150,9 +101,6 @@
                         </form>
                     </div>
                 </span>
-                <!--
-                email address
-                -->
                 <span>
                     <p>
                         email address:
@@ -170,9 +118,6 @@
                         </form>
                     </div>
                 </span>
-                <!--
-                residential address
-                -->
                 <span>
                     <p>
                         residential address:
@@ -198,9 +143,6 @@
                         </form>
                     </div>
                 </span> 
-                <!--
-                phone number
-                -->
                 <span>
                     <p>
                         phone number:
