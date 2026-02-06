@@ -92,26 +92,32 @@ def delete_data(sql_statement, data_source):
       cursor.close
       print('data deleted from database: ' + str(data_source))
 # set user session
-def set_session():
-      # fetch count of all entries in log table
-      def fetch_count():
-             # connect to database 
-            db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
-            cursor = db_connection.cursor()
+def set_session(session_name):
+      if str(session_name) == 'id':
             # fetch count of all entries in log table
-            cursor.execute('select count(*) from log;')
-            db_data = cursor.fetchall()
-            cursor.close()
-            return db_data
-      # set session id to count of all entries in log table + random number between 1 and 1000000
-      username = request.form['username']
-      password = request.form['password']
-      db_data = clear_int(fetch_count())
-      number = random.randint(1,1000000)
-      session_id = str(db_data) + str(number)
-      update_data('update users set session_id =%s where username =%s and password =%s', [session_id, username, password]) 
-      session['id'] = session_id
-      print('session for user ' + str(username) + ' set to: ' + str(session_id))
+            def fetch_count():
+                  # connect to database 
+                  db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
+                  cursor = db_connection.cursor()
+                  # fetch count of all entries in log table
+                  cursor.execute('select count(*) from log;')
+                  db_data = cursor.fetchall()
+                  cursor.close()
+                  return db_data
+            # set session id to count of all entries in log table + random number between 1 and 1000000
+            username = request.form['username']
+            password = request.form['password']
+            db_data = clear_int(fetch_count())
+            number = random.randint(1,1000000)
+            session_id = str(db_data) + str(number)
+            update_data('update users set session_id =%s where username =%s and password =%s', [session_id, username, password]) 
+            session['id'] = session_id
+            print('session for user ' + str(username) + ' set to: ' + str(session_id))
+      else:
+            usr = session_name
+            session['usr'] = usr
+            print('sesssion for user')
+
 # authenticate user session
 def session_authenticator():
       # check if session id exists on database and return true if match found, false if match not found, and print error message if function fails to run
@@ -142,20 +148,6 @@ def app_log(details):
             insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
       print( str(user_id) + str(details))
 # app routes
-# user dashboard
-@app.route('/dashboard/', methods=['POST','GET'])
-def user_dashboard():
-      # render user dashboard if session authentication returns true, redirect to main if session authentication returns false, and print error message if function fails to run
-      if session_authenticator() == True:
-            session_id = session.get('id')
-            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id]) 
-            user_id = clear_int(fetch_data('select id from users where session_id = %s', [session_id]))
-            return render_template('dashboard.html')
-      elif session_authenticator() == False:
-            return main()
-      else:
-            print('user dashbord function failed')
-            return main()
 # list
 @app.route('/list_item/', methods = ['POST', 'GET'])
 def list_item():
@@ -287,13 +279,10 @@ def dashboard_filter():
             #redirect based on catagory selected
             if catagory == 'information':
                   #get user data from db
-                  session_id = session.get('id')
-                  usr_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where session_id= %s;',[session_id] )
-                  #serialize usr_data to JSON string
-                  usr_data_str = json.dumps(usr_data)
-                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, user_data_str=usr_data_str))
+                  user_data_str = session.get('usr')
+                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, user_data_str=user_data_str))
             #dashboard.html db product query with catagory filter applied
-            elif catagory == 'pending' or catagory == 'approved' or catagory == 'history':
+            elif catagory == 'pending' or catagory == 'activated' or catagory == 'history':
                   item_data = fetch_data('select image, item_name, price from listings where status=%s', [catagory])
                   #serialize item_data to JSON string
                   item_data_str = json.dumps(item_data)
@@ -303,7 +292,10 @@ def dashboard_filter():
                   product_data = fetch_data('select image, item_name, price from listings where status=%s and catagory=%s', ['approved', catagory])
                   #serialize product_data to JSON string
                   product_data_str = json.dumps(product_data)
-                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, product_data_str=product_data_str))  
+                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, product_data_str=product_data_str)) 
+            else:
+                  print('dashboard_filter function failed: catagory not recognised')
+                  return main() 
       elif session_authenticator() == False:
             return main()
       else:
@@ -324,7 +316,7 @@ def dashboard_filter_enabled():
       if catagory == 'information':
             return render_template('information.html', title=catagory, user_data=user_data)
       #render dashboard.html based on catagory selected
-      elif catagory == 'pending' or catagory == 'approved' or catagory == 'history':
+      elif catagory == 'pending' or catagory == 'activated' or catagory == 'history':
             return render_template ('dashboard.html', title=catagory, item_data=item_data)
       #reder app.html based on catagory selected
       elif catagory == 'catagory1' or catagory == 'catagory2' or catagory == 'catagory3':
@@ -346,7 +338,10 @@ def login():
       password = request.form['password']
       #validate user login credentials
       if clear_int(fetch_data("select exists (select * from users where username=%s and password=%s);", [username, password])) == 1:
-            set_session()
+            user_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where username=%s and password=%s;',[username, password])
+            user_data_str = json.dumps(user_data)
+            set_session(user_data_str)
+            set_session('id')
             app_log('logged in')
             return redirect(url_for('main'))
       
