@@ -7,9 +7,12 @@ function dashboard() {
   document.getElementById('dashboard').innerHTML =
    `<ul>
       <li>
-        <a href="/dashboard/">
-          User Dashboard
-        </a>
+        <form action="/enable_dashboard_filter/" method="POST">
+            <div class="catagory-placeholder">
+                <input type="text" value='information' name="catagory" style="width: 0;">
+            </div>
+            <input type="submit" value="Dashboard">
+        </form>
       </li>
       <li>
         <a href="/user_information/">
