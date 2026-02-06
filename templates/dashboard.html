@@ -1,53 +1,12 @@
 {% extends 'base.html' %}
-
 {% block head %}
 <title>dashboard</title>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/dashboard.css')}}">
 <script src="{{url_for('static', filename='scripts/dashboard.js')}}"></script>
 {% endblock %}
-
-
 {% block body %}
-
-    <!--
-
-            body container:
-            -profile
-            -user_listing
-
-        -->
 <div class="body_container">
-
-    <!--
-
-        profile:
-        -user_profile_container
-        -listing_form
-
-    -->
     <div class="profile">
-
-        <!-- user_profile_container -->
-        <div class="user_profile_container">
-            <div class="user_icon">
-                <img src="" alt="user_icon" class="user_icon_img">
-                <div class="available_funds">
-                    <p>
-                        placeholder
-                    </p>
-                </div>
-            </div>
-
-            <div class="profile_values">
-                <ul>
-                    <li>placeholder</li>
-                    <li>placeholder</li>
-                    <li>placeholder</li>
-                </ul>
-            </div>
-
-        </div>
-
         <!-- listing_form -->
         <div class="listing_form">
             <form action="/list_item/" method="POST" enctype="multipart/form-data">
@@ -58,7 +17,6 @@
                 <input type="submit" value="upload">
             </form>
         </div>
-       
         <form action="/enable_dashboard_filter/" method="POST">
             <div class="catagory-placeholder">
                 <input type="text" value='information' name="catagory" style="width: 0;">
@@ -83,18 +41,7 @@
             </div>
             <input type="submit" value="view history">
         </form>
-        
     </div>
-
-    <!-- 
-
-    user_listing_container:
-    -history_container
-    -active_listings_container
-    -pending_listings_container
-
-    -->
-    
     <!-- information-container -->
     <div class="information-container" id="information-container">
         <div class="dashboard-title">
@@ -103,20 +50,14 @@
             </h2>
         </div>
         <div class="product-card-container">
-        
             {% for item_data in item_data %}
-
             {% set x = item_data[0]|string %}
-
             {% set y = x.replace("(", "") %}
             {% set z = y.replace(")", "") %}
             {% set a = z.replace("'", "") %}
             {% set b = a.replace(",", "") %}
-
             {% set directory = 'assets/product_img/' %}
-
             {% set img_value = directory + b %}
-            
             <div class="card-container">    
                 <div class="card-header">
                     <img src="{{ url_for('static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
