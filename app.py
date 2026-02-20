@@ -3,17 +3,21 @@ import mysql.connector
 from flask import Flask, render_template, request, redirect, session, url_for
 from tabulate import tabulate
 from PIL import Image
+from dotenv import load_dotenv
 import json
 import random
 import os
 # initialize flask app
+load_dotenv()
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'my_secret'
+app.config['SECRET_KEY'] = os.getenv('KEY')
+
 # database connection details
 HOST = 'localhost'
-DATABASE = 'letting'
-USER = 'liveserver'
-PASSWORD = 'liveserver1'
+DATABASE = os.getenv('DATABASE')
+USER =  'liveserver'
+PASSWORD = os.getenv('PASSWORD')
+print(HOST, DATABASE, USER, PASSWORD)
 # return string without special characters
 def clear_str(value):
       # remove first 3 and last 4 characters from string
