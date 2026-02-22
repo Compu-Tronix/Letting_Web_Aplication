@@ -1,23 +1,34 @@
-# app.py
+# import necessary libraries
 import mysql.connector
 from flask import Flask, render_template, request, redirect, session, url_for
+from flask_mail import Mail, Message
 from tabulate import tabulate
 from PIL import Image
 from dotenv import load_dotenv
 import json
 import random
 import os
-# initialize flask app
+# load environment variables from .env file
 load_dotenv()
+# initialize flask app
 app = Flask(__name__)
+# set secret key for flask session management
 app.config['SECRET_KEY'] = os.getenv('KEY')
-
+# set email server details for flask mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.getenv('EMAIL_USER')
+app.config['MAIL_PASSWORD'] = os.getenv('EMAIL_PASS')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('EMAIL_USER')
+# initialize flask mail
+mail = Mail(app)
 # database connection details
-HOST = 'localhost'
-DATABASE = os.getenv('DATABASE')
 USER =  'liveserver'
+HOST = 'localhost'
 PASSWORD = os.getenv('PASSWORD')
-print(HOST, DATABASE, USER, PASSWORD)
+DATABASE = os.getenv('DATABASE')
+
 # return string without special characters
 def clear_str(value):
       # remove first 3 and last 4 characters from string
@@ -150,6 +161,13 @@ def app_log(details):
             details = details
             insert_data('insert into log (user_id, details) values (%s, %s)', [user_id, details])
       print( str(user_id) + str(details))
+# send email to user
+def send_email(mail_address, subject, mail_body):
+      msg = Message(subject, recipients=[mail_address])
+      msg.body = mail_body
+      mail.send(msg)
+      print('mail sent to ' + mail_address + ' with subject: ' + subject + ' and body: ' + mail_body)
+      return main()
 # app routes
 # list
 @app.route('/list_item/', methods = ['POST', 'GET'])
