@@ -1,6 +1,6 @@
 # import necessary libraries
 import mysql.connector
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, send_from_directory, Blueprint
 from flask_mail import Mail, Message
 from tabulate import tabulate
 from PIL import Image
@@ -11,7 +11,15 @@ import os
 # load environment variables from .env file
 load_dotenv()
 # initialize flask app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
+# create blueprint for letting data static files
+img_data_bp = Blueprint(
+      'letting_data', __name__,
+      static_folder='/mnt/s/letting_data',
+      static_url_path='/letting_data'
+)
+# register blueprint for letting data static files
+app.register_blueprint(img_data_bp)
 # set secret key for flask session management
 app.config['SECRET_KEY'] = os.getenv('KEY')
 # set email server details for flask mail
@@ -182,7 +190,7 @@ def list_item():
             # save item image to static/assets/product_img with unique filename
             number = random.randint(1, 1000000) + random.randint(1,1000000)
             filename = item_name + '_' + str(number) + str(len(description)) + str(len(item_name)) + '.jpg'
-            path = 'static/assets/product_img'
+            path = '/mnt/s/letting_data/product_img'
             img_file = Image.open(request.files['item_img'])
             img_file.save(f'{path}/{filename}')
             # insert item data into database and log user action
