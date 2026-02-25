@@ -388,9 +388,8 @@ def main():
       if session_authenticator() == True:
             item_data = fetch_data('select image, item_name, price from listings where status=%s', ['activated'] )
             session_id = session.get('id')
-            usr_data = fetch_data('select user_icon from users where session_id=%s', [session_id])
-            print('session authentication success')
-            return render_template ('app.html', item_data=item_data, usr_data=usr_data)
+            user_data = json.loads(session.get('usr')) if session.get('usr') else []
+            return render_template ('app.html', item_data=item_data,  user_data=user_data)
       elif session_authenticator() == False:
             def get_ip():
                   ip_address = request.remote_addr
