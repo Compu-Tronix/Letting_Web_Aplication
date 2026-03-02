@@ -1,3 +1,4 @@
+# letting web application
 # import necessary libraries
 import mysql.connector
 from flask import Flask, render_template, request, redirect, session, url_for, send_from_directory, Blueprint
@@ -36,16 +37,16 @@ USER =  'liveserver'
 HOST = 'localhost'
 PASSWORD = os.getenv('PASSWORD')
 DATABASE = os.getenv('DATABASE')
-
 # return string without special characters
 def clear_str(value):
-      # remove first 3 and last 4 characters from string
+      # convert value to string and remove special characters
       del_suffix = str(value)[:-4]
       del_prefix = del_suffix[:0] + del_suffix[3:]
       str_data = del_prefix
       return str_data
 # return integer without special characters
 def clear_int(value):
+      # convert value to string and remove special characters
       value = value
       string = ''
       # iterate through tuple to extract integer value
@@ -175,9 +176,9 @@ def send_email(mail_address, subject, mail_body):
       msg.body = mail_body
       mail.send(msg)
       print('mail sent to ' + mail_address + ' with subject: ' + subject + ' and body: ' + mail_body)
-      return main()
+      #return main()
 # app routes
-# list
+# list item for letting
 @app.route('/list_item/', methods = ['POST', 'GET'])
 def list_item():
       if session_authenticator() == True:
@@ -199,7 +200,7 @@ def list_item():
             return user_dashboard()
       else:
             return main()
-# delist
+# delist item from letting
 @app.route('/delete_product/', methods = ['POST', 'GET'])
 def delist_item():
       product_name = request.form['product_name']
@@ -398,6 +399,7 @@ def main():
             details = 'interaction initiated'
             insert_data('insert into log (user_id, details) values (%s,%s)', [user_id, details])
             usr_data = [('default.jpg'),]
+            send_email('kabongweinvestments@hotmail.com', 'test email', 'this is a test email from the letting web application')
             print('no session exists')
             return render_template ('index.html', usr_data=usr_data)
       else:
