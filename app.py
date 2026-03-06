@@ -399,7 +399,6 @@ def main():
             details = 'interaction initiated'
             insert_data('insert into log (user_id, details) values (%s,%s)', [user_id, details])
             usr_data = [('default.jpg'),]
-            send_email('kabongweinvestments@hotmail.com', 'test email', 'this is a test email from the letting web application')
             print('no session exists')
             return render_template ('index.html', usr_data=usr_data)
       else:
