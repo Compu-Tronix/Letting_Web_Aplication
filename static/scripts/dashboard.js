@@ -7,6 +7,7 @@ function toggleUploadForm() {
             <input type="text" placeholder="model description" name="model_description" required>
             <input type="number" placeholder="price per 24hrs" name="price" required>
             <input type="file" placeholder="upload item image" name="item_img" required>
+            <input type="hidden" value='pending' name="catagory">
             <input type="submit" value="upload">
         </form>
     </div>
