@@ -197,7 +197,7 @@ def list_item():
             # insert item data into database and log user action
             insert_data("insert into listings (user_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)", [user_id, item_name, description, filename, price])
             app_log(str(item_name) + ' listed')
-            return user_dashboard()
+            return dashboard_filter()
       else:
             return main()
 # delist item from letting
