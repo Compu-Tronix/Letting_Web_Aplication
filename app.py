@@ -294,26 +294,8 @@ def dashboard_filter():
       if session_authenticator() == True:
             #get catagory from form
             catagory = request.form.get('catagory')
-            #redirect based on catagory selected
-            if catagory == 'information':
-                  #get user data from db
-                  #user_data_str = session.get('usr')
-                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory))
-            #dashboard.html db product query with catagory filter applied
-            elif catagory == 'pending' or catagory == 'activated' or catagory == 'history':
-                  item_data = fetch_data('select image, item_name, price from listings where status=%s', [catagory])
-                  #serialize item_data to JSON string
-                  item_data_str = json.dumps(item_data)
-                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, item_data_str=item_data_str))
-            #app.html db product query without catagory filter applied
-            elif catagory == 'catagory1' or catagory == 'catagory2' or catagory == 'catagory3':
-                  product_data = fetch_data('select image, item_name, price from listings where status=%s and catagory=%s', ['approved', catagory])
-                  #serialize product_data to JSON string
-                  product_data_str = json.dumps(product_data)
-                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, product_data_str=product_data_str)) 
-            else:
-                  print('dashboard_filter function failed: catagory not recognised')
-                  return main() 
+            #user_data_str = session.get('usr')
+            return redirect(url_for('dashboard_filter_enabled', catagory = catagory))
       elif session_authenticator() == False:
             return main()
       else:
@@ -323,20 +305,17 @@ def dashboard_filter():
 @app.route('/dashboard_filter_enabled/')
 def dashboard_filter_enabled():
       catagory = request.args.get('catagory')
-      item_data_str = request.args.get('item_data_str')
-      product_data_str = request.args.get('product_data_str')
-      #deserialize JSON strings back to Python lists
-      user_data = json.loads(session.get('usr')) if session.get('usr') else []
-      item_data = json.loads(session.get('item_data_activated')) if sesion.get('item_data_activated') else []
-      product_data = json.loads(product_data_str) if product_data_str else []
-      #render information.html based on catagory selected
+      user_data = json.loads(session.get('user_data')) if session.get('user_data') else []
+     #render information.html based on catagory selected
       if catagory == 'information':
             return render_template('information.html', title=catagory, user_data=user_data)
       #render dashboard.html based on catagory selected
-      elif catagory == 'pending' or catagory == 'activated' or catagory == 'history':
-            return render_template ('dashboard.html', title=catagory, item_data=item_data)
+      elif catagory == 'item_data_activated' or catagory == 'item_data_pending' or catagory == 'item_data_history':
+            item_data = json.loads(session.get(catagory))
+            return render_template ('dashboard.html', title=catagory, item_data=item_data, user_data=user_data,)
       #reder app.html based on catagory selected
       elif catagory == 'catagory1' or catagory == 'catagory2' or catagory == 'catagory3':
+            product_data = json.loads(session.get(catagory))
             return render_template ('app.html', title=catagory, item_data=product_data, user_data=user_data,)
       else:
             print('dashboard_filter_enabled function failed')
