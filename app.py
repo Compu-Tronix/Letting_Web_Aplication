@@ -309,8 +309,8 @@ def dashboard_filter():
             #redirect based on catagory selected
             if catagory == 'information':
                   #get user data from db
-                  user_data_str = session.get('usr')
-                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory, user_data_str=user_data_str))
+                  #user_data_str = session.get('usr')
+                  return redirect(url_for('dashboard_filter_enabled', catagory=catagory))
             #dashboard.html db product query with catagory filter applied
             elif catagory == 'pending' or catagory == 'activated' or catagory == 'history':
                   item_data = fetch_data('select image, item_name, price from listings where status=%s', [catagory])
@@ -335,11 +335,10 @@ def dashboard_filter():
 @app.route('/dashboard_filter_enabled/')
 def dashboard_filter_enabled():
       catagory = request.args.get('catagory')
-      user_data_str = request.args.get('user_data_str')
       item_data_str = request.args.get('item_data_str')
       product_data_str = request.args.get('product_data_str')
       #deserialize JSON strings back to Python lists
-      user_data = json.loads(user_data_str) if user_data_str else []
+      user_data = json.loads(session.get('usr')) if session.get('usr') else []
       item_data = json.loads(item_data_str) if item_data_str else []
       product_data = json.loads(product_data_str) if product_data_str else []
       #render information.html based on catagory selected
