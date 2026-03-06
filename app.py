@@ -116,31 +116,19 @@ def delete_data(sql_statement, data_source):
       cursor.close
       print('data deleted from database: ' + str(data_source))
 # set user session
-def set_session(session_name):
+def set_session(session_name, session_value):
+      #get data from login form
+      username = request.form['username']
+      password = request.form['password']
       if str(session_name) == 'id':
-            # fetch count of all entries in log table
-            def fetch_count():
-                  # connect to database 
-                  db_connection = mysql.connector.connect(host = HOST, database = DATABASE, user = USER, password = PASSWORD, auth_plugin='caching_sha2_password')
-                  cursor = db_connection.cursor()
-                  # fetch count of all entries in log table
-                  cursor.execute('select count(*) from log;')
-                  db_data = cursor.fetchall()
-                  cursor.close()
-                  return db_data
             # set session id to count of all entries in log table + random number between 1 and 1000000
-            username = request.form['username']
-            password = request.form['password']
-            db_data = clear_int(fetch_count())
-            number = random.randint(1,1000000)
-            session_id = str(db_data) + str(number)
+            session_id = str(clear_int(session_value)) + str(random.randint(1,1000000))
             update_data('update users set session_id =%s where username =%s and password =%s', [session_id, username, password]) 
             session['id'] = session_id
             print('session for user ' + str(username) + ' set to: ' + str(session_id))
       else:
-            usr = session_name
-            session['usr'] = usr
-            print('sesssion for user')
+            session[session_name] = session_value
+            print('session for user ' + str(username) + ' set to: ' + str(session_value))
 # authenticate user session
 def session_authenticator():
       # check if session id exists on database and return true if match found, false if match not found, and print error message if function fails to run
@@ -339,7 +327,7 @@ def dashboard_filter_enabled():
       product_data_str = request.args.get('product_data_str')
       #deserialize JSON strings back to Python lists
       user_data = json.loads(session.get('usr')) if session.get('usr') else []
-      item_data = json.loads(item_data_str) if item_data_str else []
+      item_data = json.loads(session.get('item_data_activated')) if sesion.get('item_data_activated') else []
       product_data = json.loads(product_data_str) if product_data_str else []
       #render information.html based on catagory selected
       if catagory == 'information':
@@ -367,10 +355,15 @@ def login():
       password = request.form['password']
       #validate user login credentials
       if clear_int(fetch_data("select exists (select * from users where username=%s and password=%s);", [username, password])) == 1:
-            user_data = fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where username=%s and password=%s;',[username, password])
-            user_data_str = json.dumps(user_data)
-            set_session(user_data_str)
-            set_session('id')
+            user_data = json.dumps(fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where username=%s and password=%s;',[username, password] ))
+            item_data_activated = json.dumps(fetch_data('select image, item_name, price from listings where status=%s', ['activated'] ))
+            item_data_pending = json.dumps(fetch_data('select image, item_name, price from listings where status=%s', ['pending'] ))
+            item_data_history = json.dumps(fetch_data('select image, item_name, price from listings where status=%s', ['history'] ))
+            set_session('item_data_activated',item_data_activated)
+            set_session('item_data_pending',item_data_pending)
+            set_session('item_data_history',item_data_history)
+            set_session('user_data', user_data)
+            set_session('id', fetch_data('select count(*) from log where ",%s,"IS NOT NULL ;',['details'] ))
             app_log('logged in')
             return redirect(url_for('main'))
       
@@ -388,7 +381,7 @@ def main():
       if session_authenticator() == True:
             item_data = fetch_data('select image, item_name, price from listings where status=%s', ['activated'] )
             session_id = session.get('id')
-            user_data = json.loads(session.get('usr')) if session.get('usr') else []
+            user_data = json.loads(session.get('user_data')) if session.get('user_data') else []
             return render_template ('app.html', item_data=item_data,  user_data=user_data)
       elif session_authenticator() == False:
             def get_ip():
