@@ -10,19 +10,19 @@ import json
 import random
 import os
 # load environment variables from .env file
-load_dotenv()
+load_dotenv(dotenv_path='/home/administrator/Documents/secrets/letting/.env')
 # initialize flask app
 app = Flask(__name__, static_folder='static')
 # create blueprint for letting data static files
 img_data_bp = Blueprint(
       'letting_data', __name__,
-      static_folder='/mnt/s/letting_data',
+      static_folder='/mnt/storage/letting',
       static_url_path='/letting_data'
 )
 # register blueprint for letting data static files
 app.register_blueprint(img_data_bp)
 # set secret key for flask session management
-app.config['SECRET_KEY'] = os.getenv('KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 # set email server details for flask mail
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -33,7 +33,7 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv('EMAIL_USER')
 # initialize flask mail
 mail = Mail(app)
 # database connection details
-USER =  'liveserver'
+USER =  'letting'
 HOST = 'localhost'
 PASSWORD = os.getenv('PASSWORD')
 DATABASE = os.getenv('DATABASE')
@@ -179,7 +179,7 @@ def list_item():
             # save item image to static/assets/product_img with unique filename
             number = random.randint(1, 1000000) + random.randint(1,1000000)
             filename = item_name + '_' + str(number) + str(len(description)) + str(len(item_name)) + '.jpg'
-            path = '/mnt/s/letting_data/product_img'
+            path = '/mnt/storage/letting/product_img'
             img_file = Image.open(request.files['item_img'])
             img_file.save(f'{path}/{filename}')
             # insert item data into database and log user action
