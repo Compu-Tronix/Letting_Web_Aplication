@@ -15,9 +15,9 @@ load_dotenv(dotenv_path='/home/administrator/Documents/secrets/letting/.env')
 app = Flask(__name__, static_folder='static')
 # create blueprint for letting data static files
 img_data_bp = Blueprint(
-      'letting_data', __name__,
+      'letting', __name__,
       static_folder='/mnt/storage/letting',
-      static_url_path='/letting_data'
+      static_url_path='/letting'
 )
 # register blueprint for letting data static files
 app.register_blueprint(img_data_bp)
@@ -185,6 +185,9 @@ def list_item():
             # insert item data into database and log user action
             insert_data("insert into listings (user_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)", [user_id, item_name, description, filename, price])
             app_log(str(item_name) + ' listed')
+            #
+            #address = 
+            #send_email(,)
             return dashboard_filter()
       else:
             return main()
@@ -335,6 +338,7 @@ def login():
       #validate user login credentials
       if clear_int(fetch_data("select exists (select * from users where username=%s and password=%s);", [username, password])) == 1:
             user_data = json.dumps(fetch_data('select user_icon, username, surname, email, cell_no, postal_code, street_address, town_city from users where username=%s and password=%s;',[username, password] ))
+            print('THIS IS WHAT IS BEING STORED: '+ str(type(user_data)) + str(user_data))
             item_data_activated = json.dumps(fetch_data('select image, item_name, price from listings where status=%s', ['activated'] ))
             item_data_pending = json.dumps(fetch_data('select image, item_name, price from listings where status=%s', ['pending'] ))
             item_data_history = json.dumps(fetch_data('select image, item_name, price from listings where status=%s', ['history'] ))
@@ -361,6 +365,8 @@ def main():
             item_data = fetch_data('select image, item_name, price from listings where status=%s', ['activated'] )
             session_id = session.get('id')
             user_data = json.loads(session.get('user_data')) if session.get('user_data') else []
+            address = json.loads(session.get('user_data')) if session.get('user_data') else []
+            print('THIS IS MAIL ADDRESS TO SEND TO: '+ str(address))
             return render_template ('app.html', item_data=item_data,  user_data=user_data)
       elif session_authenticator() == False:
             def get_ip():

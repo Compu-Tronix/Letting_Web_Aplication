@@ -13,11 +13,6 @@ function dashboard() {
             </div>
             <input type="submit" value="Dashboard">
         </form>
-      </li>
-      <li>
-        <a href="/user_information/">
-          Information
-        </a>
       </li> 
       <li>
         <a href="/services/">

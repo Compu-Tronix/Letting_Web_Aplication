@@ -36,7 +36,7 @@
                 <a href="javascript:void(0)" onclick="dashboard(document.getElementById('dashboard'))">
                     {% for user_data in user_data %}
                     {% set directory = 'user_docs/user_profile_img/' + user_data[0]|string %}
-                    <img src="{{ url_for('letting_data.static', filename=directory) }}" alt="Image Upload Display" class="dashboard-img">
+                    <img src="{{ url_for('letting.static', filename=directory) }}" alt="Image Upload Display" class="dashboard-img">
                     {% endfor %}
                 </a>
             </span>
