@@ -185,9 +185,11 @@ def list_item():
             # insert item data into database and log user action
             insert_data("insert into listings (user_id, item_name, description, image, price) values (%s, %s, %s, %s, %s)", [user_id, item_name, description, filename, price])
             app_log(str(item_name) + ' listed')
-            #
-            #address = 
-            #send_email(,)
+            #send email notification
+            mail_address = fetch_data('select email from users where session_id=%s', [session_id])
+            subject = "listing request"
+            mail_body = "Hello. you are recieving this mail as confirmation of listing request now pending approval."
+            #send_email(mail_address, subject, mail_body)
             return dashboard_filter()
       else:
             return main()
@@ -195,7 +197,7 @@ def list_item():
 @app.route('/delete_product/', methods = ['POST', 'GET'])
 def delist_item():
       product_name = request.form['product_name']
-      path = 'static/assets/product_img/' + str(product_name)
+      path = '/mnt/storage/letting/product_img/' + str(product_name)
       os.remove(path)
       delete_data('delete from listings where image = %s;', [str(product_name)])
       app_log(str(product_name) + ' delisted')
@@ -255,8 +257,15 @@ def register():
       if password == confirm_password:
                   # search database for existing email
                   if clear_int(fetch_data("select exists (select email from users where email=%s);", [email])) == 0:
+                        # create account
                         insert_data("insert into users (username, email, password, user_icon) values (%s, %s,%s, %s);", [username, email, password, 'default_user_icon.png'])
+                        # log action
                         app_log(username + ': registered')
+                        # send mail notification 
+                        mail_address = fetch_data('select email from users where session_id=%s', [session_id])
+                        subject = "Registration Success"
+                        mail_body = "Hello. you are recieving this mail as confirmation of successful registration to Letting."
+                        #send_email(mail_address, subject, mail_body)
                         return redirect(url_for('main'))
                   elif clear_int(fetch_data("select exists (select email from users where email=%s);", [email])) == 1:
                         return redirect(url_for('main'))
@@ -287,10 +296,17 @@ def product_info():
 def product_infomation():
       product_name = request.args.get('product_name')
       product_data_str = request.args.get('product_data_str')
+      session_id=session.get('id')
+      item_uid= clear_str(fetch_data('select user_id from listings where image=%s', [product_name]))
+      user_id= clear_int(fetch_data('select id from users where session_id=%s', [session_id]))
       #deserialize json stirng back to python list
+      user_data = json.loads(session.get('user_data')) if session.get('user_data') else []
       product_data = json.loads(product_data_str)
-      #render product.html with product data
-      return render_template('product.html', item_data=product_data, product_name=product_name)
+      # verify product ownership
+      if int(item_uid)==user_id:
+            return render_template('product-insight.html', item_data=product_data, product_name=product_name, user_data=user_data)
+      else:
+            return render_template('product.html', item_data=product_data, product_name=product_name, user_data=user_data)
 #user dashboard & filters
 @app.route('/enable_dashboard_filter/', methods=['POST','GET'])
 def dashboard_filter():
@@ -365,8 +381,6 @@ def main():
             item_data = fetch_data('select image, item_name, price from listings where status=%s', ['activated'] )
             session_id = session.get('id')
             user_data = json.loads(session.get('user_data')) if session.get('user_data') else []
-            address = json.loads(session.get('user_data')) if session.get('user_data') else []
-            print('THIS IS MAIL ADDRESS TO SEND TO: '+ str(address))
             return render_template ('app.html', item_data=item_data,  user_data=user_data)
       elif session_authenticator() == False:
             def get_ip():

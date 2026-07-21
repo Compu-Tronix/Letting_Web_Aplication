@@ -55,7 +55,7 @@
                 <div class="card-footer">
                     <form action="/product/" method="POST">
                         <div class="item-name-placeholder">
-                            <input type="text" value={{item_data[0]}} name="product_name" style="width: 0;">
+                            <input type="text" value={{item_data[0]}} name="product_name" style="visibility: hidden;">
                         </div>
                         <p> {{'R ' + item_data[2]|string }}</p>
                         <input type="submit" value="more">
