@@ -23,12 +23,10 @@
             <span class="home_page_container">
                 <a href="/"><img src="{{url_for('static', filename='assets/icons/home-icon.png')}}" class="home_page" alt="home_page"></a>
             </span>
-
             <!-- logo -->
             <span class="logo_container">
                 <img src="" class="logo_img" alt="logo">
             </span>
-
             <!-- dashboard -->
             <span class="dashboard">
                 <script>
@@ -36,51 +34,43 @@
                         document.getElementById('dashboard').innerHTML = '<button id="user_access_button">login</button>'
                     }
                 </script>
-                    <a href="javascript:void(0)" id="user_access_button">
-                        <img src="{{ url_for('letting.static', filename='user_docs/user_profile_img/default_user_icon.png') }}" alt="Image Upload Display" class="dashboard-img">
-                    </a>
-                    
-                    <div class="login" id="login">
-
-                        
-                        <form action="/login/" method="POST" class="form">
-                            
-                            <input type="text" placeholder="username" name="username" required class="form-input">
-                            <input type="password" placeholder="password" name="password"required class="form-input">
-                            <input type="submit" value="Login" class="btn">
-                            <button id="user_registration_button" class="btn">
-                                Register
+                <a href="javascript:void(0)" id="user_access_button">
+                    <img src="{{ url_for('letting.static', filename='user_docs/user_profile_img/default_user_icon.png') }}" alt="Image Upload Display" class="dashboard-img">
+                </a>
+                <div class="login" id="login"> 
+                    <form action="/login/" method="POST" class="form">   
+                        <input type="text" placeholder="username" name="username" required class="form-input">
+                        <input type="password" placeholder="password" name="password"required class="form-input">
+                        <input type="submit" value="Login" class="btn">
+                        <button id="user_registration_button" class="btn">
+                            Register
+                        </button>
+                        <button id="close_login_popup" class="btn">
+                            Cancel
+                        </button>
+                    </form>
+                    <div class="register"> 
+                        <form action="/register" method="POST" class="form"> 
+                            <input type="text" placeholder="name" name="username" required class="form-input">
+                            <input type="email" placeholder="email" name="email" required class="form-input">
+                            <input type="password" placeholder="password" name="password" required class="form-input">
+                            <input type="password" placeholder="confirm password" name="confirm_password" required class="form-input">
+                            <input type="submit" value="register" class="btn">
+                            <button id="close_registration_popup" class="btn">
+                                Login
                             </button>
-                            <button id="close_login_popup" class="btn">
+                            <button id="close_login_popup"class="btn">
                                 Cancel
                             </button>
                         </form>
-
-                        
-                        <div class="register"> 
-                            <form action="/register" method="POST" class="form">
-                                
-                                <input type="text" placeholder="name" name="username" required class="form-input">
-                                <input type="email" placeholder="email" name="email" required class="form-input">
-                                <input type="password" placeholder="password" name="password" required class="form-input">
-                                <input type="password" placeholder="confirm password" name="confirm_password" required class="form-input">
-                                <input type="submit" value="register" class="btn">
-                                <button id="close_registration_popup" class="btn">
-                                    Login
-                                </button>
-                                <button id="close_login_popup"class="btn">
-                                    Cancel
-                                </button>
-                            </form>
-                        </div>
                     </div>
+                </div>
             </span>
         </div>
     </nav>
     <body>
         <!-- summary -->
-        <div class="summary_container">
-                
+        <div class="summary_container">     
             <div class="summary_text">
                 <div class="text-summary">
                     <p>
@@ -106,10 +96,8 @@
                         scroll
                     </h1>
                 </button>
-            </div>
-            
+            </div> 
         </div>
-
         <!-- 
             app widget:
             -upload shortcut
@@ -128,8 +116,7 @@
                     </div>
                 </div>
                 <!-- catagory division shortcuts -->
-                <div class="catagory_division_shortcuts">
-                    
+                <div class="catagory_division_shortcuts">   
                     <div class="catagory_summary">
                         <p>
                             Sed vulputate mi sit amet mauris commodo. Tristique sollicitudin nibh sit amet commodo nulla. 
@@ -150,9 +137,7 @@
                             Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis. 
                             Pharetra sit amet aliquam id diam maecenas ultricies mi.
                         </p>
-                    </div>
-                    
-                    
+                    </div>   
                 </div>
             </div>
             <button class="scroll" onclick="smoothScroll(document.getElementById('associations'))">
@@ -161,7 +146,6 @@
                     </h1>
             </button>
         </div>
-
         <!-- 
             associates
         -->
