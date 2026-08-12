@@ -8,8 +8,8 @@
 {% block body %}
 <div class="container">
     <div class="productImgContainer">
-        {% set product_name = 'assets/img/'+ product_name|string %}
-        <img src="{{url_for('static', filename=product_name)}}" class="img">
+        {% set product_name = 'product_img/'+ product_name|string %}
+        <img src="{{url_for('letting.static', filename=product_name)}}" class="img">
     </div>
     <div class="productInfoContainer">
         {% for item_data in item_data %}
