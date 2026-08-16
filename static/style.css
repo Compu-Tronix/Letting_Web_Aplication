@@ -21,34 +21,26 @@ navigation bar:
 */
 nav {
     width: 100%;
-    
     position: fixed;
 }
 .nav {
-    border: 2px solid green;
-    background: white;
+    background: gray;
     display: flex;
     justify-content: space-between;
 }
-
 .home_page_container {
-    border: 2px solid brown;
     width: 100%;
     display: flex;
     justify-content: left;
 }
 /*logo*/
 .logo_container {
-    border: 2px solid orange;
     width: 100%;
     display: flex;
     justify-content: center;
 }
-
-
 /* dashboard*/
 .dashboard {
-    border: 2px solid red;
     width: 100%;
     display: flex;
     justify-content: right;
@@ -70,8 +62,6 @@ nav {
     margin: auto;
     width: 20%;
 }
-
-
 /*user access &user registration*/
 .user_access_button_container {
     border: 2px solid brown;
@@ -103,8 +93,6 @@ nav {
 .register.visible {
     visibility: visible;
 }
-
-
 .form{
     
     display: flex;
@@ -117,12 +105,8 @@ nav {
     width: 50%;
     margin: auto;
 }
-
-
 /*
-
 body:
-
 */
 body {
     margin: 0;
@@ -156,8 +140,6 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-
 /*
 footer:
 -additiional documents
@@ -165,29 +147,21 @@ footer:
 -help center
 */
 .footer {
-    position: fixed;
     bottom: 0;
     width: 100%;
-    /*margin-top: auto;*/
-    border: 2px solid black;
     display: flex;
     justify-content: space-between;
+    background: gray;
 }
-
-
 /*additional documents*/
 .additional_documents {
-    border: 2px solid blue;
+    width: 100%;
 }
-
-
 /*copyright*/
 .copyright {
-    border: 2px solid red;
+    width: 100%;
 }
-
-
 /*help center*/
 .help_center {
-    border: 2px solid green;
+    width: 100%;
 }

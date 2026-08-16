@@ -29,11 +29,6 @@
             </span>
             <!-- dashboard -->
             <span class="dashboard">
-                <script>
-                    function indexDashboard() {
-                        document.getElementById('dashboard').innerHTML = '<button id="user_access_button">login</button>'
-                    }
-                </script>
                 <a href="javascript:void(0)" id="user_access_button">
                     <img src="{{ url_for('letting.static', filename='user_docs/user_profile_img/default_user_icon.png') }}" alt="Image Upload Display" class="dashboard-img">
                 </a>
@@ -139,7 +134,7 @@
                         </p>
                     </div>
                     <div class="catagory_summary">
-                        <a href="">
+                        <a href="javascript:void(0)" id="user_access_button">
                             <h1>
                                 Electronics
                             </h1>

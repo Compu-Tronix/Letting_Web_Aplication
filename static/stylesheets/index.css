@@ -83,16 +83,5 @@ app widget:
     width: 100%;
     display: flex;
     justify-content: space-between;
-}
-/*additional documents*/
-.additional_documents {
-    border: 2px solid blue;
-}
-/*copyright*/
-.copyright {
-    border: 2px solid red;
-}
-/*help center*/
-.help_center {
-    border: 2px solid green;
+    background: gray;
 }
