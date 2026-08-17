@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html>
     <header>
+        <!-- Page metadata and asset includes (CSS/JS). Kept minimal here; additional per-page scripts/styles can be added as needed. -->
         <title>index</title>    
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale-1.0">
+        <!-- Main stylesheet served from the 'static' folder -->
         <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+        <!-- jQuery and site scripts (loaded from static) -->
         <script src="{{url_for('static', filename='jquery.js')}}"></script>
         <script src="{{url_for('static', filename='script.js')}}"></script>
     </header>
     <nav>
-        <!--navigation bar-->
+        <!-- Navigation bar: contains the home link, application logo, and user account controls (login/register). -->
         <div class="nav">
-            <!-- main app -->
+            <!-- main app: home link (returns to this index page) -->
             <span class="home_page_container">
                 <a href="/"><img src="{{url_for('static', filename='assets/icons/home-icon.png')}}" class="home_page" alt="home_page"></a>
             </span>
-            <!-- logo -->
+            <!-- logo: brand mark shown in the header -->
             <span class="logo_container">
                 <img src="{{url_for('static', filename='assets/icons/logo.png')}}" class="logo" alt="logo">
             </span>
-            <!-- dashboard -->
+            <!-- dashboard / user controls: clicking the avatar toggles the login/register UI -->
             <span class="dashboard">
                 <a href="javascript:void(0)" id="user_access_button">
                     <img src="{{ url_for('letting.static', filename='user_docs/user_profile_img/default_user_icon.png') }}" alt="Image Upload Display" class="dashboard-img">
                 </a>
                 <div class="login" id="login"> 
+                    <!-- Login form: posts credentials to /login/; server should validate and start a session -->
                     <form action="/login/" method="POST" class="form">   
                         <input type="text" placeholder="username" name="username" required class="form-input">
                         <input type="password" placeholder="password" name="password"required class="form-input">
                         <input type="submit" value="Login" class="btn">
+                        <!-- Trigger to open registration UI -->
                         <button id="user_registration_button" class="btn">
                             Register
                         </button>
@@ -36,6 +41,7 @@
                             Cancel
                         </button>
                     </form>
+                    <!-- Registration form: posts new user data to /register; ensure server-side validation for security -->
                     <div class="register"> 
                         <form action="/register" method="POST" class="form"> 
                             <input type="text" placeholder="name" name="username" required class="form-input">
@@ -43,6 +49,7 @@
                             <input type="password" placeholder="password" name="password" required class="form-input">
                             <input type="password" placeholder="confirm password" name="confirm_password" required class="form-input">
                             <input type="submit" value="register" class="btn">
+                            <!-- Buttons toggle between the forms; IDs are reused and handled by client-side script -->
                             <button id="close_registration_popup" class="btn">
                                 Login
                             </button>
@@ -56,6 +63,7 @@
         </div>
     </nav>
     <body>
+        <!-- Main content starts here: top banner / summary and the app widget (see #app_widget anchor). -->
         <!--summary-->
         <div style="height: 100vh; display: flex; flex-direction: column;">     
             <div style="width: 90%; height: 50%; margin: auto; display: flex;">
@@ -76,7 +84,7 @@
                 </button>
             </div> 
         </div>
-        <!--app widget-->
+        <!-- App widget: quick access area for core product categories and vendor shortcuts. Anchored by id="app_widget" so the top "arrow" button scrolls here. -->
         <div class="summary_container" id="app_widget" style="height: 100vh;">
             <div style="display: flex; flex-direction: column; height: 75%; margin: auto;">  
                 <!-- upload shortcut -->
@@ -138,7 +146,7 @@
                 </div>
             </div>
         </div>
-        <!--associates-->
+        <!-- Associates section: shows partner logos or vendor/partner highlights. Intended to display collaborators and sponsors. -->
         <div id="associations" style="height: 100vh; display: flex; flex-direction: column;">
             <h1 style="background: navy; color: white;">
                        Associates
@@ -153,7 +161,7 @@
             </div>
         </div>
     </body>
-    <!--footer-->
+    <!-- Footer: contains additional documents, copyright, and help links. This sits outside <body> for layout simplicity in this template; consider moving into <footer> element if semantic correctness is desired. -->
     <div style="bottom: 0; width: 100%; display: flex; justify-content: space-between; background: gray;">   
         <!-- additional documents -->
         <div class="additional_documents">
