@@ -122,6 +122,14 @@ body {
     height: 100vh;
     background: blue;
 }
+.product-list-container {
+    display: flex;
+    flex-direction: column;
+    background: red;
+    width: 70%;
+    max-height: 80vh;
+    margin: auto;
+}
 .product-icon {
     width: 5rem;
 }
@@ -143,12 +151,27 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-/*
-footer:
--additiional documents
--copyright
--help center
-*/
+/*dashboard command container*/
+.dashboardCmdContainer {
+    display: flex;
+    max-height: 80%;
+}
+.CmdContainer {
+    border: 2px solid green;
+    margin: auto;
+}
+/*listing_form*/
+.listing_form {
+    border: 2px solid green;
+    margin: auto;
+    width: 80%;
+}
+
+.dashboard-title {
+    margin: auto;
+}
+
+/*footer:*/
 .footer {
     bottom: 0;
     width: 100%;
@@ -156,15 +179,53 @@ footer:
     justify-content: space-between;
     background: gray;
 }
-/*additional documents*/
 .additional_documents {
     width: 100%;
 }
-/*copyright*/
 .copyright {
     width: 100%;
 }
-/*help center*/
 .help_center {
     width: 100%;
+}
+
+/*update user information input fields visibility*/
+.user_information {
+    margin: auto;
+}
+.input_username {
+    visibility: hidden;
+}
+.input_username.visible {
+    visibility: visible;
+}
+.input_surname {
+    visibility: hidden;
+}
+.input_surname.visible {
+    visibility: visible;
+}
+.input_id_number {
+    visibility: hidden;
+}
+.input_id_number.visible {
+    visibility: visible;
+}
+.input_residential_address {
+    visibility: hidden;
+}
+.input_residential_address.visible {
+    visibility: visible;
+}
+.input_phone_number {
+    visibility: hidden;
+}
+.input_phone_number.visible {
+    visibility: visible;
+}
+.input_email_address {
+    visibility: hidden;
+}
+.input_email_address.visible {
+    visibility: visible;
 }
