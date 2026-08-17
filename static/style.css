@@ -50,14 +50,11 @@ nav {
 }
 .dashboard_container {
     width: 100%;
-    background: white;
     display: flex;
     flex-direction: column;
-    border: 2px solid blue;
 }
 .dashboard_container ul{
     display: flex;
-    border: 2px solid orange;
     justify-content: space-around;
     list-style: none;
 }
@@ -66,9 +63,6 @@ nav {
     width: 20%;
 }
 /*user access &user registration*/
-.user_access_button_container {
-    border: 2px solid brown;
-}
 .login {
     backdrop-filter: blur(10px);
     position: fixed;
@@ -97,13 +91,11 @@ nav {
     visibility: visible;
 }
 .form{
-    
     display: flex;
     flex-direction: column;
     width: 50%;
     margin: auto;
 }
-
 .btn {
     width: 50%;
     margin: auto;
@@ -120,12 +112,10 @@ body {
 .body_container {
     display: flex;
     height: 100vh;
-    background: blue;
 }
 .product-list-container {
     display: flex;
     flex-direction: column;
-    background: red;
     width: 70%;
     max-height: 80vh;
     margin: auto;
@@ -136,7 +126,6 @@ body {
 .product-card-container {
     display: flex;
     flex-wrap: wrap;
-    border: 2px solid orange;
     overflow: auto;
     justify-content: space-around;
 }
@@ -157,12 +146,10 @@ body {
     max-height: 80%;
 }
 .CmdContainer {
-    border: 2px solid green;
     margin: auto;
 }
 /*listing_form*/
 .listing_form {
-    border: 2px solid green;
     margin: auto;
     width: 80%;
 }
