@@ -5,19 +5,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale-1.0">
         <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='/stylesheets/index-old.css')}}">
         <script src="{{url_for('static', filename='jquery.js')}}"></script>
         <script src="{{url_for('static', filename='script.js')}}"></script>
-        <script src="{{url_for('static', filename='/scripts/index.js')}}"></script>
     </header>
     
     <nav>
-        <!--
-            navigaation bar:
-            -logo
-            -dashboard
-            -user access & user registration function
-        -->
+        <!--navigation bar-->
         <div class="nav">
             <!-- main app -->
             <span class="home_page_container">
@@ -54,7 +47,7 @@
                             <button id="close_registration_popup" class="btn">
                                 Login
                             </button>
-                            <button id="close_login_popup"class="btn">
+                            <button id="close_registration_popup"class="btn">
                                 Cancel
                             </button>
                         </form>
@@ -64,7 +57,7 @@
         </div>
     </nav>
     <body>
-        <!-- summary -->
+        <!--summary-->
         <div style="height: 100vh; display: flex; flex-direction: column;">     
             <div style="width: 90%; height: 50%; margin: auto; display: flex;">
                 <div style="width: 90%; margin: auto;">
@@ -84,11 +77,7 @@
                 </button>
             </div> 
         </div>
-        <!-- 
-            app widget:
-            -upload shortcut
-            -catagory division shortcuts
-        -->
+        <!--app widget-->
         <div class="summary_container" id="app_widget" style="height: 100vh;">
             <div style="display: flex; flex-direction: column; height: 75%; margin: auto;">  
                 <!-- upload shortcut -->
@@ -107,7 +96,7 @@
                     </div>
                 </div>
                 <!-- catagory division shortcuts -->
-                <div style="height: 100%; display: flex;">   
+                <div style="height: 100%; display: flex; width: 90%; margin: auto;">   
                     <div style="width: 100%; margin:1%;">
                         <a href="">
                             <h1>
@@ -150,9 +139,7 @@
                 </div>
             </div>
         </div>
-        <!-- 
-            associates
-        -->
+        <!--associates-->
         <div id="associations" style="height: 100vh; display: flex; flex-direction: column;">
             <h1 style="background: navy; color: white;">
                        Associates
@@ -167,13 +154,8 @@
             </div>
         </div>
     </body>
+    <!--footer-->
     <div style="bottom: 0; width: 100%; display: flex; justify-content: space-between; background: gray;">   
-        <!-- 
-            footer:
-            -additional documents
-            -copyright
-            -help center
-        -->
         <!-- additional documents -->
         <div class="additional_documents">
             <ul>
