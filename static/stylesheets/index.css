@@ -2,72 +2,22 @@
 INDEX.HTML BODY
 */
 /*summary*/
-.summary_container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-.summary_text {
-    width: 90%;
-    height: 50%;
-    margin: auto;
-    display: flex;
-}
-.text-summary {
-    width: 90%;
-    margin: auto;
-}
-.scroll-container {
-    display: flex;
-    width: 90%;
-    margin: auto;
-}
-.scroll {
-    width: 50%;
-    background: none;
-    border: none;
-    margin: auto;
-}
-.home-page-arrow {
-    width: 50%;
-}
+
+
+
+
 /*
 app widget:
 -upload shortcut
 -catagory division shortcuts
 */
-.app-widget-container{
-    display: flex;
-    flex-direction: column;
-    height: 75%;
-    margin: auto;
-}
+
 /*upload shortcut*/
-.upload_shortcut {
-    height: 100%;
-    width: 90%;
-    display: flex;
-    margin: auto;
-}
+
 /*catagory division shortcuts*/
-.catagory_division_shortcuts {
-    height: 100%;
-    display: flex;
-}
-.catagory_summary {
-    width: 100%;
-    margin:1%;
-}
+
 /*associations*/
-.associations {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-.associates_container {
-    margin: auto;
-    display: flex;
-}
+
 .associate{
     width: 100%;
     display: flex;

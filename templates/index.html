@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale-1.0">
         <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='/stylesheets/index.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='/stylesheets/index-old.css')}}">
         <script src="{{url_for('static', filename='jquery.js')}}"></script>
         <script src="{{url_for('static', filename='script.js')}}"></script>
         <script src="{{url_for('static', filename='/scripts/index.js')}}"></script>
@@ -65,9 +65,9 @@
     </nav>
     <body>
         <!-- summary -->
-        <div class="summary_container">     
-            <div class="summary_text">
-                <div class="text-summary">
+        <div style="height: 100vh; display: flex; flex-direction: column;">     
+            <div style="width: 90%; height: 50%; margin: auto; display: flex;">
+                <div style="width: 90%; margin: auto;">
                     <h1 style="background: navy; color: white;">
                         Rent. Earn. Repeat.
                     </h1>
@@ -78,9 +78,9 @@
                     </p>
                 </div>
             </div>
-            <div class="scroll-container">
-                <button class="scroll" onclick="smoothScroll(document.getElementById('app_widget'))">
-                    <img src="{{url_for('static', filename='assets/icons/arrow.png')}}" class="home-page-arrow" alt="home-page-arrow">
+            <div style="display: flex; width: 90%; margin: auto;">
+                <button onclick="smoothScroll(document.getElementById('app_widget'))" style="width: 50%; background: none; border: none; margin: auto;">
+                    <img src="{{url_for('static', filename='assets/icons/arrow.png')}}" style="width: 50%;" alt="home-page-arrow">
                 </button>
             </div> 
         </div>
@@ -89,14 +89,14 @@
             -upload shortcut
             -catagory division shortcuts
         -->
-        <div class="summary_container" id="app_widget">
-            <div class="app-widget-container">  
+        <div class="summary_container" id="app_widget" style="height: 100vh;">
+            <div style="display: flex; flex-direction: column; height: 75%; margin: auto;">  
                 <!-- upload shortcut -->
-                <div class="upload_shortcut">
-                    <div class="upload-shortcut-container">
-                            <h1 style="background: navy; color: white;">
-                                Turn Idle Assets into Steady Income!
-                            </h1>
+                <div style="height: 100%; width: 90%; display: flex; margin: auto;">
+                    <div>
+                        <h1 style="background: navy; color: white;">
+                            Turn Idle Assets into Steady Income!
+                        </h1>
                         <p>
                             Join our rental marketplace and put your tools, fashion, electronics, or event gear to work. As a vendor, you gain access to a wide customer base, secure payments, and flexible listing options — all while keeping control of your inventory.
                             <br>List with ease. Earn with confidence.
@@ -107,11 +107,11 @@
                     </div>
                 </div>
                 <!-- catagory division shortcuts -->
-                <div class="catagory_division_shortcuts">   
-                    <div class="catagory_summary">
+                <div style="height: 100%; display: flex;">   
+                    <div style="width: 100%; margin:1%;">
                         <a href="">
                             <h1>
-                            Tools
+                                Tools
                             </h1>
                         </a>
                         <h2>
@@ -121,7 +121,7 @@
                             No need to buy expensive equipment for one‑time projects. Rent drills, ladders, or welding machines at affordable rates and finish your job without the extra cost or clutter.
                         </p>
                     </div>
-                    <div class="catagory_summary">
+                    <div>
                         <a href="">
                             <h1>
                                 Event Gear
@@ -134,7 +134,7 @@
                             From tents and chairs to sound systems and décor, you can rent everything for weddings, parties, or community events — all in one place, without the stress of ownership.
                         </p>
                     </div>
-                    <div class="catagory_summary">
+                    <div>
                         <a href="javascript:void(0)" id="user_access_button">
                             <h1>
                                 Electronics
@@ -153,21 +153,21 @@
         <!-- 
             associates
         -->
-        <div class="associations" id="associations">
+        <div id="associations" style="height: 100vh; display: flex; flex-direction: column;">
             <h1 style="background: navy; color: white;">
                        Associates
             </h1>
-            <div class="associates_container">
-                <div class="associate">
-                    <img src="{{url_for('static', filename='assets/icons/associate.png')}}" class="associate-img" alt="associate-img">
+            <div style="margin: auto; display: flex;">
+                <div style="width: 100%; display: flex;">
+                    <img src="{{url_for('static', filename='assets/icons/associate.png')}}" alt="associate-img" style="width: 25%; margin: auto;">
                 </div>
-                <div class="associate">
-                    <img src="{{url_for('static', filename='assets/icons/associate.png')}}" class="associate-img" alt="associate-img">
+                <div style="width: 100%; display: flex;">
+                    <img src="{{url_for('static', filename='assets/icons/associate.png')}}" alt="associate-img" style="width: 25%; margin: auto;">
                 </div>
             </div>
         </div>
     </body>
-    <div class="footer-home-page">   
+    <div style="bottom: 0; width: 100%; display: flex; justify-content: space-between; background: gray;">   
         <!-- 
             footer:
             -additional documents
