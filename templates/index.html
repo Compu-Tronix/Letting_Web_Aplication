@@ -25,7 +25,7 @@
             </span>
             <!-- logo -->
             <span class="logo_container">
-                <img src="" class="logo_img" alt="logo">
+                <img src="{{url_for('static', filename='assets/icons/logo.png')}}" class="logo" alt="logo">
             </span>
             <!-- dashboard -->
             <span class="dashboard">
@@ -68,7 +68,7 @@
         <div class="summary_container">     
             <div class="summary_text">
                 <div class="text-summary">
-                    <h1>
+                    <h1 style="background: navy; color: white;">
                         Rent. Earn. Repeat.
                     </h1>
                     <p>
@@ -89,20 +89,21 @@
             -upload shortcut
             -catagory division shortcuts
         -->
-        <div class="app_widget" id="app_widget">
+        <div class="summary_container" id="app_widget">
             <div class="app-widget-container">  
                 <!-- upload shortcut -->
                 <div class="upload_shortcut">
                     <div class="upload-shortcut-container">
-                        <a href="">
-                            <h1>
+                            <h1 style="background: navy; color: white;">
                                 Turn Idle Assets into Steady Income!
                             </h1>
-                        </a>
                         <p>
                             Join our rental marketplace and put your tools, fashion, electronics, or event gear to work. As a vendor, you gain access to a wide customer base, secure payments, and flexible listing options — all while keeping control of your inventory.
-                            <br>List with ease. Earn with confidence. Grow with us.
+                            <br>List with ease. Earn with confidence.
                         </p>
+                        <a href="">
+                            Start earning.
+                        </a>
                     </div>
                 </div>
                 <!-- catagory division shortcuts -->
@@ -153,6 +154,9 @@
             associates
         -->
         <div class="associations" id="associations">
+            <h1 style="background: navy; color: white;">
+                       Associates
+            </h1>
             <div class="associates_container">
                 <div class="associate">
                     <img src="{{url_for('static', filename='assets/icons/associate.png')}}" class="associate-img" alt="associate-img">

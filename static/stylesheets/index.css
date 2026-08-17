@@ -36,25 +36,18 @@ app widget:
 -upload shortcut
 -catagory division shortcuts
 */
-.app_widget {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
 .app-widget-container{
     display: flex;
     flex-direction: column;
     height: 75%;
     margin: auto;
 }
-.upload-shortcut-container {
-    margin: auto;
-}
 /*upload shortcut*/
 .upload_shortcut {
     height: 100%;
-    min-width: 25%;
+    width: 90%;
     display: flex;
+    margin: auto;
 }
 /*catagory division shortcuts*/
 .catagory_division_shortcuts {
@@ -69,13 +62,18 @@ app widget:
 .associations {
     height: 100vh;
     display: flex;
+    flex-direction: column;
 }
 .associates_container {
     margin: auto;
+    display: flex;
+}
+.associate{
+    width: 100%;
+    display: flex;
 }
 .associate-img {
-    width: 10%;
-    height: 10%;
+    width: 25%;
     margin: auto;
 }
 .footer-home-page {
