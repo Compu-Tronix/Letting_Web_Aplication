@@ -5,8 +5,8 @@
 {% block body %}
 <div class="body_container">
     <!-- search -->
-    <div style="border: 2px solid brown; display: flex; width: 25%; height: 80vh;">
-        <div style="margin: auto; background: blue; width: 100%; height: 80%; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+    <div style="display: flex; width: 25%; height: 80vh;">
+        <div style="margin: auto; width: 100%; height: 80%; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
             <form action="/enable_dashboard_filter/" method="POST">
                 <input type="hidden" value='catagory_1' name="catagory" style="width: 0;">
                 <input type="submit" value="catagory 1">
@@ -22,9 +22,9 @@
         </div>
     </div>
     <!-- search results -->
-    <div style="overflow: auto; border: 2px solid black; width: 75%; height: 80vh; display: flex;">
-        <div style="margin: auto; background: red; width: 100%; height: 80%; display: flex;">
-            <div id="productContainer" style="background: white; margin: auto;">
+    <div style="overflow: auto; width: 75%; height: 80vh; display: flex;">
+        <div style="margin: auto; width: 100%; height: 80%; display: flex;">
+            <div id="productContainer" style="margin: auto;">
                 <div class="product-card-container">
                     {% for item_data in item_data %}
                     {% set x = item_data[0]|string %}
