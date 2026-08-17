@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/dashboard.css')}}">
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheets/information.css')}}">
-<script src="{{url_for('static', filename='scripts/dashboard.js')}}"></script>
-<script src="{{url_for('static', filename='scripts/information.js')}}"></script>
 <title>Information</title>
 {% endblock %}
 {% block body %}
@@ -34,13 +30,12 @@
                 </h2>
             </div>
         <div class="product-card-container">
-
-            <div>
-                <div class="user_profile_container">
-                    <div class="user_icon">
+            <div style="width: 100%;">
+                <div style="display: flex; width: 100%;">
+                    <div style="width: 100%;">
                         {% for user_data in user_data %}
                     {% set directory = 'user_docs/user_profile_img/' + user_data[0]|string %}
-                    <img src="{{ url_for('letting.static', filename=directory) }}" alt="Image Upload Display" class="dashboard-img">
+                    <img src="{{ url_for('letting.static', filename=directory) }}" alt="Image Upload Display">
                     {% endfor %}
                     </div>
                     <div class="available_funds">
