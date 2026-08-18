@@ -1,8 +1,11 @@
+{# Extends base layout to inherit global structure and assets #}
 {% extends 'base.html' %}
 {% block head %}
 <title>dashboard</title>
+{# Page-specific head content ends here #}
 {% endblock %}
 {% block body %}
+{# Main page body: contains dashboard controls and the product list display #}
 <div class="body_container">
     <div class="dashboardCmdContainer">
         <div class="CmdContainer">
@@ -27,7 +30,7 @@
             </form>
         </div>
     </div>
-    <!--product list-->
+    <!-- Product list container: shows cards for each item in item_data -->
     <div class="product-list-container" id="information-container">
         <div class="dashboard-title">
             <h2 style="background: navy; color:white">
@@ -36,6 +39,7 @@
         </div>
         <div class="product-card-container">
             {% for item_data in item_data %}
+            {# Iterate items and sanitize item name to create image filename (remove punctuation) #}
             {% set x = item_data[0]|string %}
             {% set y = x.replace("(", "") %}
             {% set z = y.replace(")", "") %}
@@ -53,6 +57,7 @@
                 <div class="card-footer">
                     <form action="/product/" method="POST">
                         <div class="item-name-placeholder">
+                            <!-- Hidden input holds product identifier used by the server when 'more' is submitted -->
                             <input type="text" value={{item_data[0]}} name="product_name" style="visibility: hidden;">
                         </div>
                         <p> {{'R ' + item_data[2]|string }}</p>

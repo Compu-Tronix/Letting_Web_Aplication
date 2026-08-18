@@ -1,9 +1,13 @@
+{# Extends base layout to inherit global layout and assets #}
 {% extends 'base.html' %}
 {% block head %}
 <title>Information</title>
+<!-- Page-specific head content ends here -->
 {% endblock %}
 {% block body %}
+<!-- Main body: dashboard controls, user profile display, and inline edit forms -->
 <div class="body_container">
+    <!-- Dashboard controls: toggle list view and quick filter forms -->
     <div class="dashboardCmdContainer">
         <div class="CmdContainer">
             <button onclick="toggleUploadForm(document.getElementById('information-container'))">
@@ -23,6 +27,7 @@
             </form>
         </div>
     </div>
+    <!-- User information container: profile image, contact details and edit widgets -->
     <div class="information-container" id="information-container">
         <div class="dashboard-title">
                 <h2>
@@ -33,6 +38,7 @@
             <div style="width: 100%;">
                 <div style="display: flex; width: 100%;">
                     <div style="width: 100%;">
+                        {# Loop over user_data to show profile image(s) stored under user_docs/user_profile_img/ #}
                         {% for user_data in user_data %}
                     {% set directory = 'user_docs/user_profile_img/' + user_data[0]|string %}
                     <img src="{{ url_for('letting.static', filename=directory) }}" alt="Image Upload Display">
@@ -53,6 +59,7 @@
                 </div>
             </div>
             <div>
+                <!-- Username display with inline edit trigger -->
                 <span>
                     <p>
                         username: 
@@ -62,6 +69,7 @@
                     </p>
                     <a href="javascript:void(0)" id="edit_username"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit"></a>
                     <div class="input_username">
+                        <!-- Inline username update form posts new username to /update_username/ -->
                         <form action="/update_username/" method="POST">
                             <input type="text" placeholder=" update name" name="username" required>
                             <input type="submit" value="update">
@@ -69,6 +77,7 @@
                         </form>
                     </div>
                 </span>
+                <!-- Surname display with inline edit trigger -->
                 <span>
                     <p>
                         surname:
@@ -78,6 +87,7 @@
                     </p>
                     <a href="javascript:void(0)" id="edit_surname"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit_data"></a>
                     <div class="input_surname">
+                        <!-- Inline surname update posts new value and type to /update_user_information/ -->
                         <form action="/update_user_information/" method="POST">
                             <input type="text" placeholder="update surname" name="user_data_value" required>
                             <input type="hidden" name="user_data_type" value="surname">
@@ -86,6 +96,7 @@
                         </form>
                     </div>
                 </span>
+                <!-- Email display with inline edit trigger; email field is updated via /update_user_information/ -->
                 <span>
                     <p>
                         email address:
@@ -95,6 +106,7 @@
                     </p>
                     <a href="javascript:void(0)" id="edit_email_address"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit_data"></a>
                     <div class="input_email_address">
+                        <!-- Inline email update posts new value and type to /update_user_information/ -->
                         <form action="/update_user_information/" method="POST">
                             <input type="email" placeholder="email" name="user_data_value" required>
                             <input type="hidden" name="user_data_type" value="email">
@@ -103,6 +115,7 @@
                         </form>
                     </div>
                 </span>
+                <!-- Residential address display: shows street, town/city and postal code; includes proof upload form below -->
                 <span>
                     <p>
                         residential address:
@@ -117,6 +130,7 @@
                     </p>
                     <a href="javascript:void(0)" id="edit_residential_address"><img src="{{ url_for('static', filename='assets/icons/edit-square-icon.png') }}" alt="edit" class="edit_data"></a>
                     <div class="input_residential_address">
+                        <!-- Address update form accepts street/town/postal code and a proof_of_residence file upload -->
                         <form action="/update_user_information/" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="user_data_type" value="address">
                             <input type="text" placeholder="street" name="street_value" required>
@@ -128,6 +142,7 @@
                         </form>
                     </div>
                 </span> 
+                <!-- Phone number display with inline edit trigger -->
                 <span>
                     <p>
                         phone number:

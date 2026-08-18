@@ -11,7 +11,6 @@
         <!-- Block for child templates to extend head section -->
         {% block head %}{% endblock %}
     </header>
-    
     <!-- Navigation bar with logo, home link, dashboard, and user auth -->
     <nav>
         <div class="nav">
@@ -33,7 +32,6 @@
                     {% endfor %}
                 </a>
             </span>
-            
             <!-- User login/registration section -->
             {% for login in login %}
                 <div>
@@ -41,19 +39,16 @@
                     <a href="javascript:void(0)" id="user_access_button">                        
                         {{ login }}                     
                     </a>
-                    
                     <!-- Login popup modal -->                                     
                     <div class="login" id="login">
                         <!-- Close button -->
                         <button id="close_login_popup">
                             X
                         </button>
-                        
                         <!-- Register button to toggle registration form -->                     
                         <button class="user_registration_button" id="user_registration_button">
                             register
                         </button>
-                        
                         <!-- Registration form section -->
                         <div class="register">
                             <div class="registration_form">
@@ -78,12 +73,10 @@
         <div class="dashboard_container" id="dashboard">
         </div>
     </nav>
-    
     <!-- Main content block for child templates -->
     <body>
         {% block body %}{% endblock %}
     </body>
-    
     <!-- Footer with additional info sections -->
     <div class="footer">
         <!-- Additional documents section -->

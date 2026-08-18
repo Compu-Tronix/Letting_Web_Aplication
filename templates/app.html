@@ -1,10 +1,13 @@
+{# Extends base layout to inherit global structure and assets #}
 {% extends 'base.html' %}
 {% block head %}
 <title>letting App</title>
+{# Page-specific head content ends here #}
 {% endblock %}
 {% block body %}
+{# Main body: sidebar filters and product list display #}
 <div class="body_container">
-    <!-- search -->
+    <!-- Sidebar filters: category selection forms -->
     <div style="display: flex; width: 25%; height: 80vh;">
         <div style="margin: auto; width: 100%; height: 80%; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
             <form action="/enable_dashboard_filter/" method="POST">
@@ -21,40 +24,8 @@
             </form>
         </div>
     </div>
-    <!-- search results 
-    <div style="width: 75%; height: 80vh; display: flex;">
-            <div id="productContainer" style="margin: auto;">
-                <div class="product-card-container">
-                    {% for item_data in item_data %}
-                    {% set x = item_data[0]|string %}
-                    {% set y = x.replace("(", "") %}
-                    {% set z = y.replace(")", "") %}
-                    {% set a = z.replace("'", "") %}
-                    {% set b = a.replace(",", "") %}
-                    {% set directory = 'product_img/' %}
-                    {% set img_value = directory + b %}
-                    <div class="card-container">    
-                        <div class="card-header">
-                            <img src="{{ url_for('letting.static', filename=img_value) }}" alt="Image Upload Display" class="product-icon">
-                        </div>
-                        <div class="card-body">    
-                            <p> {{ item_data[1] }} </p>
-                        </div>
-                        <div class="card-footer">
-                            <form action="/product/" method="POST">
-                                <div style="position: absolute; width: 0; visibility: hidden;">
-                                    <input type="text" value={{item_data[0]}} name="product_name" style="width: 0;">
-                                </div>
-                                <p> {{'R ' + item_data[2]|string }}</p>
-                                <input type="submit" value="more">
-                            </form>
-                        </div> 
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-    </div>-->
-    <div class="product-list-container" id="information-container">
+   <!-- Product list container: displays cards for each item in item_data -->
+   <div class="product-list-container" id="information-container">
         <div class="dashboard-title">
             <h2>
                 catagory title
@@ -62,6 +33,7 @@
         </div>
         <div class="product-card-container">
             {% for item_data in item_data %}
+            {# Build image filename from item name by removing punctuation to match stored filenames #}
             {% set x = item_data[0]|string %}
             {% set y = x.replace("(", "") %}
             {% set z = y.replace(")", "") %}
@@ -79,6 +51,7 @@
                 <div class="card-footer">
                     <form action="/product/" method="POST">
                         <div class="item-name-placeholder">
+                            <!-- Hidden input: product identifier submitted when 'more' is clicked -->
                             <input type="text" value={{item_data[0]}} name="product_name" style="visibility: hidden;">
                         </div>
                         <p> {{'R ' + item_data[2]|string }}</p>
