@@ -4,15 +4,11 @@ variables
 :root {
     --them-color: ;
     --font: ;
-    
 }
-
 html {
     width: 100%;
     height: 100%;
 }
-
-
 /* 
 navigation bar:
 -logo
@@ -134,7 +130,6 @@ body {
     width: 25%;
     flex: 0 0 auto;
 }
-
 .card-body {
     white-space: nowrap;
     overflow: hidden;
@@ -153,11 +148,9 @@ body {
     margin: auto;
     width: 80%;
 }
-
 .dashboard-title {
     margin: auto;
 }
-
 /*footer:*/
 .footer {
     bottom: 0;
@@ -175,7 +168,6 @@ body {
 .help_center {
     width: 100%;
 }
-
 /*update user information input fields visibility*/
 .user_information {
     margin: auto;
